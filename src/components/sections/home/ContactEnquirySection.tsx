@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { gsap, isReducedMotion } from '@/lib/animations/gsap';
-import { Container } from '@/components/ui/container';
 import { cn } from '@/lib/utils/cn';
 
 export interface ContactEnquirySectionProps {
@@ -15,15 +14,12 @@ export interface ContactEnquirySectionProps {
 /**
  * HOMEPAGE SECTION 08 — CONTACT & ENQUIRY (08 / LET'S GROW TOGETHER)
  *
- * Final editorial homepage chapter before the footer:
- * - Warm cream background (#F5F1E7) with data-nav-theme="light"
- * - Asymmetric two-column editorial composition (Left ~60% Typography & CTAs | Right ~40% Portrait Agricultural Visual)
- * - Line-by-line vertical text mask reveal for headline
- * - Organic botanical root/stem line illustration progressive SVG draw
- * - Soft vertical clipping mask reveal and internal parallax on seedling visual
- * - Primary CTA ("Get in Touch" ↗) linking to /contact
- * - Secondary CTA ("Explore Our Products" →) linking to /nutrition-system
- * - Subtle agronomy assistance notice
+ * Full-Bleed Split-Screen Editorial Composition:
+ * - Desktop Layout: Left 55% Cream Panel (#F5F1E7) | Right 45% True Full-Bleed Photographic Panel
+ * - Right seedling photograph fills entire height and touches top, bottom & right viewport edge
+ * - Zero rounded corners, zero outer margins, zero inset card borders
+ * - Preserved editorial line text-mask reveals, botanical stem SVG draw & smooth parallax
+ * - Mobile: Seamless stacked layout with comfortable padding and edge-to-edge photography
  */
 export function ContactEnquirySection({ className }: ContactEnquirySectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -123,12 +119,12 @@ export function ContactEnquirySection({ className }: ContactEnquirySectionProps)
 
       // =======================================================================
       // 2. Right Side Seedling Visual Entrance
-      // Soft vertical clipping mask reveal
+      // Clean full-bleed rectangular reveal without rounded borders
       // =======================================================================
       if (visualWrapperRef.current) {
         gsap.fromTo(
           visualWrapperRef.current,
-          { clipPath: 'inset(12% 0% 0% 0%)', opacity: 0, y: 26 },
+          { clipPath: 'inset(8% 0% 0% 0%)', opacity: 0, y: 20 },
           {
             clipPath: 'inset(0% 0% 0% 0%)',
             opacity: 1,
@@ -146,14 +142,14 @@ export function ContactEnquirySection({ className }: ContactEnquirySectionProps)
 
       // =======================================================================
       // 3. Subtle Parallax on Internal Photographic Visual
-      // Moves gently inside stable overflow-hidden container
+      // Moves gently inside full-bleed overflow-hidden container
       // =======================================================================
       if (parallaxImgRef.current && visualWrapperRef.current) {
         gsap.fromTo(
           parallaxImgRef.current,
-          { yPercent: -5 },
+          { yPercent: -4 },
           {
-            yPercent: 5,
+            yPercent: 4,
             ease: 'none',
             scrollTrigger: {
               trigger: visualWrapperRef.current,
@@ -176,19 +172,18 @@ export function ContactEnquirySection({ className }: ContactEnquirySectionProps)
       data-nav-theme="light"
       className={cn(
         'relative w-full bg-cream text-text-primary overflow-hidden',
-        'py-20 sm:py-24 md:py-28 lg:py-32 xl:py-36',
         'border-t border-forest-deep/10',
         className
       )}
       aria-labelledby="section-08-heading"
     >
-      <Container size="default">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 xl:gap-20 items-center">
-          {/* ===================================================================
-              LEFT COLUMN — (~60% on desktop)
-              Typography, Editorial Headline, Root Illustration, CTAs & Assistance
-              =================================================================== */}
-          <div className="lg:col-span-7 xl:col-span-7 flex flex-col justify-center">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-[55%_45%] lg:min-h-[100dvh] items-stretch">
+        {/* ===================================================================
+            LEFT PANEL — (55% on desktop)
+            Typography, Editorial Headline, Root Illustration, CTAs & Assistance
+            =================================================================== */}
+        <div className="flex flex-col justify-center px-4 xs:px-6 sm:px-8 md:px-12 lg:pl-12 lg:pr-10 xl:pl-20 xl:pr-14 2xl:pl-28 2xl:pr-20 pt-24 sm:pt-28 md:pt-32 lg:pt-32 xl:pt-36 pb-16 sm:pb-20 lg:pb-24 bg-cream z-10">
+          <div className="w-full max-w-xl xl:max-w-2xl">
             {/* Numbered Section Label */}
             <div className="contact-eyebrow flex items-center gap-2.5 mb-5 sm:mb-6">
               <span className="w-2 h-2 rounded-full bg-olive" aria-hidden="true" />
@@ -296,51 +291,46 @@ export function ContactEnquirySection({ className }: ContactEnquirySectionProps)
               </p>
             </div>
           </div>
+        </div>
 
-          {/* ===================================================================
-              RIGHT COLUMN — (~40% on desktop)
-              Tall Portrait Visual of Young Seedling Growing from Rich Dark Soil
-              =================================================================== */}
-          <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end">
+        {/* ===================================================================
+            RIGHT PANEL — (45% on desktop, TRUE FULL-BLEED)
+            Continuous Edge-to-Edge Photographic Panel without Card Inset
+            =================================================================== */}
+        <div
+          ref={visualWrapperRef}
+          className="contact-visual-panel relative w-full min-h-[380px] xs:min-h-[440px] sm:min-h-[500px] md:min-h-[560px] lg:min-h-full lg:h-full overflow-hidden bg-forest-deep"
+        >
+          {/* Internal Parallax Container */}
+          <div
+            ref={parallaxImgRef}
+            className="absolute inset-[-6%] w-[112%] h-[112%]"
+          >
+            <Image
+              src="/assets/images/home/contact-seedling.jpg"
+              alt="Young healthy crop seedling growing in dark rich fertile soil under natural sunlight"
+              fill
+              sizes="(max-width: 1024px) 100vw, 45vw"
+              quality={90}
+              className="object-cover object-[center_36%]"
+              priority={false}
+            />
+            {/* Subtle bottom vignette to ensure caption legibility */}
             <div
-              ref={visualWrapperRef}
-              className="contact-visual-stage relative w-full max-w-md lg:max-w-none aspect-[3/4] sm:aspect-[4/5] lg:aspect-[3/4] rounded-2xl sm:rounded-3xl overflow-hidden bg-cream-muted border border-forest-deep/10 shadow-[0_20px_50px_rgba(20,36,14,0.06)]"
-            >
-              {/* Internal Parallax Container */}
-              <div
-                ref={parallaxImgRef}
-                className="absolute inset-[-8%] w-[116%] h-[116%]"
-              >
-                <Image
-                  src="/assets/images/home/contact-seedling.jpg"
-                  alt="Young healthy crop seedling growing in dark rich fertile soil under natural sunlight"
-                  fill
-                  sizes="(max-width: 1024px) 90vw, 40vw"
-                  quality={90}
-                  className="object-cover object-center"
-                  priority={false}
-                />
-                {/* Subtle soft gradient overlay at bottom for organic warmth */}
-                <div
-                  className="absolute inset-0 bg-gradient-to-t from-forest-deep/25 via-transparent to-transparent pointer-events-none"
-                  aria-hidden="true"
-                />
-              </div>
+              className="absolute inset-0 bg-gradient-to-t from-forest-deep/65 via-transparent to-transparent pointer-events-none"
+              aria-hidden="true"
+            />
+          </div>
 
-              {/* Discreet Editorial Spec Badge */}
-              <div
-                className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5 z-10 bg-cream/90 backdrop-blur-sm px-3 sm:px-3.5 py-1.5 rounded-full border border-forest-deep/10 flex items-center gap-2 pointer-events-none"
-                aria-hidden="true"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-olive animate-pulse" />
-                <span className="font-mono text-[10px] sm:text-[11px] font-semibold text-forest-deep tracking-wider uppercase">
-                  Living Soil · Active Growth
-                </span>
-              </div>
-            </div>
+          {/* Discreet Unobtrusive Editorial Photo Caption */}
+          <div className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8 lg:bottom-10 lg:left-10 z-10 pointer-events-none flex items-center gap-2.5 text-cream/90 font-mono text-[11px] sm:text-xs tracking-wider uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-harvest" aria-hidden="true" />
+            <span className="drop-shadow-sm font-semibold tracking-widest">
+              Living Soil · Active Growth
+            </span>
           </div>
         </div>
-      </Container>
+      </div>
     </section>
   );
 }
