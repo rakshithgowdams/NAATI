@@ -3,7 +3,7 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { gsap, ScrollTrigger, isReducedMotion } from '@/lib/animations/gsap';
 import { cn } from '@/lib/utils/cn';
 
@@ -11,11 +11,11 @@ export interface HomeHeroProps {
   className?: string;
 }
 
-const PHILOSOPHY_MARKERS = [
-  { label: 'HEALTHY SOIL', highlight: false },
-  { label: 'STRONG ROOTS', highlight: false },
-  { label: 'HEALTHY PLANTS', highlight: false },
-  { label: 'BETTER HARVESTS', highlight: true },
+const APPROACH_MILESTONES = [
+  { step: '01', label: 'HEALTHY SOIL', id: 'healthy-soil' },
+  { step: '02', label: 'STRONG ROOTS', id: 'strong-roots' },
+  { step: '03', label: 'HEALTHY PLANTS', id: 'healthy-plants' },
+  { step: '04', label: 'BETTER HARVESTS', id: 'better-harvests' },
 ];
 
 /**
@@ -40,6 +40,7 @@ export function HomeHero({ className }: HomeHeroProps) {
   const openingMetaRef = useRef<HTMLDivElement>(null);
   const scrollCueRef = useRef<HTMLDivElement>(null);
   const closingContentRef = useRef<HTMLDivElement>(null);
+  const stripRef = useRef<HTMLDivElement>(null);
 
   // Loading & Ready State
   const [isVideoReady, setIsVideoReady] = useState(false);
@@ -238,6 +239,284 @@ export function HomeHero({ className }: HomeHeroProps) {
         { y: 22, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.9, stagger: 0.1, delay: 0.1 }
       );
+
+      // =======================================================================
+      // FROM SOIL TO HARVEST — EDITORIAL GROWTH PATHWAY SCROLL ANIMATION
+      // Coordinated progression: Heading reveal -> 4 connected milestones with lines
+      // =======================================================================
+      if (stripRef.current) {
+        const mm = gsap.matchMedia();
+
+        // DESKTOP & TABLET ANIMATION (Horizontal Continuous Pathway)
+        mm.add('(min-width: 768px)', () => {
+          const stripTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: stripRef.current,
+              start: 'top 88%',
+              end: 'bottom 68%',
+              scrub: 0.5,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          // STEP 01: Reveal editorial label & heading upward through subtle text mask
+          stripTl.fromTo(
+            ['.strip-label', '.strip-heading'],
+            { y: 18, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.16, stagger: 0.04, ease: 'power2.out' },
+            0
+          );
+
+          // Reveal CTAs
+          stripTl.fromTo(
+            ['.strip-cta-primary', '.strip-cta-secondary'],
+            { y: 14, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.16, stagger: 0.04, ease: 'power2.out' },
+            0.06
+          );
+
+          // STEP 02: Milestone 01 ("Healthy Soil") becomes active
+          stripTl.fromTo(
+            '.pathway-dot-fill-0',
+            { scale: 0, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.08, ease: 'back.out(2)' },
+            0.10
+          );
+          stripTl.to(
+            '.pathway-dot-0',
+            { borderColor: '#14240E', boxShadow: '0 0 0 3px rgba(32, 56, 23, 0.15)', duration: 0.08 },
+            0.10
+          );
+          stripTl.to(
+            '.pathway-label-0',
+            { color: '#14240E', fontWeight: '700', duration: 0.08 },
+            0.10
+          );
+          stripTl.to(
+            '.pathway-step-num-0',
+            { color: '#4B5E32', duration: 0.08 },
+            0.10
+          );
+
+          // STEP 03: Connecting Line 1 draws toward "Strong Roots"
+          stripTl.fromTo(
+            '.pathway-line-fill-0',
+            { scaleX: 0 },
+            { scaleX: 1, duration: 0.22, ease: 'power1.inOut' },
+            0.18
+          );
+
+          // STEP 04: "Strong Roots" becomes active
+          stripTl.fromTo(
+            '.pathway-dot-fill-1',
+            { scale: 0, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.08, ease: 'back.out(2)' },
+            0.40
+          );
+          stripTl.to(
+            '.pathway-dot-1',
+            { borderColor: '#14240E', boxShadow: '0 0 0 3px rgba(32, 56, 23, 0.15)', duration: 0.08 },
+            0.40
+          );
+          stripTl.to(
+            '.pathway-label-1',
+            { color: '#14240E', fontWeight: '700', duration: 0.08 },
+            0.40
+          );
+          stripTl.to(
+            '.pathway-step-num-1',
+            { color: '#4B5E32', duration: 0.08 },
+            0.40
+          );
+
+          // Connecting Line 2 draws toward "Healthy Plants"
+          stripTl.fromTo(
+            '.pathway-line-fill-1',
+            { scaleX: 0 },
+            { scaleX: 1, duration: 0.22, ease: 'power1.inOut' },
+            0.48
+          );
+
+          // "Healthy Plants" becomes active
+          stripTl.fromTo(
+            '.pathway-dot-fill-2',
+            { scale: 0, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.08, ease: 'back.out(2)' },
+            0.70
+          );
+          stripTl.to(
+            '.pathway-dot-2',
+            { borderColor: '#14240E', boxShadow: '0 0 0 3px rgba(32, 56, 23, 0.15)', duration: 0.08 },
+            0.70
+          );
+          stripTl.to(
+            '.pathway-label-2',
+            { color: '#14240E', fontWeight: '700', duration: 0.08 },
+            0.70
+          );
+          stripTl.to(
+            '.pathway-step-num-2',
+            { color: '#4B5E32', duration: 0.08 },
+            0.70
+          );
+
+          // STEP 05: Final line connects to "Better Harvests"
+          stripTl.fromTo(
+            '.pathway-line-fill-2',
+            { scaleX: 0 },
+            { scaleX: 1, duration: 0.20, ease: 'power1.inOut' },
+            0.78
+          );
+
+          // STEP 06: "Better Harvests" becomes active (with harvest accent ring)
+          stripTl.fromTo(
+            '.pathway-dot-fill-3',
+            { scale: 0, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.08, ease: 'back.out(2)' },
+            0.92
+          );
+          stripTl.to(
+            '.pathway-dot-3',
+            { borderColor: '#14240E', boxShadow: '0 0 0 3px rgba(200, 181, 117, 0.45)', duration: 0.08 },
+            0.92
+          );
+          stripTl.to(
+            '.pathway-label-3',
+            { color: '#14240E', fontWeight: '700', duration: 0.08 },
+            0.92
+          );
+          stripTl.to(
+            '.pathway-step-num-3',
+            { color: '#C8B575', duration: 0.08 },
+            0.92
+          );
+        });
+
+        // MOBILE ANIMATION (Vertical Continuous Pathway)
+        mm.add('(max-width: 767px)', () => {
+          const mobileTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: stripRef.current,
+              start: 'top 85%',
+              end: 'bottom 65%',
+              scrub: 0.5,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          // Reveal label & heading
+          mobileTl.fromTo(
+            ['.strip-label', '.strip-heading'],
+            { y: 14, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.16, stagger: 0.04, ease: 'power2.out' },
+            0
+          );
+
+          // Milestone 01
+          mobileTl.fromTo(
+            '.mobile-dot-fill-0',
+            { scale: 0, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.08, ease: 'back.out(2)' },
+            0.10
+          );
+          mobileTl.to(
+            '.mobile-dot-0',
+            { borderColor: '#14240E', boxShadow: '0 0 0 3px rgba(32, 56, 23, 0.15)', duration: 0.08 },
+            0.10
+          );
+          mobileTl.to(
+            '.mobile-label-0',
+            { color: '#14240E', fontWeight: '700', duration: 0.08 },
+            0.10
+          );
+
+          // Line 01 draws downward
+          mobileTl.fromTo(
+            '.mobile-line-fill-0',
+            { scaleY: 0 },
+            { scaleY: 1, duration: 0.22, ease: 'power1.inOut' },
+            0.18
+          );
+
+          // Milestone 02
+          mobileTl.fromTo(
+            '.mobile-dot-fill-1',
+            { scale: 0, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.08, ease: 'back.out(2)' },
+            0.40
+          );
+          mobileTl.to(
+            '.mobile-dot-1',
+            { borderColor: '#14240E', boxShadow: '0 0 0 3px rgba(32, 56, 23, 0.15)', duration: 0.08 },
+            0.40
+          );
+          mobileTl.to(
+            '.mobile-label-1',
+            { color: '#14240E', fontWeight: '700', duration: 0.08 },
+            0.40
+          );
+
+          // Line 02 draws downward
+          mobileTl.fromTo(
+            '.mobile-line-fill-1',
+            { scaleY: 0 },
+            { scaleY: 1, duration: 0.22, ease: 'power1.inOut' },
+            0.48
+          );
+
+          // Milestone 03
+          mobileTl.fromTo(
+            '.mobile-dot-fill-2',
+            { scale: 0, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.08, ease: 'back.out(2)' },
+            0.70
+          );
+          mobileTl.to(
+            '.mobile-dot-2',
+            { borderColor: '#14240E', boxShadow: '0 0 0 3px rgba(32, 56, 23, 0.15)', duration: 0.08 },
+            0.70
+          );
+          mobileTl.to(
+            '.mobile-label-2',
+            { color: '#14240E', fontWeight: '700', duration: 0.08 },
+            0.70
+          );
+
+          // Line 03 draws downward
+          mobileTl.fromTo(
+            '.mobile-line-fill-2',
+            { scaleY: 0 },
+            { scaleY: 1, duration: 0.20, ease: 'power1.inOut' },
+            0.78
+          );
+
+          // Milestone 04
+          mobileTl.fromTo(
+            '.mobile-dot-fill-3',
+            { scale: 0, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.08, ease: 'back.out(2)' },
+            0.92
+          );
+          mobileTl.to(
+            '.mobile-dot-3',
+            { borderColor: '#14240E', boxShadow: '0 0 0 3px rgba(200, 181, 117, 0.45)', duration: 0.08 },
+            0.92
+          );
+          mobileTl.to(
+            '.mobile-label-3',
+            { color: '#14240E', fontWeight: '700', duration: 0.08 },
+            0.92
+          );
+
+          // Reveal CTAs
+          mobileTl.fromTo(
+            ['.strip-cta-primary', '.strip-cta-secondary'],
+            { y: 12, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.16, stagger: 0.04, ease: 'power2.out' },
+            0.88
+          );
+        });
+      }
     }, containerRef);
 
     return () => ctx.revert();
@@ -247,7 +526,6 @@ export function HomeHero({ className }: HomeHeroProps) {
     <section
       ref={containerRef}
       id="home-hero"
-      data-nav-theme="dark"
       aria-label="Naati Organics Hero — Fix the Soil. Feed the Plant."
       className={cn('relative w-full bg-forest-deep select-none', className)}
     >
@@ -256,6 +534,7 @@ export function HomeHero({ className }: HomeHeroProps) {
           ========================================================================= */}
       <div
         ref={pinViewportRef}
+        data-nav-theme="dark"
         className="relative w-full h-[100svh] min-h-[600px] overflow-hidden bg-forest-deep flex flex-col justify-between"
       >
         {/* =======================================================================
@@ -444,66 +723,202 @@ export function HomeHero({ className }: HomeHeroProps) {
       </div>
 
       {/* =========================================================================
-          TASK 02 & TASK 03 — FULL-WIDTH EDITORIAL BRAND STRIP
-          Participates in normal document flow immediately following the pinned video.
-          Edge-to-edge dark forest-green (#1c2e17) with the 4 philosophy markers + link.
+          FROM SOIL TO HARVEST — EDITORIAL TRANSITION BRIDGE
+          Warm cream (#F5F1E7) editorial surface connecting the cinematic hero with Soil Crisis.
+          Refined 3-part layout:
+          A — Editorial Heading (01 / THE NAATI APPROACH + "From soil to harvest.")
+          B — Four-Stage Continuous Growth Pathway (Desktop horizontal, Mobile vertical)
+          C — Navigation Actions (Primary solid CTA + Secondary editorial text link)
           ========================================================================= */}
       <div
-        data-nav-theme="dark"
-        className="hero-brand-strip relative w-full bg-[#1b3014] border-t border-cream/15 text-cream py-5 sm:py-6 px-5 sm:px-8 md:px-12 lg:px-16 z-20"
+        ref={stripRef}
+        id="from-soil-to-harvest"
+        data-nav-theme="light"
+        className="relative w-full bg-[#F5F1E7] border-t border-[#DFD7C2]/70 border-b border-cream-border/70 text-forest-deep py-6 sm:py-7 lg:py-8 z-20 transition-colors"
       >
-        <div className="max-w-[1720px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-5 sm:gap-6">
-          {/* Brand Philosophy Markers */}
-          <div
-            className="flex flex-wrap items-center justify-center lg:justify-start gap-x-3 sm:gap-x-5 md:gap-x-7 gap-y-2 text-center"
-            aria-label="Brand philosophy sequence: Healthy Soil to Strong Roots to Healthy Plants to Better Harvests"
-          >
-            {PHILOSOPHY_MARKERS.map((marker, idx) => (
-              <React.Fragment key={marker.label}>
-                <span
-                  className={cn(
-                    'font-mono text-[10px] sm:text-xs font-semibold tracking-[0.2em] uppercase flex items-center gap-2',
-                    marker.highlight ? 'text-harvest font-bold' : 'text-cream/90'
-                  )}
-                >
-                  <span
-                    className={cn(
-                      'w-1.5 h-1.5 rounded-full',
-                      marker.highlight ? 'bg-harvest animate-pulse' : 'bg-harvest/80'
-                    )}
-                    aria-hidden="true"
-                  />
-                  {marker.label}
+        <div className="max-w-[1720px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16">
+          <div className="flex flex-col lg:grid lg:grid-cols-12 lg:items-center gap-6 lg:gap-8 xl:gap-12">
+            {/* ELEMENT A: EDITORIAL HEADING */}
+            <div className="lg:col-span-3 shrink-0">
+              <div className="overflow-hidden">
+                <span className="strip-label block font-mono text-[10px] sm:text-xs font-semibold tracking-[0.2em] uppercase text-[#637B43]">
+                  01 / THE NAATI APPROACH
                 </span>
+              </div>
+              <div className="overflow-hidden mt-1 sm:mt-1.5">
+                <h2 className="strip-heading font-display text-xl sm:text-2xl lg:text-[1.7rem] xl:text-[1.85rem] font-medium text-forest-deep tracking-[-0.025em] leading-[1.18]">
+                  From soil to harvest.
+                </h2>
+              </div>
+            </div>
 
-                {idx < PHILOSOPHY_MARKERS.length - 1 && (
-                  <span className="text-harvest/50 font-mono text-xs select-none hidden xs:inline" aria-hidden="true">
-                    →
-                  </span>
-                )}
-              </React.Fragment>
-            ))}
-          </div>
+            {/* ELEMENT B: FOUR-STAGE GROWTH PATHWAY */}
+            <div className="lg:col-span-6 w-full py-1 lg:py-0">
+              {/* Desktop & Tablet: Horizontal Continuous Growth Pathway */}
+              <div
+                className="hidden md:flex items-start w-full relative"
+                aria-label="The Naati Approach: Healthy Soil, Strong Roots, Healthy Plants, Better Harvests"
+              >
+                {APPROACH_MILESTONES.map((milestone, idx) => {
+                  const isLast = idx === APPROACH_MILESTONES.length - 1;
+                  return (
+                    <div
+                      key={milestone.id}
+                      className={cn(
+                        'relative flex flex-col items-start',
+                        isLast ? 'shrink-0' : 'flex-1'
+                      )}
+                    >
+                      {/* Step Number in IBM Plex Mono */}
+                      <span
+                        className={cn(
+                          `pathway-step-num-${idx}`,
+                          'font-mono text-[10px] tracking-widest text-[#73806B] font-medium mb-1.5 transition-colors duration-300 select-none'
+                        )}
+                      >
+                        {milestone.step}
+                      </span>
 
-          {/* Action CTAs: Primary Complete Nutrition System + Farmer Handbook */}
-          <div className="flex flex-wrap items-center justify-center lg:justify-end gap-3 sm:gap-4 shrink-0">
-            <Link
-              href="#crop-nutrition-system"
-              className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-harvest text-forest-deep font-sans text-xs sm:text-sm font-bold tracking-wide hover:bg-cream active:scale-[0.98] transition-all group shadow-warm-xs"
-            >
-              <span>Explore Nutrition System</span>
-              <ArrowRight
-                className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5"
-                aria-hidden="true"
-              />
-            </Link>
+                      {/* Milestone Marker & Continuous Connecting Line */}
+                      <div className="w-full flex items-center relative h-3">
+                        {/* Circular Marker Point */}
+                        <div
+                          className={cn(
+                            `pathway-dot-${idx}`,
+                            'relative z-10 w-2.5 h-2.5 rounded-full border border-[#8B9880] bg-[#FAF8F3] flex items-center justify-center shrink-0 transition-all duration-300'
+                          )}
+                          aria-hidden="true"
+                        >
+                          <div
+                            className={cn(
+                              `pathway-dot-fill-${idx}`,
+                              'w-1.5 h-1.5 rounded-full bg-forest-deep opacity-0 scale-50 transition-all duration-300'
+                            )}
+                          />
+                        </div>
 
-            <Link
-              href="/resources"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-cream/20 hover:border-cream/50 text-cream/90 hover:text-cream font-sans text-xs sm:text-sm font-medium tracking-wide transition-colors"
-            >
-              <span>Farmer Handbook</span>
-            </Link>
+                        {/* Delicate Continuous Connecting Line */}
+                        {!isLast && (
+                          <div
+                            className="flex-1 h-[1.5px] bg-[#D4DDD0] relative overflow-hidden"
+                            aria-hidden="true"
+                          >
+                            <div
+                              className={cn(
+                                `pathway-line-fill-${idx}`,
+                                'absolute inset-0 bg-forest-deep origin-left scale-x-0'
+                              )}
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Stage Label in IBM Plex Mono */}
+                      <span
+                        className={cn(
+                          `pathway-label-${idx}`,
+                          'font-mono text-[11px] lg:text-xs font-semibold tracking-[0.12em] uppercase text-[#5A6850] mt-2 transition-colors duration-300 whitespace-nowrap'
+                        )}
+                      >
+                        {milestone.label}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Mobile: Vertical Continuous Growth Pathway */}
+              <div
+                className="md:hidden flex flex-col space-y-0 relative pl-1 w-full"
+                aria-label="The Naati Approach: Healthy Soil, Strong Roots, Healthy Plants, Better Harvests"
+              >
+                {APPROACH_MILESTONES.map((milestone, idx) => {
+                  const isLast = idx === APPROACH_MILESTONES.length - 1;
+                  return (
+                    <div
+                      key={`m-${milestone.id}`}
+                      className="relative flex items-start gap-3.5 pb-5 last:pb-0"
+                    >
+                      {/* Left Vertical Spine */}
+                      <div
+                        className="relative flex flex-col items-center shrink-0 w-3 pt-0.5"
+                        aria-hidden="true"
+                      >
+                        {/* Marker Dot */}
+                        <div
+                          className={cn(
+                            `mobile-dot-${idx}`,
+                            'w-2.5 h-2.5 rounded-full border border-[#8B9880] bg-[#FAF8F3] flex items-center justify-center relative z-10 transition-all duration-300'
+                          )}
+                        >
+                          <div
+                            className={cn(
+                              `mobile-dot-fill-${idx}`,
+                              'w-1.5 h-1.5 rounded-full bg-forest-deep opacity-0 scale-50 transition-all duration-300'
+                            )}
+                          />
+                        </div>
+
+                        {/* Vertical Connecting Line */}
+                        {!isLast && (
+                          <div className="w-[1.5px] bg-[#D4DDD0] absolute top-3 bottom-0 left-1/2 -translate-x-1/2 overflow-hidden">
+                            <div
+                              className={cn(
+                                `mobile-line-fill-${idx}`,
+                                'w-full h-full bg-forest-deep origin-top scale-y-0'
+                              )}
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Milestone Content */}
+                      <div className="flex flex-col">
+                        <span className="font-mono text-[10px] tracking-widest text-[#73806B] font-medium uppercase select-none">
+                          {milestone.step}
+                        </span>
+                        <span
+                          className={cn(
+                            `mobile-label-${idx}`,
+                            'font-mono text-xs font-semibold tracking-wider uppercase text-[#5A6850] mt-0.5 transition-colors duration-300'
+                          )}
+                        >
+                          {milestone.label}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* ELEMENT C: NAVIGATION ACTIONS */}
+            <div className="lg:col-span-3 flex flex-wrap items-center lg:justify-end gap-4 sm:gap-5 shrink-0 pt-1 lg:pt-0">
+              <Link
+                href="#crop-nutrition-system"
+                className="strip-cta-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-forest-deep text-[#F5F1E7] font-sans text-xs sm:text-sm font-semibold tracking-wide hover:bg-forest active:scale-[0.98] transition-all group shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+              >
+                <span>Explore the System</span>
+                <ArrowUpRight
+                  className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  aria-hidden="true"
+                />
+              </Link>
+
+              <Link
+                href="/soil-academy#farmer-handbook"
+                className="strip-cta-secondary group inline-flex items-center gap-1.5 py-2 px-1 text-xs sm:text-sm font-sans font-medium text-[#2E4122] hover:text-forest-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-cream rounded-sm"
+              >
+                <span className="relative">
+                  Farmer Handbook
+                  <span className="absolute left-0 bottom-0 w-full h-[1px] bg-[#637B43]/50 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
+                </span>
+                <ArrowUpRight
+                  className="w-3.5 h-3.5 text-[#637B43] group-hover:text-forest-deep transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  aria-hidden="true"
+                />
+              </Link>
+            </div>
           </div>
         </div>
       </div>
