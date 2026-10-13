@@ -18,7 +18,8 @@ export interface NaatiPlusStaticGroundProps {
  * Static editorial imagery at the bottom of Section 02:
  * - Naati Plus package resting on rich vermicompost toward the lower-right.
  * - Dark soil extending across the bottom edge immediately before Section 03.
- * - Subtle top mask seamlessly blending into Section 02 cream (#F5F1E7) background.
+ * - Generous top clearance ensuring the package is never cropped or faded across desktop/mobile.
+ * - Seamless top fade into Section 02 warm cream (#F5F1E7) background.
  * - Positioned below the closing quotation and CTA with zero text collision.
  * - 100% responsive without stretching or distorting product proportions.
  */
@@ -28,12 +29,20 @@ export function NaatiPlusStaticGround({ className }: NaatiPlusStaticGroundProps)
       aria-hidden="true"
       className={cn(
         'relative w-full overflow-hidden pointer-events-none select-none',
-        'h-[190px] xs:h-[230px] sm:h-[280px] md:h-[330px] lg:h-[380px] max-h-[420px]',
+        // Responsive heights maintaining ample clearance above the package at every breakpoint
+        'h-[190px] xs:h-[230px] sm:h-[280px] md:h-[350px] lg:h-[480px] xl:h-[560px] 2xl:h-[640px] min-[1600px]:h-[720px] min-[1920px]:h-[clamp(780px,42vw,960px)]',
+        // Top mask fade residing entirely in the empty cream area above the packaging
         '[mask-image:linear-gradient(to_bottom,transparent_0%,black_50px,black_100%)]',
         '[-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_50px,black_100%)]',
         className
       )}
     >
+      {/* Soft cream edge blend guaranteeing zero visible cutoff under all rendering engines */}
+      <div
+        className="absolute inset-x-0 top-0 h-10 sm:h-12 md:h-14 lg:h-16 bg-gradient-to-b from-[#F5F1E7] to-transparent pointer-events-none z-10"
+        aria-hidden="true"
+      />
+
       <Image
         src="/assets/images/home/naati-plus-compost-end.webp"
         alt=""
