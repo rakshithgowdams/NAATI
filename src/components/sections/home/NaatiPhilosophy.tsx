@@ -34,13 +34,16 @@ const STAGE_02_ITEMS = [
 /**
  * HOMEPAGE SECTION 04 — THE NAATI PHILOSOPHY
  * 
- * Farm Minerals-Inspired Editorial Split-Screen Horizontal Scroll Experience:
+ * "From Foundation to Growth" — Coordinated Editorial Scroll Animation Experience:
  * - Concise, sophisticated asymmetric editorial introduction
  * - Pinned two-panel horizontal track on desktop (>= 1024px)
- *   - PANEL 01: [ 50% Soil Image ] [ 50% Build the Soil Content ]
- *   - PANEL 02: [ 50% Feed the Plant Content ] [ 50% Crop Image ]
- * - Natural, elegant vertical responsive layout on mobile/tablet (< 1024px)
- * - Pure GSAP ScrollTrigger matchMedia with zero extra manual scrollbars
+ *   - STAGE 01: Progressive editorial entrance (Eyebrow -> Masked "Build the Soil" -> Rows -> Product badge)
+ *     followed by a stable reading pause
+ *   - TRANSITION: As Panel 01 moves away and Panel 02 enters, Stage Two reveals synchronously with panel visibility
+ *   - STAGE 02: Masked "Feed the Plant" -> Sequential 5-row reveal (drawing line, index, masked title, note)
+ *     completing before final resting position with a stable closing reading pause
+ * - Mobile / Tablet (< 1024px): Natural stacked vertical layout with independent viewport-triggered ScrollTriggers
+ * - Fully deterministic and reversible, with support for prefers-reduced-motion
  */
 export function NaatiPhilosophy({ className }: NaatiPhilosophyProps) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -58,7 +61,9 @@ export function NaatiPhilosophy({ className }: NaatiPhilosophyProps) {
     if (isReducedMotion()) return;
 
     const ctx = gsap.context(() => {
-      // 1. Editorial Introduction Reveal
+      // =======================================================================
+      // 1. EDITORIAL INTRODUCTION REVEAL
+      // =======================================================================
       const introTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.phil-intro-trigger',
@@ -92,9 +97,11 @@ export function NaatiPhilosophy({ className }: NaatiPhilosophyProps) {
           '-=0.4'
         );
 
-      // 2. Desktop Horizontal Scroll Pinned Experience (>= 1024px)
       const mm = gsap.matchMedia();
 
+      // =======================================================================
+      // 2. DESKTOP HORIZONTAL SCROLL & CONTENT TIMELINE (>= 1024px)
+      // =======================================================================
       mm.add('(min-width: 1024px)', () => {
         const track = horizontalTrackRef.current;
         const wrapper = horizontalWrapperRef.current;
@@ -103,9 +110,84 @@ export function NaatiPhilosophy({ className }: NaatiPhilosophyProps) {
         // Dynamic translation calculation: exact track overflow
         const getScrollAmount = () => -(track.scrollWidth - window.innerWidth);
 
-        const scrollTween = gsap.to(track, {
-          x: getScrollAmount,
-          ease: 'none',
+        // STAGE ONE: Entrance sequence as visitor reaches the horizontal section
+        const stageOneTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: wrapper,
+            start: 'top 75%',
+            toggleActions: 'play none none reverse',
+          },
+        });
+
+        stageOneTl
+          .fromTo(
+            '.stage-01-eyebrow',
+            { opacity: 0, y: 16 },
+            { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }
+          )
+          .fromTo(
+            '.stage-01-heading',
+            { opacity: 0, y: 35 },
+            { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' },
+            '-=0.25'
+          )
+          .fromTo(
+            '.stage-01-subheading',
+            { opacity: 0, y: 18 },
+            { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out' },
+            '-=0.35'
+          )
+          .fromTo(
+            '.stage-01-desc',
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+            '-=0.3'
+          )
+          .fromTo(
+            '.stage-01-row-line',
+            { scaleX: 0, transformOrigin: 'left center' },
+            { scaleX: 1, duration: 0.4, ease: 'power2.inOut', stagger: 0.08 },
+            '-=0.2'
+          )
+          .fromTo(
+            '.stage-01-row-num',
+            { opacity: 0, y: 8 },
+            { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out', stagger: 0.08 },
+            '<0.05'
+          )
+          .fromTo(
+            '.stage-01-row-title',
+            { opacity: 0, y: 22 },
+            { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out', stagger: 0.08 },
+            '<0.05'
+          )
+          .fromTo(
+            '.stage-01-row-note',
+            { opacity: 0, x: 16 },
+            { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out', stagger: 0.08 },
+            '<0.05'
+          )
+          .fromTo(
+            '.stage-01-row-bottom-line',
+            { scaleX: 0, transformOrigin: 'left center' },
+            { scaleX: 1, duration: 0.35, ease: 'power2.inOut' },
+            '-=0.15'
+          )
+          .fromTo(
+            '.stage-01-bottom-label',
+            { opacity: 0, y: 16 },
+            { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+            '-=0.15'
+          )
+          .fromTo(
+            '.stage-01-bottom-stage',
+            { opacity: 0, scale: 0.94 },
+            { opacity: 1, scale: 1, duration: 0.35, ease: 'power2.out' },
+            '-=0.2'
+          );
+
+        // MASTER PINNED TIMELINE: Synchronizes horizontal track and Stage Two content
+        const masterTl = gsap.timeline({
           scrollTrigger: {
             trigger: wrapper,
             start: 'top top',
@@ -140,9 +222,211 @@ export function NaatiPhilosophy({ className }: NaatiPhilosophyProps) {
           },
         });
 
+        // 1. Horizontal track movement spans 0 to 1
+        masterTl.to(track, {
+          x: getScrollAmount,
+          ease: 'none',
+          duration: 1,
+        }, 0);
+
+        // 2. Set initial hidden states for Stage Two
+        gsap.set('.stage-02-eyebrow', { opacity: 0, y: 16 });
+        gsap.set('.stage-02-heading', { opacity: 0, y: 35 });
+        gsap.set('.stage-02-subheading', { opacity: 0, y: 18 });
+        gsap.set('.stage-02-desc', { opacity: 0, y: 14 });
+        gsap.set('.stage-02-row-line', { scaleX: 0, transformOrigin: 'left center' });
+        gsap.set('.stage-02-row-num', { opacity: 0, y: 8 });
+        gsap.set('.stage-02-row-title', { opacity: 0, y: 22 });
+        gsap.set('.stage-02-row-note', { opacity: 0, x: 16 });
+        gsap.set('.stage-02-row-bottom-line', { scaleX: 0, transformOrigin: 'left center' });
+        gsap.set('.stage-02-bottom-label', { opacity: 0, y: 16 });
+        gsap.set('.stage-02-bottom-stage', { opacity: 0, scale: 0.94 });
+
+        // 3. Stage Two Synchronized Progression (Reveals once panel is sufficiently in viewport)
+        masterTl
+          // Eyebrow enters once Panel 02 is well within view
+          .to('.stage-02-eyebrow', { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.38)
+          // Main heading "Feed the Plant." rises through clean vertical text mask
+          .to('.stage-02-heading', { opacity: 1, y: 0, duration: 0.12, ease: 'power3.out' }, 0.44)
+          // Supporting statement and description enter with slight stagger
+          .to('.stage-02-subheading', { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.48)
+          .to('.stage-02-desc', { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.52)
+          // 5 Information rows reveal sequentially (line draws, index, masked title, note from right)
+          .to('.stage-02-row-line', { scaleX: 1, duration: 0.1, ease: 'power2.inOut', stagger: 0.04 }, 0.56)
+          .to('.stage-02-row-num', { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out', stagger: 0.04 }, 0.58)
+          .to('.stage-02-row-title', { opacity: 1, y: 0, duration: 0.1, ease: 'power3.out', stagger: 0.04 }, 0.58)
+          .to('.stage-02-row-note', { opacity: 1, x: 0, duration: 0.09, ease: 'power2.out', stagger: 0.04 }, 0.60)
+          .to('.stage-02-row-bottom-line', { scaleX: 1, duration: 0.08, ease: 'power2.inOut' }, 0.78)
+          // Bottom label and stage indicator reveal before final resting position (0.84 vs 1.0)
+          .to('.stage-02-bottom-label', { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.80)
+          .to('.stage-02-bottom-stage', { opacity: 1, scale: 1, duration: 0.07, ease: 'power2.out' }, 0.84);
+
         return () => {
-          scrollTween.scrollTrigger?.kill();
-          scrollTween.kill();
+          stageOneTl.kill();
+          masterTl.scrollTrigger?.kill();
+          masterTl.kill();
+        };
+      });
+
+      // =======================================================================
+      // 3. MOBILE & TABLET VERTICAL SCROLL ANIMATIONS (< 1024px)
+      // =======================================================================
+      mm.add('(max-width: 1023px)', () => {
+        // Stage One Mobile Trigger
+        const mStage1 = gsap.timeline({
+          scrollTrigger: {
+            trigger: '#panel-build-the-soil',
+            start: 'top 75%',
+            toggleActions: 'play none none reverse',
+          },
+        });
+
+        mStage1
+          .fromTo(
+            '.stage-01-eyebrow',
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }
+          )
+          .fromTo(
+            '.stage-01-heading',
+            { opacity: 0, y: 35 },
+            { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' },
+            '-=0.25'
+          )
+          .fromTo(
+            '.stage-01-subheading',
+            { opacity: 0, y: 16 },
+            { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+            '-=0.35'
+          )
+          .fromTo(
+            '.stage-01-desc',
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' },
+            '-=0.3'
+          )
+          .fromTo(
+            '.stage-01-row-line',
+            { scaleX: 0, transformOrigin: 'left center' },
+            { scaleX: 1, duration: 0.4, ease: 'power2.inOut', stagger: 0.08 },
+            '-=0.2'
+          )
+          .fromTo(
+            '.stage-01-row-num',
+            { opacity: 0, y: 8 },
+            { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out', stagger: 0.08 },
+            '<0.05'
+          )
+          .fromTo(
+            '.stage-01-row-title',
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out', stagger: 0.08 },
+            '<0.05'
+          )
+          .fromTo(
+            '.stage-01-row-note',
+            { opacity: 0, x: 14 },
+            { opacity: 1, x: 0, duration: 0.38, ease: 'power2.out', stagger: 0.08 },
+            '<0.05'
+          )
+          .fromTo(
+            '.stage-01-row-bottom-line',
+            { scaleX: 0, transformOrigin: 'left center' },
+            { scaleX: 1, duration: 0.35, ease: 'power2.inOut' },
+            '-=0.15'
+          )
+          .fromTo(
+            '.stage-01-bottom-label',
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+            '-=0.15'
+          )
+          .fromTo(
+            '.stage-01-bottom-stage',
+            { opacity: 0, scale: 0.94 },
+            { opacity: 1, scale: 1, duration: 0.3, ease: 'power2.out' },
+            '-=0.2'
+          );
+
+        // Stage Two Mobile Trigger
+        const mStage2 = gsap.timeline({
+          scrollTrigger: {
+            trigger: '#panel-feed-the-plant',
+            start: 'top 75%',
+            toggleActions: 'play none none reverse',
+          },
+        });
+
+        mStage2
+          .fromTo(
+            '.stage-02-eyebrow',
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }
+          )
+          .fromTo(
+            '.stage-02-heading',
+            { opacity: 0, y: 35 },
+            { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' },
+            '-=0.25'
+          )
+          .fromTo(
+            '.stage-02-subheading',
+            { opacity: 0, y: 16 },
+            { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+            '-=0.35'
+          )
+          .fromTo(
+            '.stage-02-desc',
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' },
+            '-=0.3'
+          )
+          .fromTo(
+            '.stage-02-row-line',
+            { scaleX: 0, transformOrigin: 'left center' },
+            { scaleX: 1, duration: 0.4, ease: 'power2.inOut', stagger: 0.08 },
+            '-=0.2'
+          )
+          .fromTo(
+            '.stage-02-row-num',
+            { opacity: 0, y: 8 },
+            { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out', stagger: 0.08 },
+            '<0.05'
+          )
+          .fromTo(
+            '.stage-02-row-title',
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out', stagger: 0.08 },
+            '<0.05'
+          )
+          .fromTo(
+            '.stage-02-row-note',
+            { opacity: 0, x: 14 },
+            { opacity: 1, x: 0, duration: 0.38, ease: 'power2.out', stagger: 0.08 },
+            '<0.05'
+          )
+          .fromTo(
+            '.stage-02-row-bottom-line',
+            { scaleX: 0, transformOrigin: 'left center' },
+            { scaleX: 1, duration: 0.35, ease: 'power2.inOut' },
+            '-=0.15'
+          )
+          .fromTo(
+            '.stage-02-bottom-label',
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+            '-=0.15'
+          )
+          .fromTo(
+            '.stage-02-bottom-stage',
+            { opacity: 0, scale: 0.94 },
+            { opacity: 1, scale: 1, duration: 0.3, ease: 'power2.out' },
+            '-=0.2'
+          );
+
+        return () => {
+          mStage1.kill();
+          mStage2.kill();
         };
       });
     }, sectionRef.current);
@@ -290,58 +574,76 @@ export function NaatiPhilosophy({ className }: NaatiPhilosophyProps) {
               {/* Upper Content Group */}
               <div>
                 {/* Small Eyebrow */}
-                <div className="inline-flex items-center gap-2 mb-3 sm:mb-4">
+                <div className="stage-01-eyebrow inline-flex items-center gap-2 mb-3 sm:mb-4 will-change-transform">
                   <span className="w-1.5 h-1.5 rounded-full bg-earth" aria-hidden="true" />
                   <span className="font-mono text-[11px] sm:text-xs font-semibold tracking-[0.2em] uppercase text-earth">
                     01 / THE FOUNDATION
                   </span>
                 </div>
 
-                {/* Headline & Subheading */}
-                <h3 className="font-display font-medium text-2xl sm:text-3xl lg:text-[2.25rem] text-forest leading-[1.1] tracking-[-0.03em]">
-                  Build the Soil.
-                </h3>
-                <p className="font-sans text-base sm:text-lg text-olive-dark font-medium mt-1 sm:mt-1.5 [text-wrap:pretty]">
-                  Start where healthy growth begins.
-                </p>
+                {/* Headline & Subheading with Clean Line Mask */}
+                <div className="overflow-hidden">
+                  <h3 className="stage-01-heading font-display font-medium text-2xl sm:text-3xl lg:text-[2.25rem] text-forest leading-[1.1] tracking-[-0.03em] will-change-transform">
+                    Build the Soil.
+                  </h3>
+                </div>
+                <div className="overflow-hidden mt-1 sm:mt-1.5">
+                  <p className="stage-01-subheading font-sans text-base sm:text-lg text-olive-dark font-medium [text-wrap:pretty] will-change-transform">
+                    Start where healthy growth begins.
+                  </p>
+                </div>
 
                 {/* Supporting Copy */}
-                <p className="font-sans text-sm sm:text-base text-text-secondary leading-relaxed mt-2.5 sm:mt-3 max-w-lg [text-wrap:pretty]">
+                <p className="stage-01-desc font-sans text-sm sm:text-base text-text-secondary leading-relaxed mt-2.5 sm:mt-3 max-w-lg [text-wrap:pretty] will-change-transform">
                   Healthy soil conditions support living biology, organic matter and stronger root development.
                 </p>
               </div>
 
-              {/* Middle Group: Concise List with Enhanced Readability */}
-              <div className="my-5 sm:my-6 lg:my-0 space-y-0 border-t border-cream-border/70">
+              {/* Middle Group: Numbered Information Rows with Controlled Sequential Reveals */}
+              <div className="my-5 sm:my-6 lg:my-0 space-y-0 relative">
                 {STAGE_01_ITEMS.map((item) => (
                   <div
                     key={item.index}
-                    className="flex flex-col xs:flex-row xs:items-center justify-between gap-1 xs:gap-3 py-2.5 sm:py-3.5 border-b border-cream-border/70 group"
+                    className="stage-01-row flex flex-col xs:flex-row xs:items-center justify-between gap-1 xs:gap-3 py-2.5 sm:py-3.5 relative group"
                   >
+                    {/* Horizontal divider drawing from left to right */}
+                    <div
+                      className="stage-01-row-line absolute top-0 inset-x-0 h-px bg-cream-border/70 origin-left will-change-transform"
+                      aria-hidden="true"
+                    />
+
                     <div className="flex items-center gap-3 sm:gap-4">
-                      <span className="font-mono text-xs sm:text-[13px] font-semibold text-olive tracking-wider shrink-0">
+                      <span className="stage-01-row-num font-mono text-xs sm:text-[13px] font-semibold text-olive tracking-wider shrink-0 will-change-transform">
                         {item.index}
                       </span>
-                      <span className="font-sans font-semibold text-forest text-sm sm:text-base tracking-[-0.01em]">
-                        {item.title}
-                      </span>
+                      <div className="overflow-hidden">
+                        <span className="stage-01-row-title block font-sans font-semibold text-forest text-sm sm:text-base tracking-[-0.01em] will-change-transform">
+                          {item.title}
+                        </span>
+                      </div>
                     </div>
-                    <span className="font-sans text-xs sm:text-sm text-text-secondary font-medium tracking-normal text-left xs:text-right max-w-full xs:max-w-[220px] sm:max-w-xs leading-snug pl-6 xs:pl-0">
+
+                    <span className="stage-01-row-note font-sans text-xs sm:text-sm text-text-secondary font-medium tracking-normal text-left xs:text-right max-w-full xs:max-w-[220px] sm:max-w-xs leading-snug pl-6 xs:pl-0 will-change-transform">
                       {item.note}
                     </span>
                   </div>
                 ))}
+                {/* Bottom closing divider line */}
+                <div
+                  className="stage-01-row-bottom-line w-full h-px bg-cream-border/70 origin-left will-change-transform"
+                  aria-hidden="true"
+                />
               </div>
 
-              {/* Bottom Sign-off: Contemporary Editorial Styling */}
-              <div className="pt-4 sm:pt-5 border-t border-cream-border/80 flex flex-wrap items-center justify-between gap-2">
-                <div className="inline-flex items-center gap-2.5">
+              {/* Bottom Sign-off: Masked Editorial Indicator */}
+              <div className="stage-01-bottom pt-4 sm:pt-5 border-t border-cream-border/80 flex flex-wrap items-center justify-between gap-2 overflow-hidden">
+                <div className="stage-01-bottom-label inline-flex items-center gap-2.5 will-change-transform">
                   <span className="w-2 h-2 rounded-full bg-olive shrink-0" aria-hidden="true" />
                   <span className="font-mono text-xs sm:text-[13px] font-semibold tracking-[0.14em] sm:tracking-[0.2em] uppercase text-forest">
                     NAATI PLUS — SOIL NUTRITION
                   </span>
                 </div>
-                <span className="font-mono text-[10px] sm:text-[11px] font-semibold text-olive tracking-widest uppercase">
+                <span className="stage-01-bottom-stage font-mono text-[10px] sm:text-[11px] font-semibold text-olive tracking-widest uppercase will-change-transform">
                   STAGE 01
                 </span>
               </div>
@@ -350,7 +652,7 @@ export function NaatiPhilosophy({ className }: NaatiPhilosophyProps) {
 
           {/* ===================================================================
               PANEL 02 — FEED THE PLANT
-              Desktop: 50% Information on LEFT | 50% Crop Image on RIGHT (Reversed!)
+              Desktop: 50% Information on LEFT | 50% Crop Image on RIGHT (Reversed)
               =================================================================== */}
           <div
             id="panel-feed-the-plant"
@@ -361,58 +663,76 @@ export function NaatiPhilosophy({ className }: NaatiPhilosophyProps) {
               {/* Upper Content Group */}
               <div>
                 {/* Small Eyebrow */}
-                <div className="inline-flex items-center gap-2 mb-3 sm:mb-4">
+                <div className="stage-02-eyebrow inline-flex items-center gap-2 mb-3 sm:mb-4 will-change-transform">
                   <span className="w-1.5 h-1.5 rounded-full bg-olive" aria-hidden="true" />
                   <span className="font-mono text-[11px] sm:text-xs font-semibold tracking-[0.2em] uppercase text-olive">
                     02 / THE GROWTH
                   </span>
                 </div>
 
-                {/* Headline & Subheading */}
-                <h3 className="font-display font-medium text-2xl sm:text-3xl lg:text-[2.25rem] text-forest leading-[1.1] tracking-[-0.03em]">
-                  Feed the Plant.
-                </h3>
-                <p className="font-sans text-base sm:text-lg text-olive-dark font-medium mt-1 sm:mt-1.5 [text-wrap:pretty]">
-                  Support the crop throughout its development.
-                </p>
+                {/* Headline & Subheading with Clean Line Mask */}
+                <div className="overflow-hidden">
+                  <h3 className="stage-02-heading font-display font-medium text-2xl sm:text-3xl lg:text-[2.25rem] text-forest leading-[1.1] tracking-[-0.03em] will-change-transform">
+                    Feed the Plant.
+                  </h3>
+                </div>
+                <div className="overflow-hidden mt-1 sm:mt-1.5">
+                  <p className="stage-02-subheading font-sans text-base sm:text-lg text-olive-dark font-medium [text-wrap:pretty] will-change-transform">
+                    Support the crop throughout its development.
+                  </p>
+                </div>
 
                 {/* Supporting Copy */}
-                <p className="font-sans text-sm sm:text-base text-text-secondary leading-relaxed mt-2.5 sm:mt-3 max-w-lg [text-wrap:pretty]">
+                <p className="stage-02-desc font-sans text-sm sm:text-base text-text-secondary leading-relaxed mt-2.5 sm:mt-3 max-w-lg [text-wrap:pretty] will-change-transform">
                   Balanced plant nutrition complements the foundation established by healthy soil.
                 </p>
               </div>
 
-              {/* Middle Group: Concise List with Enhanced Readability */}
-              <div className="my-5 sm:my-6 lg:my-0 space-y-0 border-t border-cream-border/70">
+              {/* Middle Group: Numbered Information Rows with Controlled Sequential Reveals */}
+              <div className="my-5 sm:my-6 lg:my-0 space-y-0 relative">
                 {STAGE_02_ITEMS.map((item) => (
                   <div
                     key={item.index}
-                    className="flex flex-col xs:flex-row xs:items-center justify-between gap-1 xs:gap-3 py-2.5 sm:py-3.5 border-b border-cream-border/70 group"
+                    className="stage-02-row flex flex-col xs:flex-row xs:items-center justify-between gap-1 xs:gap-3 py-2.5 sm:py-3.5 relative group"
                   >
+                    {/* Horizontal divider drawing from left to right */}
+                    <div
+                      className="stage-02-row-line absolute top-0 inset-x-0 h-px bg-cream-border/70 origin-left will-change-transform"
+                      aria-hidden="true"
+                    />
+
                     <div className="flex items-center gap-3 sm:gap-4">
-                      <span className="font-mono text-xs sm:text-[13px] font-semibold text-olive tracking-wider shrink-0">
+                      <span className="stage-02-row-num font-mono text-xs sm:text-[13px] font-semibold text-olive tracking-wider shrink-0 will-change-transform">
                         {item.index}
                       </span>
-                      <span className="font-sans font-semibold text-forest text-sm sm:text-base tracking-[-0.01em]">
-                        {item.title}
-                      </span>
+                      <div className="overflow-hidden">
+                        <span className="stage-02-row-title block font-sans font-semibold text-forest text-sm sm:text-base tracking-[-0.01em] will-change-transform">
+                          {item.title}
+                        </span>
+                      </div>
                     </div>
-                    <span className="font-sans text-xs sm:text-sm text-text-secondary font-medium tracking-normal text-left xs:text-right max-w-full xs:max-w-[220px] sm:max-w-xs leading-snug pl-6 xs:pl-0">
+
+                    <span className="stage-02-row-note font-sans text-xs sm:text-sm text-text-secondary font-medium tracking-normal text-left xs:text-right max-w-full xs:max-w-[220px] sm:max-w-xs leading-snug pl-6 xs:pl-0 will-change-transform">
                       {item.note}
                     </span>
                   </div>
                 ))}
+                {/* Bottom closing divider line */}
+                <div
+                  className="stage-02-row-bottom-line w-full h-px bg-cream-border/70 origin-left will-change-transform"
+                  aria-hidden="true"
+                />
               </div>
 
-              {/* Bottom Sign-off: Contemporary Editorial Styling */}
-              <div className="pt-4 sm:pt-5 border-t border-cream-border/80 flex flex-wrap items-center justify-between gap-2">
-                <div className="inline-flex items-center gap-2.5">
+              {/* Bottom Sign-off: Masked Editorial Indicator */}
+              <div className="stage-02-bottom pt-4 sm:pt-5 border-t border-cream-border/80 flex flex-wrap items-center justify-between gap-2 overflow-hidden">
+                <div className="stage-02-bottom-label inline-flex items-center gap-2.5 will-change-transform">
                   <span className="w-2 h-2 rounded-full bg-olive shrink-0" aria-hidden="true" />
                   <span className="font-mono text-xs sm:text-[13px] font-semibold tracking-[0.14em] sm:tracking-[0.2em] uppercase text-forest">
                     NAATI PRO — PLANT NUTRITION
                   </span>
                 </div>
-                <span className="font-mono text-[10px] sm:text-[11px] font-semibold text-olive tracking-widest uppercase">
+                <span className="stage-02-bottom-stage font-mono text-[10px] sm:text-[11px] font-semibold text-olive tracking-widest uppercase will-change-transform">
                   STAGE 02
                 </span>
               </div>
