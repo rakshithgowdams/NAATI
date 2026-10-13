@@ -110,88 +110,12 @@ export function NaatiPhilosophy({ className }: NaatiPhilosophyProps) {
         // Dynamic translation calculation: exact track overflow
         const getScrollAmount = () => -(track.scrollWidth - window.innerWidth);
 
-        // STAGE ONE: Entrance sequence as visitor reaches the horizontal section
-        const stageOneTl = gsap.timeline({
-          scrollTrigger: {
-            trigger: wrapper,
-            start: 'top 75%',
-            toggleActions: 'play none none reverse',
-          },
-        });
-
-        stageOneTl
-          .fromTo(
-            '.stage-01-eyebrow',
-            { opacity: 0, y: 16 },
-            { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }
-          )
-          .fromTo(
-            '.stage-01-heading',
-            { opacity: 0, y: 35 },
-            { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' },
-            '-=0.25'
-          )
-          .fromTo(
-            '.stage-01-subheading',
-            { opacity: 0, y: 18 },
-            { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out' },
-            '-=0.35'
-          )
-          .fromTo(
-            '.stage-01-desc',
-            { opacity: 0, y: 14 },
-            { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-            '-=0.3'
-          )
-          .fromTo(
-            '.stage-01-row-line',
-            { scaleX: 0, transformOrigin: 'left center' },
-            { scaleX: 1, duration: 0.4, ease: 'power2.inOut', stagger: 0.08 },
-            '-=0.2'
-          )
-          .fromTo(
-            '.stage-01-row-num',
-            { opacity: 0, y: 8 },
-            { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out', stagger: 0.08 },
-            '<0.05'
-          )
-          .fromTo(
-            '.stage-01-row-title',
-            { opacity: 0, y: 22 },
-            { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out', stagger: 0.08 },
-            '<0.05'
-          )
-          .fromTo(
-            '.stage-01-row-note',
-            { opacity: 0, x: 16 },
-            { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out', stagger: 0.08 },
-            '<0.05'
-          )
-          .fromTo(
-            '.stage-01-row-bottom-line',
-            { scaleX: 0, transformOrigin: 'left center' },
-            { scaleX: 1, duration: 0.35, ease: 'power2.inOut' },
-            '-=0.15'
-          )
-          .fromTo(
-            '.stage-01-bottom-label',
-            { opacity: 0, y: 16 },
-            { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
-            '-=0.15'
-          )
-          .fromTo(
-            '.stage-01-bottom-stage',
-            { opacity: 0, scale: 0.94 },
-            { opacity: 1, scale: 1, duration: 0.35, ease: 'power2.out' },
-            '-=0.2'
-          );
-
-        // MASTER PINNED TIMELINE: Synchronizes horizontal track and Stage Two content
+        // MASTER PINNED TIMELINE: Synchronizes Stage 01, horizontal transition, and Stage 02
         const masterTl = gsap.timeline({
           scrollTrigger: {
             trigger: wrapper,
             start: 'top top',
-            end: () => `+=${Math.round(window.innerWidth * 1.2)}`,
+            end: () => `+=${Math.round(window.innerWidth * 1.8)}`,
             pin: true,
             scrub: 0.8,
             invalidateOnRefresh: true,
@@ -222,14 +146,20 @@ export function NaatiPhilosophy({ className }: NaatiPhilosophyProps) {
           },
         });
 
-        // 1. Horizontal track movement spans 0 to 1
-        masterTl.to(track, {
-          x: getScrollAmount,
-          ease: 'none',
-          duration: 1,
-        }, 0);
+        // 1. Initial hidden states for Stage One ("Build the Soil")
+        gsap.set('.stage-01-eyebrow', { opacity: 0, y: 16 });
+        gsap.set('.stage-01-heading', { opacity: 0, y: 35 });
+        gsap.set('.stage-01-subheading', { opacity: 0, y: 18 });
+        gsap.set('.stage-01-desc', { opacity: 0, y: 14 });
+        gsap.set('.stage-01-row-line', { scaleX: 0, transformOrigin: 'left center' });
+        gsap.set('.stage-01-row-num', { opacity: 0, y: 8 });
+        gsap.set('.stage-01-row-title', { opacity: 0, y: 22 });
+        gsap.set('.stage-01-row-note', { opacity: 0, x: 16 });
+        gsap.set('.stage-01-row-bottom-line', { scaleX: 0, transformOrigin: 'left center' });
+        gsap.set('.stage-01-bottom-label', { opacity: 0, y: 16 });
+        gsap.set('.stage-01-bottom-stage', { opacity: 0, scale: 0.94 });
 
-        // 2. Set initial hidden states for Stage Two
+        // 2. Initial hidden states for Stage Two ("Feed the Plant")
         gsap.set('.stage-02-eyebrow', { opacity: 0, y: 16 });
         gsap.set('.stage-02-heading', { opacity: 0, y: 35 });
         gsap.set('.stage-02-subheading', { opacity: 0, y: 18 });
@@ -242,27 +172,52 @@ export function NaatiPhilosophy({ className }: NaatiPhilosophyProps) {
         gsap.set('.stage-02-bottom-label', { opacity: 0, y: 16 });
         gsap.set('.stage-02-bottom-stage', { opacity: 0, scale: 0.94 });
 
-        // 3. Stage Two Synchronized Progression (Reveals once panel is sufficiently in viewport)
+        // 3. Stage One Synchronized Progression ("Build the Soil")
+        masterTl
+          // Eyebrow enters
+          .to('.stage-01-eyebrow', { opacity: 1, y: 0, duration: 0.05, ease: 'power2.out' }, 0.02)
+          // Main heading "Build the Soil." rises through clean vertical text mask
+          .to('.stage-01-heading', { opacity: 1, y: 0, duration: 0.08, ease: 'power3.out' }, 0.05)
+          // Supporting statement and description enter with slight stagger
+          .to('.stage-01-subheading', { opacity: 1, y: 0, duration: 0.06, ease: 'power2.out' }, 0.09)
+          .to('.stage-01-desc', { opacity: 1, y: 0, duration: 0.06, ease: 'power2.out' }, 0.12)
+          // 4 Information rows reveal sequentially (line draws, index, masked title, note from right)
+          .to('.stage-01-row-line', { scaleX: 1, duration: 0.08, ease: 'power2.inOut', stagger: 0.035 }, 0.15)
+          .to('.stage-01-row-num', { opacity: 1, y: 0, duration: 0.06, ease: 'power2.out', stagger: 0.035 }, 0.17)
+          .to('.stage-01-row-title', { opacity: 1, y: 0, duration: 0.08, ease: 'power3.out', stagger: 0.035 }, 0.17)
+          .to('.stage-01-row-note', { opacity: 1, x: 0, duration: 0.07, ease: 'power2.out', stagger: 0.035 }, 0.19)
+          .to('.stage-01-row-bottom-line', { scaleX: 1, duration: 0.06, ease: 'power2.inOut' }, 0.30)
+          // Bottom label and stage indicator reveal
+          .to('.stage-01-bottom-label', { opacity: 1, y: 0, duration: 0.06, ease: 'power2.out' }, 0.32)
+          .to('.stage-01-bottom-stage', { opacity: 1, scale: 1, duration: 0.05, ease: 'power2.out' }, 0.35);
+
+        // 4. Horizontal track movement: Panel 01 holds until 0.42, then slides smoothly to Panel 02 by 0.68
+        masterTl.to(track, {
+          x: getScrollAmount,
+          ease: 'power1.inOut',
+          duration: 0.26,
+        }, 0.42);
+
+        // 5. Stage Two Synchronized Progression ("Feed the Plant")
         masterTl
           // Eyebrow enters once Panel 02 is well within view
-          .to('.stage-02-eyebrow', { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.38)
+          .to('.stage-02-eyebrow', { opacity: 1, y: 0, duration: 0.05, ease: 'power2.out' }, 0.68)
           // Main heading "Feed the Plant." rises through clean vertical text mask
-          .to('.stage-02-heading', { opacity: 1, y: 0, duration: 0.12, ease: 'power3.out' }, 0.44)
+          .to('.stage-02-heading', { opacity: 1, y: 0, duration: 0.08, ease: 'power3.out' }, 0.71)
           // Supporting statement and description enter with slight stagger
-          .to('.stage-02-subheading', { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.48)
-          .to('.stage-02-desc', { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.52)
+          .to('.stage-02-subheading', { opacity: 1, y: 0, duration: 0.06, ease: 'power2.out' }, 0.75)
+          .to('.stage-02-desc', { opacity: 1, y: 0, duration: 0.06, ease: 'power2.out' }, 0.78)
           // 5 Information rows reveal sequentially (line draws, index, masked title, note from right)
-          .to('.stage-02-row-line', { scaleX: 1, duration: 0.1, ease: 'power2.inOut', stagger: 0.04 }, 0.56)
-          .to('.stage-02-row-num', { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out', stagger: 0.04 }, 0.58)
-          .to('.stage-02-row-title', { opacity: 1, y: 0, duration: 0.1, ease: 'power3.out', stagger: 0.04 }, 0.58)
-          .to('.stage-02-row-note', { opacity: 1, x: 0, duration: 0.09, ease: 'power2.out', stagger: 0.04 }, 0.60)
-          .to('.stage-02-row-bottom-line', { scaleX: 1, duration: 0.08, ease: 'power2.inOut' }, 0.78)
-          // Bottom label and stage indicator reveal before final resting position (0.84 vs 1.0)
-          .to('.stage-02-bottom-label', { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.80)
-          .to('.stage-02-bottom-stage', { opacity: 1, scale: 1, duration: 0.07, ease: 'power2.out' }, 0.84);
+          .to('.stage-02-row-line', { scaleX: 1, duration: 0.1, ease: 'power2.inOut', stagger: 0.035 }, 0.81)
+          .to('.stage-02-row-num', { opacity: 1, y: 0, duration: 0.06, ease: 'power2.out', stagger: 0.035 }, 0.83)
+          .to('.stage-02-row-title', { opacity: 1, y: 0, duration: 0.08, ease: 'power3.out', stagger: 0.035 }, 0.83)
+          .to('.stage-02-row-note', { opacity: 1, x: 0, duration: 0.07, ease: 'power2.out', stagger: 0.035 }, 0.85)
+          .to('.stage-02-row-bottom-line', { scaleX: 1, duration: 0.06, ease: 'power2.inOut' }, 0.94)
+          // Bottom label and stage indicator reveal before final resting position
+          .to('.stage-02-bottom-label', { opacity: 1, y: 0, duration: 0.06, ease: 'power2.out' }, 0.95)
+          .to('.stage-02-bottom-stage', { opacity: 1, scale: 1, duration: 0.05, ease: 'power2.out' }, 0.97);
 
         return () => {
-          stageOneTl.kill();
           masterTl.scrollTrigger?.kill();
           masterTl.kill();
         };
