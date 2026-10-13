@@ -144,20 +144,30 @@ export function NutritionTwoProducts({ className }: NutritionTwoProductsProps) {
               </p>
             </div>
 
-            {/* Approved Product Visual with Refined Hover Float */}
-            <div className="relative my-6 sm:my-8 aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-cream-deep/50 border border-cream-border/60 transition-transform duration-500 ease-out group-hover:-translate-y-1.5 shadow-warm-xs group-hover:shadow-warm-md">
-              <Image
-                src="/assets/images/products/naati-plus-showcase.jpg"
-                alt="Naati Plus Enriched Vermicompost official packaging pouch with rich moist vermicompost spread across the base"
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                quality={92}
-                className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-              />
+            {/* Approved Product Visual with Open Studio Staging */}
+            <div className="relative my-6 sm:my-8 w-full max-w-[420px] aspect-square mx-auto flex items-center justify-center">
               <div
-                className="absolute inset-0 bg-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                className="absolute inset-0 pointer-events-none rounded-full blur-2xl opacity-40 transition-opacity duration-500 group-hover:opacity-70"
+                style={{
+                  background:
+                    'radial-gradient(circle at center, rgba(101, 74, 50, 0.22) 0%, transparent 70%)',
+                }}
                 aria-hidden="true"
               />
+              <div
+                className="absolute bottom-4 w-3/4 h-5 bg-forest-deep/15 blur-md rounded-full pointer-events-none transition-transform duration-500 group-hover:scale-105"
+                aria-hidden="true"
+              />
+              <div className="relative w-full h-[280px] sm:h-[320px] md:h-[340px] transition-transform duration-500 ease-out group-hover:-translate-y-2 group-hover:scale-[1.02]">
+                <Image
+                  src="/assets/images/products/naati-plus-isolated.webp"
+                  alt="Naati Plus Enriched Vermicompost official packaging pouch with rich moist vermicompost spread across the base"
+                  fill
+                  sizes="(max-width: 1024px) 90vw, 420px"
+                  quality={95}
+                  className="object-contain select-none drop-shadow-[0_14px_24px_rgba(20,36,14,0.18)]"
+                />
+              </div>
             </div>
 
             {/* Description & Interactive CTA */}
@@ -204,20 +214,30 @@ export function NutritionTwoProducts({ className }: NutritionTwoProductsProps) {
               </p>
             </div>
 
-            {/* Approved Product Visual with Refined Hover Float */}
-            <div className="relative my-6 sm:my-8 aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-cream-deep/50 border border-cream-border/60 transition-transform duration-500 ease-out group-hover:-translate-y-1.5 shadow-warm-xs group-hover:shadow-warm-md">
-              <Image
-                src="/assets/images/products/naati-pro-showcase.jpg"
-                alt="Naati Pro Bio-Activator official cardboard box package with two solid circular product blocks displayed beside it"
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                quality={92}
-                className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-              />
+            {/* Approved Product Visual with Open Studio Staging */}
+            <div className="relative my-6 sm:my-8 w-full max-w-[420px] aspect-square mx-auto flex items-center justify-center">
               <div
-                className="absolute inset-0 bg-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                className="absolute inset-0 pointer-events-none rounded-full blur-2xl opacity-40 transition-opacity duration-500 group-hover:opacity-70"
+                style={{
+                  background:
+                    'radial-gradient(circle at center, rgba(45, 78, 33, 0.22) 0%, transparent 70%)',
+                }}
                 aria-hidden="true"
               />
+              <div
+                className="absolute bottom-4 w-3/4 h-5 bg-forest-deep/15 blur-md rounded-full pointer-events-none transition-transform duration-500 group-hover:scale-105"
+                aria-hidden="true"
+              />
+              <div className="relative w-full h-[280px] sm:h-[320px] md:h-[340px] transition-transform duration-500 ease-out group-hover:-translate-y-2 group-hover:scale-[1.02]">
+                <Image
+                  src="/assets/images/products/naati-pro-isolated.webp"
+                  alt="Naati Pro Bio-Activator official cardboard box package with two solid circular product blocks displayed beside it"
+                  fill
+                  sizes="(max-width: 1024px) 90vw, 420px"
+                  quality={95}
+                  className="object-contain select-none drop-shadow-[0_14px_24px_rgba(20,36,14,0.18)]"
+                />
+              </div>
             </div>
 
             {/* Description & Interactive CTA */}

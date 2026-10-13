@@ -1,10 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, MessageSquareQuote } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
+import { gsap, isReducedMotion } from '@/lib/animations/gsap';
 
 export interface ShareExperienceCtaProps {
   className?: string;
@@ -23,8 +24,60 @@ export interface ShareExperienceCtaProps {
  * Clean botanical accent and direct link to the established contact experience.
  */
 export function ShareExperienceCta({ className }: ShareExperienceCtaProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const textColRef = useRef<HTMLDivElement>(null);
+  const visualRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    if (isReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      if (textColRef.current) {
+        gsap.fromTo(
+          textColRef.current.children,
+          { opacity: 0, y: 24 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.12,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: textColRef.current,
+              start: 'top 82%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+
+      if (visualRef.current) {
+        gsap.fromTo(
+          visualRef.current,
+          { opacity: 0, y: 30, scale: 0.98 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.85,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: visualRef.current,
+              start: 'top 82%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+    }, sectionRef.current);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="share-experience"
       data-nav-theme="dark"
       aria-labelledby="share-experience-heading"
@@ -36,7 +89,7 @@ export function ShareExperienceCta({ className }: ShareExperienceCtaProps) {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
           {/* Left Column: Headline and Narrative (7 Cols) */}
-          <div className="lg:col-span-7">
+          <div ref={textColRef} className="lg:col-span-7">
             <div className="inline-flex items-center gap-3 mb-6">
               <span className="font-mono text-xs sm:text-sm font-semibold tracking-[0.24em] uppercase text-harvest">
                 05 / SHARE YOUR EXPERIENCE
@@ -77,7 +130,7 @@ export function ShareExperienceCta({ className }: ShareExperienceCtaProps) {
           </div>
 
           {/* Right Column: Botanical Visual Frame (5 Cols) */}
-          <div className="lg:col-span-5 relative">
+          <div ref={visualRef} className="lg:col-span-5 relative">
             <div className="relative w-full h-[280px] sm:h-[340px] lg:h-[380px] overflow-hidden border border-cream/15 bg-forest-mid/30">
               <Image
                 src="/assets/images/stories/botanical-accent.jpg"

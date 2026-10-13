@@ -125,15 +125,27 @@ export function ProCompleteSystem({ className }: ProCompleteSystemProps) {
                 SOIL NUTRITION
               </div>
 
-              {/* Product Pouch Packaging Visual */}
-              <div className="relative w-44 sm:w-52 aspect-square flex items-center justify-center mb-6">
+              {/* Product Pouch Packaging Visual on Photographic Stage */}
+              <div className="relative w-48 sm:w-56 aspect-square flex items-center justify-center mb-6">
+                <div
+                  className="absolute inset-0 pointer-events-none rounded-full blur-xl opacity-35"
+                  style={{
+                    background:
+                      'radial-gradient(circle at center, rgba(68, 107, 54, 0.25) 0%, transparent 70%)',
+                  }}
+                  aria-hidden="true"
+                />
+                <div
+                  className="absolute bottom-2 w-3/4 h-4 bg-forest-deep/15 blur-md rounded-full pointer-events-none"
+                  aria-hidden="true"
+                />
                 <Image
-                  src="/assets/images/products/naati-plus-pack.png"
+                  src="/assets/images/products/naati-plus-isolated.webp"
                   alt="Naati Plus Soil Nutrition standing pouch"
                   width={340}
                   height={340}
-                  quality={90}
-                  className="object-contain w-full h-full drop-shadow-[0_12px_24px_rgba(20,36,14,0.18)]"
+                  quality={95}
+                  className="object-contain w-full h-full drop-shadow-[0_12px_24px_rgba(20,36,14,0.18)] transition-transform duration-500 hover:scale-[1.03]"
                 />
               </div>
 
@@ -188,15 +200,27 @@ export function ProCompleteSystem({ className }: ProCompleteSystemProps) {
                 PLANT NUTRITION
               </div>
 
-              {/* Product Box Packaging Visual */}
-              <div className="relative w-44 sm:w-52 aspect-square flex items-center justify-center mb-6">
+              {/* Product Box Packaging Visual on Photographic Stage */}
+              <div className="relative w-48 sm:w-56 aspect-square flex items-center justify-center mb-6">
+                <div
+                  className="absolute inset-0 pointer-events-none rounded-full blur-xl opacity-45"
+                  style={{
+                    background:
+                      'radial-gradient(circle at center, rgba(68, 107, 54, 0.4) 0%, transparent 70%)',
+                  }}
+                  aria-hidden="true"
+                />
+                <div
+                  className="absolute bottom-2 w-3/4 h-4 bg-black/40 blur-md rounded-full pointer-events-none"
+                  aria-hidden="true"
+                />
                 <Image
-                  src="/assets/images/products/naati-pro-pack.png"
+                  src="/assets/images/products/naati-pro-isolated.webp"
                   alt="Naati Pro Plant Nutrition Bio-Activator packaging box"
                   width={340}
                   height={340}
-                  quality={90}
-                  className="object-contain w-full h-full drop-shadow-[0_16px_30px_rgba(0,0,0,0.55)]"
+                  quality={95}
+                  className="object-contain w-full h-full drop-shadow-[0_16px_30px_rgba(0,0,0,0.55)] transition-transform duration-500 hover:scale-[1.03]"
                 />
               </div>
 

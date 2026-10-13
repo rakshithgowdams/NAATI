@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { STORY_PRINCIPLES } from '@/data/fieldStories';
 import { cn } from '@/lib/utils/cn';
+import { gsap, isReducedMotion } from '@/lib/animations/gsap';
 
 export interface OurApproachToStoriesProps {
   className?: string;
@@ -21,8 +22,56 @@ export interface OurApproachToStoriesProps {
  * - Communicates authenticity, scientific caution, and responsible agricultural documentation
  */
 export function OurApproachToStories({ className }: OurApproachToStoriesProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const rowsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    if (isReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.approach-header',
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+
+      if (rowsRef.current) {
+        gsap.fromTo(
+          rowsRef.current.children,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.12,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: rowsRef.current,
+              start: 'top 82%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+    }, sectionRef.current);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="our-approach"
       data-nav-theme="light"
       aria-labelledby="our-approach-heading"
@@ -33,7 +82,7 @@ export function OurApproachToStories({ className }: OurApproachToStoriesProps) {
     >
       <div className="max-w-7xl mx-auto">
         {/* Section Introductory Statement */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 mb-14 lg:mb-20">
+        <div className="approach-header grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 mb-14 lg:mb-20">
           <div className="lg:col-span-6">
             <div className="flex items-center gap-3 mb-4 sm:mb-5">
               <span className="font-mono text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-forest-deep">
@@ -62,7 +111,7 @@ export function OurApproachToStories({ className }: OurApproachToStoriesProps) {
         </div>
 
         {/* Three Spacious Rows Separated by Fine Dividers */}
-        <div className="divide-y divide-forest-deep/15 border-t border-b border-forest-deep/15">
+        <div ref={rowsRef} className="divide-y divide-forest-deep/15 border-t border-b border-forest-deep/15">
           {STORY_PRINCIPLES.map((principle) => (
             <article
               key={principle.number}

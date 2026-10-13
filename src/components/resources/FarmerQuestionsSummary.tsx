@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { Plus, Minus, ArrowUpRight, AlertCircle } from 'lucide-react';
 import { HUB_FARMER_QUESTIONS } from '@/data/resources';
+import { gsap, isReducedMotion } from '@/lib/animations/gsap';
 import { cn } from '@/lib/utils/cn';
 
 export interface FarmerQuestionsSummaryProps {
@@ -19,21 +20,68 @@ export interface FarmerQuestionsSummaryProps {
  * Design:
  * - Minimal editorial accordion
  * - 6 practical questions from the client's field plan
+ * - GSAP ScrollTrigger reveal for header and accordion rows
  * - Cautious scientific explanations acknowledging multiple contributing causes
  * - Actionable practical advice for growers
  * - Functional cross-links to relevant Soil Academy and Crop Solutions resources
- * - Accessible keyboard navigation & smooth height transition
  */
 export function FarmerQuestionsSummary({ className }: FarmerQuestionsSummaryProps) {
   // Allow opening/closing accordion items (first item open by default for immediate context)
   const [openId, setOpenId] = useState<string | null>('q1-soil-hard');
+  const sectionRef = useRef<HTMLElement>(null);
 
   const toggleItem = (id: string) => {
     setOpenId((prev) => (prev === id ? null : id));
   };
 
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    if (isReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      // 1. Header entrance
+      gsap.fromTo(
+        '.fq-head-anim',
+        { opacity: 0, y: 22 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.12,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+
+      // 2. Accordion rows entrance
+      gsap.fromTo(
+        '.fq-row-anim',
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          stagger: 0.08,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: '.fq-accordion-list',
+            start: 'top 88%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+    }, sectionRef.current);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="farmer-questions"
       data-nav-theme="light"
       aria-labelledby="farmer-questions-heading"
@@ -45,7 +93,7 @@ export function FarmerQuestionsSummary({ className }: FarmerQuestionsSummaryProp
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="max-w-2xl mb-12 sm:mb-16">
-          <div className="flex items-center gap-3 mb-4">
+          <div className="fq-head-anim flex items-center gap-3 mb-4">
             <span className="font-mono text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-forest-deep">
               05 / QUESTIONS FROM THE FIELD
             </span>
@@ -54,24 +102,24 @@ export function FarmerQuestionsSummary({ className }: FarmerQuestionsSummaryProp
 
           <h2
             id="farmer-questions-heading"
-            className="font-display font-medium text-3xl sm:text-4xl lg:text-5xl tracking-tight text-forest-deep leading-[1.12]"
+            className="fq-head-anim font-display font-medium text-3xl sm:text-4xl lg:text-5xl tracking-tight text-forest-deep leading-[1.12]"
           >
             Every question is <br />
             <span className="italic font-light">a place to begin.</span>
           </h2>
 
-          <p className="font-sans text-base sm:text-lg text-forest-deep/75 mt-4 leading-relaxed">
+          <p className="fq-head-anim font-sans text-base sm:text-lg text-forest-deep/75 mt-4 leading-relaxed">
             Direct, scientifically grounded answers to the most common challenges encountered by growers across varied soil conditions and cropping patterns.
           </p>
         </div>
 
         {/* Editorial Accordion */}
-        <div className="divide-y divide-forest-deep/15 border-t border-b border-forest-deep/15">
+        <div className="fq-accordion-list divide-y divide-forest-deep/15 border-t border-b border-forest-deep/15">
           {HUB_FARMER_QUESTIONS.map((item) => {
             const isOpen = openId === item.id;
 
             return (
-              <div key={item.id} className="transition-colors duration-200">
+              <div key={item.id} className="fq-row-anim transition-colors duration-200">
                 {/* Accordion Trigger */}
                 <button
                   type="button"

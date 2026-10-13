@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { Plus, Minus, ArrowUpRight } from 'lucide-react';
 import { DEALER_FAQS } from '@/data/dealerNetwork';
+import { gsap, isReducedMotion } from '@/lib/animations/gsap';
 import { cn } from '@/lib/utils/cn';
 
 export interface DealerQuestionsProps {
@@ -19,18 +20,66 @@ export interface DealerQuestionsProps {
  * Minimalist Editorial FAQ Accordion:
  * - 6 Verified partnership questions
  * - Clear, honest answers without commercial hyperbole
+ * - GSAP ScrollTrigger reveal for header and accordion rows
  * - Full-width dividers, large clear typography, accessible keyboard navigation
  */
 export function DealerQuestions({ className }: DealerQuestionsProps) {
   // First FAQ open by default
   const [openId, setOpenId] = useState<string | null>('faq-01');
+  const sectionRef = useRef<HTMLElement>(null);
 
   const toggleItem = (id: string) => {
     setOpenId((prev) => (prev === id ? null : id));
   };
 
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    if (isReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      // 1. Header entrance
+      gsap.fromTo(
+        '.dealer-faq-header-anim',
+        { opacity: 0, y: 22 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.12,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+
+      // 2. Questions items staggered entrance
+      gsap.fromTo(
+        '.dealer-faq-row',
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          stagger: 0.08,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: '.dealer-faq-list',
+            start: 'top 88%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+    }, sectionRef.current);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="dealer-questions"
       data-nav-theme="light"
       aria-labelledby="dealer-questions-heading"
@@ -42,7 +91,7 @@ export function DealerQuestions({ className }: DealerQuestionsProps) {
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="max-w-2xl mb-12 sm:mb-16">
-          <div className="flex items-center gap-3 mb-4">
+          <div className="dealer-faq-header-anim flex items-center gap-3 mb-4">
             <span className="font-mono text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-forest-deep">
               05 / PARTNERSHIP QUESTIONS
             </span>
@@ -51,23 +100,23 @@ export function DealerQuestions({ className }: DealerQuestionsProps) {
 
           <h2
             id="dealer-questions-heading"
-            className="font-display font-medium text-3xl sm:text-4xl lg:text-5xl tracking-tight text-forest-deep leading-[1.12]"
+            className="dealer-faq-header-anim font-display font-medium text-3xl sm:text-4xl lg:text-5xl tracking-tight text-forest-deep leading-[1.12]"
           >
             Before we begin.
           </h2>
 
-          <p className="font-sans text-base sm:text-lg text-forest-deep/75 mt-4 leading-relaxed">
+          <p className="dealer-faq-header-anim font-sans text-base sm:text-lg text-forest-deep/75 mt-4 leading-relaxed">
             Common questions regarding dealership eligibility, geographic coverage, application review, and partnership discussions.
           </p>
         </div>
 
         {/* Minimalist Full-Width Editorial Accordion */}
-        <div className="divide-y divide-forest-deep/15 border-t border-b border-forest-deep/15">
+        <div className="dealer-faq-list divide-y divide-forest-deep/15 border-t border-b border-forest-deep/15">
           {DEALER_FAQS.map((faq) => {
             const isOpen = openId === faq.id;
 
             return (
-              <div key={faq.id} className="transition-colors duration-200">
+              <div key={faq.id} className="dealer-faq-row transition-colors duration-200">
                 {/* Accordion Trigger */}
                 <button
                   type="button"

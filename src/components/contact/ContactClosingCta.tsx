@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
+import { gsap, isReducedMotion } from '@/lib/animations/gsap';
 
 export interface ContactClosingCtaProps {
   className?: string;
@@ -22,8 +23,40 @@ export interface ContactClosingCtaProps {
  * Clean transition into the dark global footer.
  */
 export function ContactClosingCta({ className }: ContactClosingCtaProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    if (isReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      if (contentRef.current) {
+        gsap.fromTo(
+          contentRef.current.children,
+          { opacity: 0, y: 24 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.12,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: contentRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+    }, sectionRef.current);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="contact-closing-cta"
       data-nav-theme="dark"
       aria-labelledby="contact-closing-cta-heading"
@@ -38,7 +71,7 @@ export function ContactClosingCta({ className }: ContactClosingCtaProps) {
         aria-hidden="true"
       />
 
-      <div className="relative max-w-4xl mx-auto text-center z-10">
+      <div ref={contentRef} className="relative max-w-4xl mx-auto text-center z-10">
         {/* Label */}
         <div className="inline-flex items-center gap-3 mb-6 sm:mb-8">
           <span className="h-px w-8 bg-harvest/40" aria-hidden="true" />

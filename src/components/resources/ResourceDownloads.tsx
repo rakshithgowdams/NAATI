@@ -1,10 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight, BookMarked, FileText, CheckCircle2 } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { DOWNLOADABLE_RESOURCES } from '@/data/resources';
+import { gsap, isReducedMotion } from '@/lib/animations/gsap';
 import { cn } from '@/lib/utils/cn';
 
 export interface ResourceDownloadsProps {
@@ -20,16 +21,80 @@ export interface ResourceDownloadsProps {
  * Design:
  * - Warm cream and deep forest-green publication-shelf composition
  * - Prominent visual showcase of the official Naati Organics Farmer Handbook mockup
+ * - GSAP ScrollTrigger reveal animations across header, featured publication and document shelf
  * - English & Kannada editions clearly distinguished
- * - Real, honest publication status (Physical print available at dealer workshops / PDF in preparation)
- * - Working request & advisory action without fabricated download statistics or non-existent files
+ * - Real, honest publication status
  */
 export function ResourceDownloads({ className }: ResourceDownloadsProps) {
+  const sectionRef = useRef<HTMLElement>(null);
   const featuredHandbook = DOWNLOADABLE_RESOURCES.find((d) => d.featured) || DOWNLOADABLE_RESOURCES[0];
   const otherResources = DOWNLOADABLE_RESOURCES.filter((d) => d.id !== featuredHandbook.id);
 
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    if (isReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      // 1. Header entrance
+      gsap.fromTo(
+        '.downloads-head-anim',
+        { opacity: 0, y: 22 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.12,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+
+      // 2. Featured publication reveal
+      gsap.fromTo(
+        '.downloads-featured-anim',
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.downloads-featured-anim',
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+
+      // 3. Document shelf cards
+      gsap.fromTo(
+        '.downloads-doc-card',
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          stagger: 0.1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: '.downloads-doc-grid',
+            start: 'top 88%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+    }, sectionRef.current);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="resource-downloads"
       data-nav-theme="light"
       aria-labelledby="resource-downloads-heading"
@@ -41,7 +106,7 @@ export function ResourceDownloads({ className }: ResourceDownloadsProps) {
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="max-w-2xl mb-12 sm:mb-16">
-          <div className="flex items-center gap-3 mb-4">
+          <div className="downloads-head-anim flex items-center gap-3 mb-4">
             <span className="font-mono text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-forest-deep">
               04 / DOWNLOADS
             </span>
@@ -50,19 +115,19 @@ export function ResourceDownloads({ className }: ResourceDownloadsProps) {
 
           <h2
             id="resource-downloads-heading"
-            className="font-display font-medium text-3xl sm:text-4xl lg:text-5xl tracking-tight text-forest-deep leading-[1.12]"
+            className="downloads-head-anim font-display font-medium text-3xl sm:text-4xl lg:text-5xl tracking-tight text-forest-deep leading-[1.12]"
           >
             Useful knowledge. <br />
             <span className="italic font-light">Always within reach.</span>
           </h2>
 
-          <p className="font-sans text-base sm:text-lg text-forest-deep/75 mt-4 leading-relaxed">
+          <p className="downloads-head-anim font-sans text-base sm:text-lg text-forest-deep/75 mt-4 leading-relaxed">
             Printed handbooks, regional advisory publications and technical sheets distributed to farmers, growers and agronomy partners across South India.
           </p>
         </div>
 
         {/* Featured Publication Showcase: Farmer Handbook */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 bg-white/70 border border-forest-deep/15 p-6 sm:p-10 lg:p-12 mb-12 lg:mb-16">
+        <div className="downloads-featured-anim grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 bg-white/70 border border-forest-deep/15 p-6 sm:p-10 lg:p-12 mb-12 lg:mb-16 shadow-warm-xs">
           {/* Publication Mockup Image */}
           <div className="lg:col-span-5 relative min-h-[300px] sm:min-h-[380px] lg:min-h-full overflow-hidden bg-forest-deep flex items-center justify-center p-4">
             {featuredHandbook.image ? (
@@ -72,7 +137,7 @@ export function ResourceDownloads({ className }: ResourceDownloadsProps) {
                   alt={featuredHandbook.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 40vw"
-                  className="object-contain object-center drop-shadow-xl"
+                  className="object-contain object-center drop-shadow-xl transition-transform duration-500 hover:scale-105"
                 />
               </div>
             ) : (
@@ -131,7 +196,7 @@ export function ResourceDownloads({ className }: ResourceDownloadsProps) {
             <div className="pt-4 border-t border-forest-deep/10 flex flex-wrap items-center gap-4">
               <Link
                 href={featuredHandbook.actionHref}
-                className="group inline-flex items-center gap-2.5 px-6 py-3.5 bg-forest-deep text-cream text-xs font-mono uppercase tracking-[0.16em] hover:bg-forest-light hover:text-forest-deep transition-all duration-300"
+                className="group inline-flex items-center gap-2.5 px-6 py-3.5 bg-forest-deep text-cream text-xs font-mono uppercase tracking-[0.16em] hover:bg-forest hover:text-cream transition-all duration-300"
               >
                 <span>{featuredHandbook.actionLabel}</span>
                 <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -153,11 +218,11 @@ export function ResourceDownloads({ className }: ResourceDownloadsProps) {
             Additional Technical Documents & Regional Editions
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          <div className="downloads-doc-grid grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {otherResources.map((res) => (
               <div
                 key={res.id}
-                className="bg-white/50 border border-forest-deep/15 p-6 flex flex-col justify-between hover:bg-white transition-all duration-200"
+                className="downloads-doc-card bg-white/50 border border-forest-deep/15 p-6 flex flex-col justify-between hover:bg-white hover:shadow-warm-xs transition-all duration-200"
               >
                 <div>
                   <div className="flex items-center justify-between text-xs font-mono text-forest-deep/60 mb-2">

@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { MapPin, Navigation, ArrowUpRight } from 'lucide-react';
 import { VERIFIED_CONTACT_INFO } from '@/data/contact';
+import { gsap, isReducedMotion } from '@/lib/animations/gsap';
 import { cn } from '@/lib/utils/cn';
 
 export interface LocationInfoProps {
@@ -19,11 +20,59 @@ export interface LocationInfoProps {
  * Restrained Editorial Presence:
  * - Highlights regional headquarters in Bengaluru, Karnataka, India
  * - Direct connection to verified regional dealer network across Karnataka and South India
+ * - GSAP ScrollTrigger reveal for heading and information card
  * - Avoids decorative fake maps or invented street addresses
  */
 export function LocationInfo({ className }: LocationInfoProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    if (isReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      // 1. Heading entrance
+      gsap.fromTo(
+        '.location-head-anim',
+        { opacity: 0, y: 22 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.12,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+
+      // 2. Info Card entrance
+      gsap.fromTo(
+        '.location-card-anim',
+        { opacity: 0, y: 26 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.location-card-anim',
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+    }, sectionRef.current);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="location-info"
       data-nav-theme="light"
       aria-labelledby="location-info-heading"
@@ -36,7 +85,7 @@ export function LocationInfo({ className }: LocationInfoProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
           {/* Left Column: Heading (6 Cols) */}
           <div className="lg:col-span-6">
-            <div className="flex items-center gap-3 mb-4">
+            <div className="location-head-anim flex items-center gap-3 mb-4">
               <span className="font-mono text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-forest-deep">
                 03 / FIND US
               </span>
@@ -45,19 +94,19 @@ export function LocationInfo({ className }: LocationInfoProps) {
 
             <h2
               id="location-info-heading"
-              className="font-display font-medium text-3xl sm:text-4xl lg:text-4xl tracking-tight text-forest-deep leading-[1.15]"
+              className="location-head-anim font-display font-medium text-3xl sm:text-4xl lg:text-4xl tracking-tight text-forest-deep leading-[1.15]"
             >
               Rooted in purpose. <br />
               <span className="italic font-light">Open to conversation.</span>
             </h2>
 
-            <p className="font-sans text-sm sm:text-base text-forest-deep/75 mt-4 leading-relaxed max-w-lg">
+            <p className="location-head-anim font-sans text-sm sm:text-base text-forest-deep/75 mt-4 leading-relaxed max-w-lg">
               Headquartered in Bengaluru with agricultural field presence, dealer outlets, and agronomic advisory support throughout key growing belts in South India.
             </p>
           </div>
 
           {/* Right Column: Verified Editorial Info Block (6 Cols) */}
-          <div className="lg:col-span-6 bg-white/70 border border-forest-deep/15 p-6 sm:p-8 lg:p-10 space-y-6">
+          <div className="location-card-anim lg:col-span-6 bg-white/70 border border-forest-deep/15 p-6 sm:p-8 lg:p-10 space-y-6 shadow-warm-xs">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-full bg-forest-deep/5 border border-forest-deep/15 flex items-center justify-center text-forest-deep shrink-0 mt-0.5">
                 <MapPin className="w-5 h-5 text-harvest" />

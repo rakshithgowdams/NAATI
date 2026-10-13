@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight, MessageSquareText } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
+import { gsap, isReducedMotion } from '@/lib/animations/gsap';
 
 export interface FAQClosingCtaProps {
   className?: string;
@@ -24,8 +25,40 @@ export interface FAQClosingCtaProps {
  * - Warm ivory and harvest gold accents
  */
 export function FAQClosingCta({ className }: FAQClosingCtaProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    if (isReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      if (contentRef.current) {
+        gsap.fromTo(
+          contentRef.current.children,
+          { opacity: 0, y: 24 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.12,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: contentRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+    }, sectionRef.current);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="still-have-questions"
       data-nav-theme="dark"
       aria-labelledby="still-have-questions-heading"
@@ -40,7 +73,7 @@ export function FAQClosingCta({ className }: FAQClosingCtaProps) {
         aria-hidden="true"
       />
 
-      <div className="max-w-4xl mx-auto text-center relative z-10">
+      <div ref={contentRef} className="max-w-4xl mx-auto text-center relative z-10">
         {/* Eyebrow */}
         <div className="inline-flex items-center gap-3 mb-6 sm:mb-8">
           <span className="h-px w-8 bg-harvest/40" aria-hidden="true" />

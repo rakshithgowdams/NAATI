@@ -135,15 +135,27 @@ export function CropNaatiApproach({ className }: CropNaatiApproachProps) {
                 Naati Plus · Soil Nutrition
               </div>
 
-              {/* Exact Approved Naati Plus Pouch */}
-              <div className="relative w-44 sm:w-52 aspect-square flex items-center justify-center mb-6">
+              {/* Exact Approved Naati Plus Pouch on Photographic Stage */}
+              <div className="relative w-48 sm:w-56 aspect-square flex items-center justify-center mb-6">
+                <div
+                  className="absolute inset-0 pointer-events-none rounded-full blur-xl opacity-50"
+                  style={{
+                    background:
+                      'radial-gradient(circle at center, rgba(68, 107, 54, 0.35) 0%, transparent 70%)',
+                  }}
+                  aria-hidden="true"
+                />
+                <div
+                  className="absolute bottom-2 w-3/4 h-4 bg-black/40 blur-md rounded-full pointer-events-none"
+                  aria-hidden="true"
+                />
                 <Image
-                  src="/assets/images/products/naati-plus-pack.png"
+                  src="/assets/images/products/naati-plus-isolated.webp"
                   alt="Naati Plus Enriched Vermicompost official packaging pouch"
                   width={340}
                   height={340}
-                  quality={90}
-                  className="object-contain w-full h-full drop-shadow-[0_16px_30px_rgba(0,0,0,0.55)]"
+                  quality={95}
+                  className="object-contain w-full h-full select-none drop-shadow-[0_16px_28px_rgba(0,0,0,0.45)] transition-transform duration-500 hover:scale-[1.03]"
                 />
               </div>
 
@@ -198,15 +210,27 @@ export function CropNaatiApproach({ className }: CropNaatiApproachProps) {
                 Naati Pro · Plant Nutrition
               </div>
 
-              {/* Exact Approved Naati Pro Box */}
-              <div className="relative w-44 sm:w-52 aspect-square flex items-center justify-center mb-6">
+              {/* Exact Approved Naati Pro Box on Photographic Stage */}
+              <div className="relative w-48 sm:w-56 aspect-square flex items-center justify-center mb-6">
+                <div
+                  className="absolute inset-0 pointer-events-none rounded-full blur-xl opacity-50"
+                  style={{
+                    background:
+                      'radial-gradient(circle at center, rgba(68, 107, 54, 0.35) 0%, transparent 70%)',
+                  }}
+                  aria-hidden="true"
+                />
+                <div
+                  className="absolute bottom-2 w-3/4 h-4 bg-black/40 blur-md rounded-full pointer-events-none"
+                  aria-hidden="true"
+                />
                 <Image
-                  src="/assets/images/products/naati-pro-pack.png"
+                  src="/assets/images/products/naati-pro-isolated.webp"
                   alt="Naati Pro Plant Nutrition Bio-Activator official packaging box"
                   width={340}
                   height={340}
-                  quality={90}
-                  className="object-contain w-full h-full drop-shadow-[0_16px_30px_rgba(0,0,0,0.55)]"
+                  quality={95}
+                  className="object-contain w-full h-full select-none drop-shadow-[0_16px_28px_rgba(0,0,0,0.45)] transition-transform duration-500 hover:scale-[1.03]"
                 />
               </div>
 

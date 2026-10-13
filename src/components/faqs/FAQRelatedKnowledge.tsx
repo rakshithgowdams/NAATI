@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
+import { gsap, isReducedMotion } from '@/lib/animations/gsap';
 
 export interface FAQRelatedKnowledgeProps {
   className?: string;
@@ -53,8 +54,56 @@ const DESTINATIONS: LearningDestination[] = [
  * - Directly bridges the FAQ page with completed educational and product sections
  */
 export function FAQRelatedKnowledge({ className }: FAQRelatedKnowledgeProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    if (isReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.related-knowledge-header',
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+
+      if (cardsRef.current) {
+        gsap.fromTo(
+          cardsRef.current.children,
+          { opacity: 0, y: 22 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.75,
+            stagger: 0.12,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: cardsRef.current,
+              start: 'top 82%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+    }, sectionRef.current);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="continue-learning"
       data-nav-theme="light"
       aria-labelledby="continue-learning-heading"
@@ -65,7 +114,7 @@ export function FAQRelatedKnowledge({ className }: FAQRelatedKnowledgeProps) {
     >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="max-w-3xl mb-12 lg:mb-16">
+        <div className="related-knowledge-header max-w-3xl mb-12 lg:mb-16">
           <div className="flex items-center gap-3 mb-4">
             <span className="font-mono text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-forest-deep">
               02 / GO DEEPER
@@ -87,7 +136,7 @@ export function FAQRelatedKnowledge({ className }: FAQRelatedKnowledgeProps) {
         </div>
 
         {/* Minimal Editorial Rows / Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 border-t border-forest-deep/15 pt-10">
+        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 border-t border-forest-deep/15 pt-10">
           {DESTINATIONS.map((dest) => (
             <article
               key={dest.number}

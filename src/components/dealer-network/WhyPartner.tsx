@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import React, { useRef, useEffect } from 'react';
 import { PARTNERSHIP_PILLARS } from '@/data/dealerNetwork';
+import { gsap, isReducedMotion } from '@/lib/animations/gsap';
 import { cn } from '@/lib/utils/cn';
 
 export interface WhyPartnerProps {
@@ -17,13 +17,61 @@ export interface WhyPartnerProps {
  * Supporting: "Naati Organics brings together soil-focused and plant-focused nutrition within a broader philosophy of thoughtful agriculture."
  *
  * Design:
- * - Large typography-led introductory statement
- * - 4 refined editorial rows with fine dividers and subtle hover response (NOT generic benefit cards)
+ * - Large typography-led introductory statement with GSAP scroll entrance
+ * - 4 refined editorial rows with progressive divider reveals and subtle hover response
  * - Honest positioning: describes partnership direction without implying guaranteed credit terms or exclusive rights
  */
 export function WhyPartner({ className }: WhyPartnerProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    if (isReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      // 1. Header entrance
+      gsap.fromTo(
+        '.why-header-anim',
+        { opacity: 0, y: 22 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.12,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.why-header-trigger',
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+
+      // 2. Pillar rows entrance
+      gsap.fromTo(
+        '.why-pillar-row',
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          stagger: 0.15,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: '.why-pillars-grid',
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+    }, sectionRef.current);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="why-partner"
       data-nav-theme="light"
       aria-labelledby="why-partner-heading"
@@ -34,9 +82,9 @@ export function WhyPartner({ className }: WhyPartnerProps) {
     >
       <div className="max-w-7xl mx-auto">
         {/* Section Introductory Statement */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 mb-16 lg:mb-20">
+        <div className="why-header-trigger grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 mb-16 lg:mb-20">
           <div className="lg:col-span-6">
-            <div className="flex items-center gap-3 mb-4 sm:mb-5">
+            <div className="why-header-anim flex items-center gap-3 mb-4 sm:mb-5">
               <span className="font-mono text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-forest-deep">
                 01 / THE PARTNERSHIP PHILOSOPHY
               </span>
@@ -45,7 +93,7 @@ export function WhyPartner({ className }: WhyPartnerProps) {
 
             <h2
               id="why-partner-heading"
-              className="font-display font-medium text-3xl sm:text-4xl lg:text-5xl tracking-tight text-forest-deep leading-[1.12]"
+              className="why-header-anim font-display font-medium text-3xl sm:text-4xl lg:text-5xl tracking-tight text-forest-deep leading-[1.12]"
             >
               More than products. <br />
               <span className="italic font-light">A shared direction.</span>
@@ -53,21 +101,21 @@ export function WhyPartner({ className }: WhyPartnerProps) {
           </div>
 
           <div className="lg:col-span-6 flex flex-col justify-end">
-            <p className="font-sans text-base sm:text-lg lg:text-xl text-forest-deep/80 leading-relaxed max-w-xl">
+            <p className="why-header-anim font-sans text-base sm:text-lg lg:text-xl text-forest-deep/80 leading-relaxed max-w-xl">
               Naati Organics brings together soil-focused and plant-focused nutrition within a broader philosophy of thoughtful agriculture.
             </p>
-            <div className="mt-4 pt-4 border-t border-forest-deep/10 text-xs font-mono text-forest-deep/60 uppercase tracking-wider">
+            <div className="why-header-anim mt-4 pt-4 border-t border-forest-deep/10 text-xs font-mono text-forest-deep/60 uppercase tracking-wider">
               Building long-term agricultural resilience alongside regional partners
             </div>
           </div>
         </div>
 
         {/* Four Refined Editorial Rows */}
-        <div className="divide-y divide-forest-deep/15 border-t border-b border-forest-deep/15">
+        <div className="why-pillars-grid divide-y divide-forest-deep/15 border-t border-b border-forest-deep/15">
           {PARTNERSHIP_PILLARS.map((pillar) => (
             <article
               key={pillar.number}
-              className="group py-8 sm:py-10 lg:py-12 transition-colors duration-300 hover:bg-white/50 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
+              className="why-pillar-row group py-8 sm:py-10 lg:py-12 transition-colors duration-300 hover:bg-white/50 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
             >
               <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-start sm:items-center">
                 {/* Column 1: Index Number & Accent */}

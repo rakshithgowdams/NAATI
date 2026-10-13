@@ -131,13 +131,25 @@ export function PlusCompleteSystem({ className }: PlusCompleteSystemProps) {
         <div className="grid grid-cols-1 lg:grid-cols-11 gap-8 lg:gap-4 items-center mb-12 sm:mb-16">
           {/* PRODUCT 01: NAATI PLUS (Col 1 to 5) */}
           <div className="sys-conn-prod-left lg:col-span-5 flex flex-col items-center text-center p-6 sm:p-8 rounded-2xl bg-cream/5 border border-cream/15 backdrop-blur-xs">
-            <div className="relative w-48 sm:w-56 md:w-64 aspect-square mb-6">
+            <div className="relative w-48 sm:w-56 md:w-64 aspect-square mb-6 flex items-center justify-center">
+              <div
+                className="absolute inset-0 pointer-events-none rounded-full blur-xl opacity-45"
+                style={{
+                  background:
+                    'radial-gradient(circle at center, rgba(68, 107, 54, 0.4) 0%, transparent 70%)',
+                }}
+                aria-hidden="true"
+              />
+              <div
+                className="absolute bottom-2 w-3/4 h-4 bg-black/40 blur-md rounded-full pointer-events-none"
+                aria-hidden="true"
+              />
               <Image
-                src="/assets/images/products/naati-plus-pack.png"
+                src="/assets/images/products/naati-plus-isolated.webp"
                 alt="Naati Plus official pouch packaging"
                 fill
                 sizes="(max-width: 1024px) 240px, 300px"
-                className="object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.5)] select-none"
+                className="object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.5)] select-none transition-transform duration-500 hover:scale-[1.03]"
               />
             </div>
 
@@ -178,13 +190,25 @@ export function PlusCompleteSystem({ className }: PlusCompleteSystemProps) {
 
           {/* PRODUCT 02: NAATI PRO (Col 7 to 11) */}
           <div className="sys-conn-prod-right lg:col-span-5 flex flex-col items-center text-center p-6 sm:p-8 rounded-2xl bg-cream/5 border border-cream/15 backdrop-blur-xs">
-            <div className="relative w-48 sm:w-56 md:w-64 aspect-square mb-6">
+            <div className="relative w-48 sm:w-56 md:w-64 aspect-square mb-6 flex items-center justify-center">
+              <div
+                className="absolute inset-0 pointer-events-none rounded-full blur-xl opacity-45"
+                style={{
+                  background:
+                    'radial-gradient(circle at center, rgba(68, 107, 54, 0.4) 0%, transparent 70%)',
+                }}
+                aria-hidden="true"
+              />
+              <div
+                className="absolute bottom-2 w-3/4 h-4 bg-black/40 blur-md rounded-full pointer-events-none"
+                aria-hidden="true"
+              />
               <Image
-                src="/assets/images/products/naati-pro-pack.png"
+                src="/assets/images/products/naati-pro-isolated.webp"
                 alt="Naati Pro official box packaging"
                 fill
                 sizes="(max-width: 1024px) 240px, 300px"
-                className="object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.5)] select-none"
+                className="object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.5)] select-none transition-transform duration-500 hover:scale-[1.03]"
               />
             </div>
 
