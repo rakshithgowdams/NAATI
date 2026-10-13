@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, ArrowRight, CheckCircle2 } from 'lucide-react';
@@ -164,11 +164,12 @@ export const ATLAS_CROPS: AtlasCropItem[] = [
 /**
  * CROP SOLUTIONS PAGE — SECTION 02 & SECTION 03: THE CROP ATLAS & SELECTED EXPERIENCE
  *
- * The Main Interactive Feature of the Crop Solutions Page:
+ * Interactive Crop Discovery and Coordinated Detail Experience:
  * - Horizontally flowing editorial gallery displaying the 5 crop families
- * - Interactive single-page selection updating the connected detail showcase
- * - Full-bleed photographic treatment for the selected crop
- * - Factual, non-fabricated educational themes without unverified claims
+ * - Card-to-details auto-scroll navigation accounting for fixed transparent navbar
+ * - Immediate state synchronization ensuring active card and details match instantly
+ * - Editorial entrance transition on crop switch with masked text and staggered themes
+ * - Seamless mobile responsiveness with dynamic touch scroll handling
  */
 export function CropAtlas({ className }: CropAtlasProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -222,28 +223,100 @@ export function CropAtlas({ className }: CropAtlasProps) {
     return () => ctx.revert();
   }, []);
 
-  // Smooth transition when active crop switches
-  const handleSelectCrop = (index: number) => {
-    if (index === selectedIndex) return;
+  // Smooth editorial transition for details panel content when selected crop updates
+  useEffect(() => {
+    if (isReducedMotion()) return;
+    if (!detailContentRef.current || !detailImageRef.current) return;
 
-    if (!isReducedMotion() && detailContentRef.current && detailImageRef.current) {
-      gsap.to([detailContentRef.current, detailImageRef.current], {
-        opacity: 0,
-        y: 8,
-        duration: 0.2,
-        ease: 'power2.in',
-        onComplete: () => {
-          setSelectedIndex(index);
-          gsap.fromTo(
-            [detailContentRef.current, detailImageRef.current],
-            { opacity: 0, y: 16 },
-            { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out', stagger: 0.08 }
-          );
-        },
+    const content = detailContentRef.current;
+    const img = detailImageRef.current;
+
+    const meta = content.querySelector('.crop-detail-meta');
+    const title = content.querySelector('.crop-detail-title');
+    const headline = content.querySelector('.crop-detail-headline');
+    const desc = content.querySelector('.crop-detail-desc');
+    const themes = content.querySelectorAll('.crop-detail-theme-item');
+
+    gsap.killTweensOf([meta, title, headline, desc, themes, img]);
+
+    const tl = gsap.timeline();
+
+    tl.fromTo(
+      meta,
+      { opacity: 0.3, y: 8 },
+      { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }
+    )
+      .fromTo(
+        title,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' },
+        '-=0.2'
+      )
+      .fromTo(
+        headline,
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        '-=0.25'
+      )
+      .fromTo(
+        desc,
+        { opacity: 0.3, y: 10 },
+        { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' },
+        '-=0.25'
+      )
+      .fromTo(
+        themes,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out' },
+        '-=0.2'
+      )
+      .fromTo(
+        img,
+        { opacity: 0.7, scale: 1.02 },
+        { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' },
+        0
+      );
+  }, [selectedIndex]);
+
+  // Reliable anchor/ref-based smooth scroll to the details panel with navbar clearance
+  const scrollToDetails = useCallback(() => {
+    if (typeof window === 'undefined' || !detailPanelRef.current) return;
+
+    // Use requestAnimationFrame to ensure state has applied and target coordinates are measured
+    requestAnimationFrame(() => {
+      if (!detailPanelRef.current) return;
+
+      // Measure dynamically rendered navbar height
+      const navEl = document.querySelector('header');
+      const navHeight = navEl
+        ? navEl.getBoundingClientRect().height
+        : window.innerWidth < 640
+        ? 80
+        : 96;
+
+      // Comfortable breathing room below navbar (24px on desktop, 16px on mobile)
+      const extraPadding = window.innerWidth < 640 ? 16 : 24;
+      const panelRect = detailPanelRef.current.getBoundingClientRect();
+      const currentScrollY = window.scrollY || window.pageYOffset;
+      const targetScrollY = Math.max(0, currentScrollY + panelRect.top - navHeight - extraPadding);
+
+      // If already at or within 20px of destination, avoid unnecessary scroll motion
+      if (Math.abs(currentScrollY - targetScrollY) < 20) return;
+
+      window.scrollTo({
+        top: targetScrollY,
+        behavior: isReducedMotion() ? 'auto' : 'smooth',
       });
-    } else {
-      setSelectedIndex(index);
-    }
+    });
+  }, []);
+
+  // Card Selection Handler: updates crop immediately and triggers smooth auto-scroll
+  const handleSelectCrop = (index: number) => {
+    // 1. Immediately update selected state (highlights card & updates panel content)
+    setSelectedIndex(index);
+
+    // 2. Smoothly scroll to the top of the details panel
+    scrollToDetails();
   };
 
   return (
@@ -317,6 +390,7 @@ export function CropAtlas({ className }: CropAtlasProps) {
                       : 'bg-white/70 hover:bg-white text-forest-deep border border-forest-deep/10 hover:border-forest-deep/30'
                   )}
                   aria-pressed={isSelected}
+                  aria-controls="crop-details-panel"
                   aria-label={`Select ${crop.name}`}
                 >
                   {/* Thumbnail Image Frame */}
@@ -404,6 +478,7 @@ export function CropAtlas({ className }: CropAtlasProps) {
             ===================================================================== */}
         <div
           ref={detailPanelRef}
+          id="crop-details-panel"
           className="relative rounded-3xl bg-white border border-forest-deep/15 overflow-hidden shadow-warm-sm"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[560px]">
@@ -414,7 +489,7 @@ export function CropAtlas({ className }: CropAtlasProps) {
             >
               <div>
                 {/* Stage Tag */}
-                <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mb-6">
+                <div className="crop-detail-meta flex flex-wrap items-center gap-2.5 sm:gap-3 mb-6">
                   <span className="font-mono text-xs font-bold uppercase tracking-widest text-forest-medium bg-forest-medium/10 px-3 py-1 rounded-full">
                     {selectedCrop.index} / {selectedCrop.category}
                   </span>
@@ -424,17 +499,21 @@ export function CropAtlas({ className }: CropAtlasProps) {
                 </div>
 
                 {/* Crop Name */}
-                <h3 className="font-display font-semibold text-2xl sm:text-3xl lg:text-4xl text-forest-deep tracking-tight mb-3">
-                  {selectedCrop.name}
-                </h3>
+                <div className="overflow-hidden mb-3">
+                  <h3 className="crop-detail-title font-display font-semibold text-2xl sm:text-3xl lg:text-4xl text-forest-deep tracking-tight">
+                    {selectedCrop.name}
+                  </h3>
+                </div>
 
                 {/* Narrative Headline */}
-                <p className="font-display italic text-lg sm:text-xl text-forest-medium mb-4">
-                  &ldquo;{selectedCrop.headline}&rdquo;
-                </p>
+                <div className="overflow-hidden mb-4">
+                  <p className="crop-detail-headline font-display italic text-lg sm:text-xl text-forest-medium">
+                    &ldquo;{selectedCrop.headline}&rdquo;
+                  </p>
+                </div>
 
                 {/* Narrative Description */}
-                <p className="font-sans text-base sm:text-lg text-forest-deep/80 leading-relaxed mb-8 [text-wrap:pretty]">
+                <p className="crop-detail-desc font-sans text-base sm:text-lg text-forest-deep/80 leading-relaxed mb-8 [text-wrap:pretty]">
                   {selectedCrop.description}
                 </p>
 
@@ -444,21 +523,23 @@ export function CropAtlas({ className }: CropAtlasProps) {
                     KEY AGRONOMIC THEMES FOR THIS CROP:
                   </span>
 
-                  {selectedCrop.themes.map((theme, i) => (
-                    <div key={i} className="flex items-start gap-3.5">
-                      <div className="w-5 h-5 rounded-full bg-forest-medium/15 text-forest-medium flex items-center justify-center shrink-0 mt-0.5">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
+                  <div className="space-y-5">
+                    {selectedCrop.themes.map((theme, i) => (
+                      <div key={i} className="crop-detail-theme-item flex items-start gap-3.5">
+                        <div className="w-5 h-5 rounded-full bg-forest-medium/15 text-forest-medium flex items-center justify-center shrink-0 mt-0.5">
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                        </div>
+                        <div>
+                          <h4 className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-forest-deep mb-0.5">
+                            {theme.title}
+                          </h4>
+                          <p className="font-sans text-xs sm:text-sm text-forest-deep/75 leading-relaxed">
+                            {theme.description}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <h4 className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-forest-deep mb-0.5">
-                          {theme.title}
-                        </h4>
-                        <p className="font-sans text-xs sm:text-sm text-forest-deep/75 leading-relaxed">
-                          {theme.description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
 
