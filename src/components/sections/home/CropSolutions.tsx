@@ -42,6 +42,12 @@ export function CropSolutions({ className }: CropSolutionsProps) {
   // Desktop nutrition panel rendered index (controlled via Phase A exit -> Phase B swap)
   const [displayedIndex, setDisplayedIndex] = useState(0);
 
+  // Mobile horizontal scroll active index & touch coordinate refs
+  const [activeMobileIndex, setActiveMobileIndex] = useState(0);
+  const activeMobileIndexRef = useRef(0);
+  const touchStartXRef = useRef(0);
+  const touchStartYRef = useRef(0);
+
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const pinWrapperRef = useRef<HTMLDivElement>(null);
@@ -51,6 +57,13 @@ export function CropSolutions({ className }: CropSolutionsProps) {
   const ctaContainerRef = useRef<HTMLDivElement>(null);
   const guidancePanelRef = useRef<HTMLDivElement>(null);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
+
+  // Mobile horizontal scroll stage and track refs
+  const mobilePinWrapperRef = useRef<HTMLDivElement>(null);
+  const mobileStageRef = useRef<HTMLDivElement>(null);
+  const mobileTrackRef = useRef<HTMLDivElement>(null);
+  const mobileProgressBarRef = useRef<HTMLDivElement>(null);
+  const mobileScrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
   // Transition coordination refs
   const displayedIndexRef = useRef(0);
@@ -209,6 +222,48 @@ export function CropSolutions({ className }: CropSolutionsProps) {
     }
   }, []);
 
+  // Smooth scroll to stage when clicking indicator dot or card on mobile
+  const handleMobileSelectCrop = useCallback((index: number) => {
+    setActiveMobileIndex(index);
+    activeMobileIndexRef.current = index;
+
+    if (typeof window !== 'undefined' && mobileScrollTriggerRef.current) {
+      const st = mobileScrollTriggerRef.current;
+      const count = CROP_SOLUTIONS.length;
+      const targetProgress = count > 1 ? index / (count - 1) : 0;
+      const targetScroll = st.start + targetProgress * (st.end - st.start);
+
+      window.scrollTo({
+        top: targetScroll,
+        behavior: 'smooth',
+      });
+    }
+  }, []);
+
+  // Handle horizontal swipe gestures on mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartXRef.current = e.touches[0].clientX;
+    touchStartYRef.current = e.touches[0].clientY;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!mobileScrollTriggerRef.current) return;
+    const currentX = e.touches[0].clientX;
+    const currentY = e.touches[0].clientY;
+    const deltaX = currentX - touchStartXRef.current;
+    const deltaY = currentY - touchStartYRef.current;
+
+    // Convert horizontal swipe into smooth scroll progress
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 8) {
+      window.scrollBy({
+        top: -deltaX * 1.3,
+        behavior: 'auto',
+      });
+      touchStartXRef.current = currentX;
+      touchStartYRef.current = currentY;
+    }
+  };
+
   useEffect(() => {
     if (!sectionRef.current) return;
     if (isReducedMotion()) return;
@@ -303,92 +358,65 @@ export function CropSolutions({ className }: CropSolutionsProps) {
         });
 
         scrollTriggerRef.current = st;
+
+        return () => {
+          scrollTriggerRef.current = null;
+        };
       });
 
-      // MOBILE & TABLET: VERTICAL EDITORIAL CROP JOURNEY (< 1024px)
+      // MOBILE & TABLET: HORIZONTAL PINNED SCROLL JOURNEY (< 1024px)
       mm.add('(max-width: 1023px)', () => {
-        const chapters = gsap.utils.toArray<HTMLElement>('.mobile-crop-chapter');
+        if (!mobilePinWrapperRef.current || !mobileTrackRef.current || !mobileStageRef.current) return;
 
-        chapters.forEach((chapter) => {
-          const header = chapter.querySelector('.mobile-crop-header');
-          const photoWrap = chapter.querySelector('.mobile-crop-photo-wrap');
-          const photo = chapter.querySelector('.mobile-crop-photo');
-          const titleOverlay = chapter.querySelector('.mobile-crop-title-overlay');
-          const step1 = chapter.querySelector('.mobile-crop-step-1');
-          const lineLeft = chapter.querySelector('.mobile-crop-line-left');
-          const lineRight = chapter.querySelector('.mobile-crop-line-right');
-          const step2 = chapter.querySelector('.mobile-crop-step-2');
-          const footer = chapter.querySelector('.mobile-crop-footer');
+        const track = mobileTrackRef.current;
+        const totalCards = CROP_SOLUTIONS.length;
 
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: chapter,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-              once: true,
+        const getScrollAmount = () => {
+          const trackWidth = track.scrollWidth;
+          const viewportWidth = window.innerWidth;
+          // Calculate distance to scroll horizontally so card 10 aligns with right margin
+          return Math.max(0, trackWidth - viewportWidth + 32);
+        };
+
+        const horizontalTween = gsap.to(track, {
+          x: () => -getScrollAmount(),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: mobilePinWrapperRef.current,
+            start: 'top top',
+            end: () => `+=${Math.max(window.innerHeight * 3.2, getScrollAmount() * 1.15)}`,
+            pin: mobileStageRef.current,
+            pinSpacing: true,
+            scrub: 0.6,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              const p = self.progress;
+
+              // Smooth continuous progress bar update
+              if (mobileProgressBarRef.current) {
+                mobileProgressBarRef.current.style.width = `${Math.min(100, Math.max(8, Math.round(p * 100)))}%`;
+              }
+
+              // Update active mobile index
+              const currentCardIndex = Math.min(
+                totalCards - 1,
+                Math.max(0, Math.round(p * (totalCards - 1)))
+              );
+
+              if (activeMobileIndexRef.current !== currentCardIndex) {
+                activeMobileIndexRef.current = currentCardIndex;
+                setActiveMobileIndex(currentCardIndex);
+              }
             },
-          });
-
-          // Step 1: Crop number and category label enter with subtle vertical reveal
-          tl.fromTo(
-            header,
-            { opacity: 0, y: 14 },
-            { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }
-          )
-            // Step 2: Photograph unveils using a clean clipping & subtle scale animation
-            .fromTo(
-              photoWrap,
-              { clipPath: 'inset(10% 0% 10% 0% round 1rem)', opacity: 0.8 },
-              {
-                clipPath: 'inset(0% 0% 0% 0% round 1rem)',
-                opacity: 1,
-                duration: 0.65,
-                ease: 'power3.out',
-              },
-              '-=0.2'
-            )
-            .fromTo(
-              photo,
-              { scale: 1.06 },
-              { scale: 1, duration: 0.75, ease: 'power2.out' },
-              '<'
-            )
-            // Step 3: Crop title reveals from masked line
-            .fromTo(
-              titleOverlay,
-              { opacity: 0, y: 10 },
-              { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
-              '-=0.3'
-            )
-            // Step 4: Naati Plus information enters gently
-            .fromTo(
-              step1,
-              { opacity: 0, y: 12 },
-              { opacity: 1, y: 0, duration: 0.38, ease: 'power2.out' },
-              '-=0.2'
-            )
-            // Step 5: Connecting line draws across
-            .fromTo(
-              [lineLeft, lineRight],
-              { scaleX: 0, transformOrigin: 'left center' },
-              { scaleX: 1, duration: 0.35, ease: 'power2.inOut', stagger: 0.08 },
-              '-=0.15'
-            )
-            // Step 6: Naati Pro information enters
-            .fromTo(
-              step2,
-              { opacity: 0, y: 12 },
-              { opacity: 1, y: 0, duration: 0.38, ease: 'power2.out' },
-              '-=0.2'
-            )
-            // Step 7: Reference information becomes visible
-            .fromTo(
-              footer,
-              { opacity: 0, y: 8 },
-              { opacity: 1, y: 0, duration: 0.32, ease: 'power2.out' },
-              '-=0.15'
-            );
+          },
         });
+
+        mobileScrollTriggerRef.current = horizontalTween.scrollTrigger ?? null;
+
+        return () => {
+          mobileScrollTriggerRef.current = null;
+        };
       });
 
       // =======================================================================
@@ -526,116 +554,152 @@ export function CropSolutions({ className }: CropSolutionsProps) {
       </div>
 
       {/* =======================================================================
-          02 — CROP SHOWCASE STAGE
-          Desktop (>= 1024px): Pinned scroll journey with coordinated chapter transitions
-          Mobile (< 1024px): Natural vertical editorial storytelling chapters
+          02A — MOBILE HORIZONTAL PINNED SCROLL JOURNEY (< 1024px)
+          All 10 crop solution cards scroll-animate horizontally as the visitor scrolls
           ======================================================================= */}
-      <div ref={pinWrapperRef} className="crop-showcase-pin-wrapper relative w-full">
+      <div
+        ref={mobilePinWrapperRef}
+        className="lg:hidden relative w-full"
+      >
         <div
-          ref={showcaseStageRef}
-          className="crop-showcase-stage w-full lg:min-h-screen lg:flex lg:flex-col lg:justify-center lg:py-8"
+          ref={mobileStageRef}
+          className="w-full min-h-[100svh] flex flex-col justify-between pt-20 pb-5 overflow-hidden select-none"
         >
-          <Container size="default">
-            {/* =================================================================
-                MOBILE / TABLET: VERTICAL EDITORIAL CROP JOURNEY (< 1024px)
-                Natural scroll-driven chapters with independent ScrollTrigger reveals
-                ================================================================= */}
-            <div className="lg:hidden flex flex-col space-y-12">
-              {CROP_SOLUTIONS.map((crop, idx) => (
+          {/* Top Ticker & Live Crop Category Info */}
+          <div className="px-4 xs:px-6 mb-2">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-forest animate-pulse" aria-hidden="true" />
+                <span className="font-mono text-xs font-bold text-forest uppercase tracking-wider">
+                  CROP {String(activeMobileIndex + 1).padStart(2, '0')} / {String(totalCrops).padStart(2, '0')}
+                </span>
+                <span className="font-sans text-xs text-olive font-semibold truncate max-w-[130px]">
+                  · {CROP_SOLUTIONS[activeMobileIndex]?.name}
+                </span>
+              </div>
+              <span className="font-mono text-[10px] tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-cream-deep border border-cream-border text-forest/80 font-semibold shrink-0">
+                {CROP_SOLUTIONS[activeMobileIndex]?.tag}
+              </span>
+            </div>
+
+            {/* Dynamic 10-Crop Scroll Progress Track */}
+            <div className="w-full h-1 bg-cream-border/60 rounded-full overflow-hidden">
+              <div
+                ref={mobileProgressBarRef}
+                className="h-full bg-forest rounded-full transition-[width] duration-100 ease-out"
+                style={{ width: `${((activeMobileIndex + 1) / totalCrops) * 100}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Horizontal Scrolling Cards Track */}
+          <div
+            ref={mobileTrackRef}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            className="flex gap-4 px-4 xs:px-6 will-change-transform py-1 items-stretch"
+          >
+            {CROP_SOLUTIONS.map((crop, idx) => {
+              const isActive = idx === activeMobileIndex;
+
+              return (
                 <article
                   key={crop.id}
-                  id={`crop-mobile-chapter-${crop.id}`}
-                  className="mobile-crop-chapter relative pt-6 first:pt-0 pb-6 border-b border-cream-border/70 last:border-b-0"
+                  id={`crop-mobile-card-${crop.id}`}
+                  onClick={() => handleMobileSelectCrop(idx)}
+                  className={cn(
+                    'w-[82vw] xs:w-[78vw] sm:w-[65vw] max-w-[340px] shrink-0 rounded-2xl bg-cream-light/95 border border-cream-border/90 p-4 shadow-warm-xs flex flex-col justify-between transition-all duration-300 cursor-pointer',
+                    isActive
+                      ? 'ring-1.5 ring-forest/20 shadow-warm-md scale-100 opacity-100'
+                      : 'scale-[0.97] opacity-85 hover:opacity-100'
+                  )}
                 >
-                  {/* Chapter Header: Crop Number, Emoji and Category Label */}
-                  <div className="mobile-crop-header flex items-center justify-between mb-3.5">
-                    <div className="flex items-center gap-2">
+                  {/* Card Header: Crop Number and Category Badge */}
+                  <div className="flex items-center justify-between mb-2.5">
+                    <div className="flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-forest" aria-hidden="true" />
                       <span className="font-mono text-[11px] font-semibold text-olive uppercase tracking-widest">
                         CROP {crop.index} / {String(totalCrops).padStart(2, '0')}
                       </span>
                     </div>
-                    <span className="font-mono text-[10px] tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-cream-deep border border-cream-border text-forest/80 font-medium">
+                    <span className="font-mono text-[10px] tracking-wider uppercase px-2 py-0.5 rounded-full bg-cream-deep border border-cream-border text-forest/80 font-medium truncate max-w-[140px]">
                       {crop.tag}
                     </span>
                   </div>
 
-                  {/* Large Full-Width Photograph with Clip-Mask Reveal */}
-                  <div className="mobile-crop-photo-wrap relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-cream-deep border border-cream-border/80 shadow-warm-sm mb-4">
+                  {/* Crop Photograph with Aspect 16:10 and Crop Title Overlay */}
+                  <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden bg-cream-deep border border-cream-border/80 shadow-warm-xs mb-3">
                     <Image
                       src={crop.imageSrc}
                       alt={crop.imageAlt}
                       fill
-                      sizes="(max-width: 1023px) 100vw, 640px"
-                      priority={idx === 0}
+                      sizes="(max-width: 1023px) 85vw, 400px"
+                      priority={idx <= 1}
                       quality={90}
-                      className="mobile-crop-photo object-cover"
+                      className="object-cover select-none"
                     />
-
-                    {/* Gentle caption contrast gradient */}
+                    {/* Gentle bottom gradient for text legibility */}
                     <div
-                      className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-forest-deep/60 via-forest-deep/20 to-transparent pointer-events-none"
+                      className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-forest-deep/70 via-forest-deep/20 to-transparent pointer-events-none"
                       aria-hidden="true"
                     />
-
-                    {/* Crop Title and Index Overlay */}
-                    <div className="mobile-crop-title-overlay absolute bottom-3.5 left-4 right-4 z-10 flex items-center justify-between text-cream pointer-events-none">
-                      <span className="font-display text-lg sm:text-xl font-medium tracking-tight drop-shadow-sm flex items-center gap-2">
+                    <div className="absolute bottom-2.5 left-3 right-3 z-10 flex items-center justify-between text-cream pointer-events-none">
+                      <span className="font-display text-base font-semibold tracking-tight drop-shadow-sm flex items-center gap-1.5">
                         <span className="text-xl">{crop.emoji}</span>
                         <span>{crop.name}</span>
                       </span>
-                      <span className="font-mono text-xs text-cream/90 tracking-wider">
+                      <span className="font-mono text-[11px] text-cream/90 tracking-wider">
                         {crop.index} / {String(totalCrops).padStart(2, '0')}
                       </span>
                     </div>
                   </div>
 
-                  {/* Guidance Card: Two-Stage Nutrition Protocol */}
-                  <div className="mobile-crop-guidance p-4 xs:p-5 rounded-2xl bg-cream-light/95 border border-cream-border/90 shadow-warm-xs">
-                    <div className="space-y-3.5">
+                  {/* Protocol Guidance Details: Two-Stage Nutrition Protocol */}
+                  <div className="space-y-2.5 flex-1 flex flex-col justify-between">
+                    <div className="space-y-2.5">
                       {/* Stage 01: Naati Plus */}
-                      <div className="mobile-crop-step-1 space-y-1">
-                        <div className="flex items-center gap-2">
+                      <div className="space-y-0.5">
+                        <div className="flex items-center gap-1.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-earth" aria-hidden="true" />
-                          <span className="font-mono text-[10px] font-bold text-earth tracking-[0.16em] uppercase">
+                          <span className="font-mono text-[9px] font-bold text-earth tracking-[0.14em] uppercase">
                             {crop.naatiPlus.stage}
                           </span>
                         </div>
-                        <div className="flex flex-wrap items-baseline gap-2 pt-0.5">
-                          <h4 className="font-display font-medium text-base sm:text-lg text-forest tracking-[-0.02em]">
+                        <div className="flex flex-wrap items-baseline gap-1.5">
+                          <h4 className="font-display font-semibold text-sm text-forest tracking-tight">
                             {crop.naatiPlus.product}
                           </h4>
-                          <span className="font-sans text-xs sm:text-sm text-text-secondary leading-snug">
+                          <span className="font-sans text-[11px] text-text-secondary leading-tight">
                             — {crop.naatiPlus.application}
                           </span>
                         </div>
                       </div>
 
                       {/* Connecting Line Between Stages */}
-                      <div className="mobile-crop-divider flex items-center gap-3 py-1">
-                        <div className="mobile-crop-line-left w-6 h-px bg-cream-border" />
-                        <div className="flex items-center gap-1.5">
-                          <ArrowDown className="w-3.5 h-3.5 text-olive stroke-[2.5]" />
-                          <span className="font-mono text-[9px] text-olive font-semibold tracking-wider uppercase">
+                      <div className="flex items-center gap-2 py-0.5">
+                        <div className="w-4 h-px bg-cream-border" />
+                        <div className="flex items-center gap-1">
+                          <ArrowDown className="w-3 h-3 text-olive stroke-[2.5]" />
+                          <span className="font-mono text-[8.5px] text-olive font-semibold tracking-wider uppercase">
                             COMPLETE SYSTEM
                           </span>
                         </div>
-                        <div className="mobile-crop-line-right flex-1 h-px bg-cream-border" />
+                        <div className="flex-1 h-px bg-cream-border" />
                       </div>
 
                       {/* Stage 02: Naati Pro */}
-                      <div className="mobile-crop-step-2 space-y-1">
-                        <div className="flex items-center gap-2">
+                      <div className="space-y-0.5">
+                        <div className="flex items-center gap-1.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-olive" aria-hidden="true" />
-                          <span className="font-mono text-[10px] font-bold text-olive tracking-[0.16em] uppercase">
+                          <span className="font-mono text-[9px] font-bold text-olive tracking-[0.14em] uppercase">
                             {crop.naatiPro.stage}
                           </span>
                         </div>
-                        <div className="flex flex-wrap items-baseline gap-2 pt-0.5">
-                          <h4 className="font-display font-medium text-base sm:text-lg text-forest tracking-[-0.02em]">
+                        <div className="flex flex-wrap items-baseline gap-1.5">
+                          <h4 className="font-display font-semibold text-sm text-forest tracking-tight">
                             {crop.naatiPro.product}
                           </h4>
-                          <span className="font-sans text-xs sm:text-sm text-text-secondary leading-snug">
+                          <span className="font-sans text-[11px] text-text-secondary leading-tight">
                             — {crop.naatiPro.application}
                           </span>
                         </div>
@@ -643,29 +707,69 @@ export function CropSolutions({ className }: CropSolutionsProps) {
                     </div>
 
                     {/* Timing & Indicative Note Footer */}
-                    <div className="mobile-crop-footer mt-4 pt-3 border-t border-cream-border/80 flex flex-wrap items-center justify-between gap-2">
-                      <div className="inline-flex items-center gap-2 text-forest/90">
-                        <span className="font-mono text-[10px] text-text-muted tracking-wider uppercase font-semibold">
-                          Reference Timing:
+                    <div className="mt-2.5 pt-2 border-t border-cream-border/80 flex flex-wrap items-center justify-between gap-1.5">
+                      <div className="inline-flex items-center gap-1.5 text-forest/90">
+                        <span className="font-mono text-[9px] text-text-muted tracking-wider uppercase font-semibold">
+                          Timing:
                         </span>
-                        <span className="font-sans text-xs font-semibold text-forest bg-forest/5 px-2.5 py-0.5 rounded-full border border-forest/10">
+                        <span className="font-sans text-[11px] font-semibold text-forest bg-forest/5 px-2 py-0.5 rounded-full border border-forest/10 truncate max-w-[180px]">
                           {crop.referenceTiming}
                         </span>
                       </div>
-                      <span className="font-sans text-[10px] text-text-muted/80 italic">
-                        *Indicative; confirm on product label
+                      <span className="font-sans text-[9px] text-text-muted/80 italic">
+                        *Confirm on label
                       </span>
                     </div>
                   </div>
                 </article>
-              ))}
+              );
+            })}
+          </div>
+
+          {/* Bottom Bar: 10 Interactive Pagination Dots & Swipe Guidance */}
+          <div className="px-4 xs:px-6 mt-3 flex items-center justify-between">
+            <div className="flex items-center gap-1.5" role="tablist" aria-label="Crop indicators">
+              {CROP_SOLUTIONS.map((crop, idx) => {
+                const isActive = idx === activeMobileIndex;
+                return (
+                  <button
+                    key={crop.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-label={`Jump to ${crop.name}`}
+                    onClick={() => handleMobileSelectCrop(idx)}
+                    className={cn(
+                      'h-1.5 rounded-full transition-all duration-300 cursor-pointer',
+                      isActive
+                        ? 'w-5 bg-forest'
+                        : 'w-1.5 bg-forest/20 hover:bg-forest/40'
+                    )}
+                  />
+                );
+              })}
             </div>
 
-            {/* =================================================================
-                DESKTOP: ASYMMETRIC STICKY SPLIT SHOWCASE (>= 1024px)
-                Left Photographic Stage (55%) | Right Selector & Guidance (45%)
-                ================================================================= */}
-            <div className="hidden lg:grid grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-center">
+            <div className="flex items-center gap-1 text-[11px] font-mono text-text-muted tracking-wider uppercase">
+              <span>Scroll to animate</span>
+              <ArrowRight className="w-3 h-3 text-olive" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* =======================================================================
+          02B — DESKTOP STICKY SPLIT SHOWCASE (>= 1024px)
+          Unchanged desktop experience with sticky split stage and guidance panel
+          ======================================================================= */}
+      <div ref={pinWrapperRef} className="hidden lg:block crop-showcase-pin-wrapper relative w-full">
+        <div
+          ref={showcaseStageRef}
+          className="crop-showcase-stage w-full min-h-screen flex flex-col justify-center py-8"
+        >
+          <Container size="default">
+            {/* Desktop Asymmetric Sticky Split Showcase */}
+            <div className="grid grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-center">
               {/* ---------------------------------------------------------------
                   LEFT COLUMN (~55%): CINEMATIC PHOTOGRAPHIC VISUAL STAGE
                   Consistent 4:3 aspect ratio with seamless layered crossfades
