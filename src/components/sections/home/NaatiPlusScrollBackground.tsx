@@ -29,17 +29,18 @@ export function NaatiPlusStaticGround({ className }: NaatiPlusStaticGroundProps)
       aria-hidden="true"
       className={cn(
         'relative w-full overflow-hidden pointer-events-none select-none',
-        // Responsive heights maintaining ample clearance above the package at every breakpoint
-        'h-[190px] xs:h-[230px] sm:h-[280px] md:h-[350px] lg:h-[480px] xl:h-[560px] 2xl:h-[640px] min-[1600px]:h-[720px] min-[1920px]:h-[clamp(780px,42vw,960px)]',
-        // Top mask fade residing entirely in the empty cream area above the packaging
-        '[mask-image:linear-gradient(to_bottom,transparent_0%,black_50px,black_100%)]',
-        '[-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_50px,black_100%)]',
+        // Tightly composed negative top margin and responsive heights matching cropped 1920x730 aspect
+        '-mt-4 sm:-mt-6 md:-mt-8 lg:-mt-12 xl:-mt-14',
+        'h-[150px] xs:h-[180px] sm:h-[230px] md:h-[300px] lg:h-[380px] xl:h-[460px] 2xl:h-[540px] min-[1920px]:h-[620px]',
+        // Top mask fade residing smoothly in the subtle cream margin above the packaging
+        '[mask-image:linear-gradient(to_bottom,transparent_0%,black_30px,black_100%)]',
+        '[-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_30px,black_100%)]',
         className
       )}
     >
       {/* Soft cream edge blend guaranteeing zero visible cutoff under all rendering engines */}
       <div
-        className="absolute inset-x-0 top-0 h-10 sm:h-12 md:h-14 lg:h-16 bg-gradient-to-b from-[#F5F1E7] to-transparent pointer-events-none z-10"
+        className="absolute inset-x-0 top-0 h-6 sm:h-8 md:h-10 bg-gradient-to-b from-[#F5F1E7] to-transparent pointer-events-none z-10"
         aria-hidden="true"
       />
 

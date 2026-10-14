@@ -291,8 +291,8 @@ export function SoilCrisis({ className }: SoilCrisisProps) {
           SECTION CLOSING — RESTRAINED EDITORIAL CLOSING STATEMENT
           Concise brand message leading into Soil Academy education
           ========================================================================= */}
-      <Container size="narrow" className="scene-closing text-center pb-4 sm:pb-6">
-        <div ref={sceneClosingRef} className="space-y-3.5 sm:space-y-4 py-6 sm:py-8 border-t border-b border-cream-border/80">
+      <Container size="narrow" className="scene-closing text-center pb-0 relative z-10">
+        <div ref={sceneClosingRef} className="space-y-3 sm:space-y-3.5 pt-5 sm:pt-7 pb-2 sm:pb-3 border-t border-cream-border/80">
           {/* Brand Statement in Fraunces */}
           <p className="font-display font-medium text-xl sm:text-2xl md:text-3xl text-forest tracking-[-0.025em] leading-tight">
             &ldquo;Healthy crops cannot thrive in unhealthy soil.&rdquo;
@@ -305,7 +305,7 @@ export function SoilCrisis({ className }: SoilCrisisProps) {
           </p>
 
           {/* Understated Editorial Link */}
-          <div className="pt-2">
+          <div className="pt-1.5 sm:pt-2">
             <Link
               href="/soil-academy"
               className={cn(
