@@ -143,7 +143,7 @@ export function CropHero({ className }: CropHeroProps) {
 
             {/* Short Editorial Description */}
             <p className="crop-hero-desc font-sans text-base sm:text-lg md:text-xl text-forest-deep/80 leading-relaxed max-w-xl mb-10 [text-wrap:pretty]">
-              From vegetables and spices to field crops, explore the role of healthy soil and balanced plant nutrition across different growing systems.
+              From coconut, arecanut, coffee, and pepper to fruit orchards, vegetables, field crops, and terrace gardens — explore how soil and plant nutrition work together across all 10 crop systems.
             </p>
 
             {/* Action CTA */}

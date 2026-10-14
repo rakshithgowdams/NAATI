@@ -21,9 +21,9 @@ interface LearningDestination {
 const DESTINATIONS: LearningDestination[] = [
   {
     number: '01',
-    title: 'SOIL ACADEMY',
+    title: 'SOIL LEARNING CENTRE',
     description: 'Explore the science beneath healthy soil, microbial aggregation, and living ecosystems.',
-    ctaText: 'EXPLORE SOIL ACADEMY',
+    ctaText: 'EXPLORE SOIL LEARNING CENTRE',
     href: '/soil-academy',
   },
   {

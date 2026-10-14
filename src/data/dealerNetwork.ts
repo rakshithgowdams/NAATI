@@ -237,7 +237,7 @@ export const DEALER_FAQS: DealerFaqItem[] = [
     answer:
       'You can explore our detailed product documentation online for Naati Plus (enriched vermicompost) and Naati Pro (plant bio-activator), or get in touch directly with our agronomy support desk.',
     detail:
-      'Comprehensive crop charts, dosage recommendations, and scientific rationale are also accessible in our Soil Academy and Resource Library.',
+      'Comprehensive crop charts, dosage recommendations, and scientific rationale are also accessible in our Soil Learning Centre and Resource Library.',
     actionHref: '/nutrition-system',
     actionLabel: 'Explore the Nutrition System ↗',
   },

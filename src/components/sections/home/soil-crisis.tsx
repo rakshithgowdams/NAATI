@@ -314,7 +314,7 @@ export function SoilCrisis({ className }: SoilCrisisProps) {
                 'focus-visible:outline-2 focus-visible:outline-olive focus-visible:outline-offset-4 rounded-subtle'
               )}
             >
-              <span>Explore Soil Academy</span>
+              <span>Explore Soil Learning Centre</span>
               <ArrowRight
                 className="w-4 h-4 text-olive transition-transform duration-200 group-hover:translate-x-1"
                 aria-hidden="true"

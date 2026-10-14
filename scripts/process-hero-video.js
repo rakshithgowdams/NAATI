@@ -9,33 +9,44 @@ if (!fs.existsSync(targetDir)) {
   fs.mkdirSync(targetDir, { recursive: true });
 }
 
-const inputName = fs.readdirSync(downloadsDir).find(f => f.includes('20261009155943') && f.endsWith('.mp4'));
-if (!inputName) {
-  console.error('Could not find input video in Downloads');
-  process.exit(1);
+const inputCandidates = [
+  'naati-hero-no-gemini-watermark.mp4',
+  'C:/Users/shash/Downloads/naati-hero-no-gemini-watermark.mp4',
+];
+
+let inputPath = inputCandidates.find(p => fs.existsSync(p));
+if (!inputPath) {
+  const downloadCandidate = fs.existsSync(downloadsDir) && fs.readdirSync(downloadsDir).find(f => f.includes('no-gemini-watermark') && f.endsWith('.mp4'));
+  if (downloadCandidate) {
+    inputPath = path.join(downloadsDir, downloadCandidate);
+  }
 }
 
-const inputPath = path.join(downloadsDir, inputName);
+if (!inputPath) {
+  console.error('Could not find naati-hero-no-gemini-watermark.mp4');
+  process.exit(1);
+}
 const outputVideo = path.join(targetDir, 'naati-hero-scrub.mp4');
 const outputPoster = path.join(targetDir, 'hero-poster.jpg');
 
 console.log('Input:', inputPath);
 console.log('Optimizing video to:', outputVideo);
 
-// 1. FFmpeg video optimization
+// 1. FFmpeg video optimization for ultra-smooth scroll scrubbing
 const ffmpegArgs = [
   '-y',
   '-i', inputPath,
   '-map', '0:v:0',
   '-c:v', 'libx264',
   '-preset', 'medium',
-  '-crf', '19',
+  '-crf', '18',
   '-pix_fmt', 'yuv420p',
   '-r', '24',
-  '-g', '6',
-  '-keyint_min', '6',
+  '-bf', '0',               // Zero B-frames ensures instant bidirectional seeking
+  '-g', '4',                // Keyframe every 4 frames (6 keyframes/sec)
+  '-keyint_min', '4',
   '-sc_threshold', '0',
-  '-movflags', '+faststart',
+  '-movflags', '+faststart', // moov atom at beginning of MP4
   '-an',
   outputVideo
 ];

@@ -40,7 +40,7 @@ const FOOTER_COLUMNS: FooterNavColumn[] = [
     links: [
       { label: 'Our Approach', href: '/nutrition-system' },
       { label: 'Crop Solutions', href: '/crop-solutions' },
-      { label: 'Soil Academy', href: '/soil-academy' },
+      { label: 'Soil Learning Centre', href: '/soil-academy' },
     ],
   },
   {

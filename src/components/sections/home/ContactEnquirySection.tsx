@@ -188,7 +188,7 @@ export function ContactEnquirySection({ className }: ContactEnquirySectionProps)
             <div className="contact-eyebrow flex items-center gap-2.5 mb-5 sm:mb-6">
               <span className="w-2 h-2 rounded-full bg-olive" aria-hidden="true" />
               <span className="font-mono text-xs sm:text-sm font-semibold text-olive-dark tracking-[0.2em] uppercase">
-                08 / LET&apos;S GROW TOGETHER
+                LET&apos;S GROW TOGETHER · GET IN TOUCH
               </span>
             </div>
 

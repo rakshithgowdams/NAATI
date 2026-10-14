@@ -5,54 +5,64 @@ import { SiteHeader } from '@/components/layout/site-header';
 import {
   AboutHero,
   AboutStoryBeneath,
+  AboutMissionVision,
   AboutPhilosophy,
-  AboutGuidingPrinciples,
-  AboutLookingForward,
+  AboutApproach,
+  AboutDifferencePromise,
+  AboutValues,
   AboutFinalCta,
 } from '@/components/sections/about';
 
 export const metadata: Metadata = createSiteMetadata({
-  title: 'About Us — Soil-First Farming & Plant Nutrition',
+  title: 'About Us — Soil-First Farming & Plant Nutrition | Naati Organics',
   description:
-    "Discover Naati Organics' soil-first philosophy and its approach to healthy soil, plant nutrition and thoughtful agriculture.",
+    'We believe every great harvest begins beneath the soil. Fix the Soil. Feed the Plant. Discover the Naati Organics story, mission, philosophy, and approach.',
   path: '/about',
 });
 
 /**
- * ABOUT NAATI ORGANICS — COMPLETE EDITORIAL STORY PAGE
+ * ABOUT NAATI ORGANICS — CLIENT EDITORIAL SPECIFICATION
  *
- * Core Concept: "The Story Beneath the Surface"
- * 01 — About Hero: Split-screen editorial statement ("To grow better, we look deeper.")
- * 02 — The Story Beneath: Asymmetric living soil macro visual & Why We Exist statement
- * 03 — Our Philosophy: Compact connected dark green stage ("Fix the Soil. Feed the Plant.")
- * 04 — What Guides Us: Three full-width typography-led guiding principle rows
- * 05 — Looking Forward: Panoramic South Indian agricultural landscape panorama
- * 06 — Final CTA: Minimal dark forest-green conclusion merging smoothly into global footer
+ * 01. Hero Banner: "We Believe Every Great Harvest Begins Beneath the Soil. Fix the Soil. Feed the Plant."
+ * 02. Our Story: "Naati Was Born From One Simple Observation..."
+ * 03. Why "Naati"?: Native wisdom, natural farming principles, respect for soil, sustainable agriculture, long-term thinking.
+ * 04. Our Mission & Vision: "Rebuild Soil. Restore Nature. Empower Farmers." / India's most trusted soil health company.
+ * 05. Our Philosophy: "Soil First. Everything Else Follows." Biological cascade (Healthy Soil -> Strong Roots -> Healthy Plants -> Abundant Harvests).
+ * 06. Our Approach: Four-step approach (Understand Soil -> Strengthen Roots -> Balanced Nutrition -> Harvest Sustainably).
+ * 07. What Makes Us Different? & The Naati Promise: 5 core differentiators & 6 solemn commitments.
+ * 08. Our Values: Integrity, Education, Sustainability, Innovation, Partnership.
+ * 09. A Message From Naati & Join The Movement: "Let's Build Healthier Soils Together. Fix the Soil. Feed the Plant. Harvest the Future."
  */
 export default function AboutPage() {
   return (
     <div className="min-h-[100dvh] flex flex-col bg-cream text-text-primary selection:bg-harvest selection:text-forest-deep overflow-x-hidden">
-      {/* Global Transparent Overlay Navbar (Senses data-nav-theme dynamically) */}
+      {/* Global Dynamic Overlay Navbar */}
       <SiteHeader initialTheme="light" />
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col">
-        {/* Section 01: Hero */}
+        {/* 01. Hero Banner */}
         <AboutHero />
 
-        {/* Section 02: The Story Beneath */}
+        {/* 02. Our Story & Why "Naati"? */}
         <AboutStoryBeneath />
 
-        {/* Section 03: Our Philosophy */}
+        {/* 03. Our Mission & Our Vision */}
+        <AboutMissionVision />
+
+        {/* 04. Our Philosophy (Soil First & Biological Cascade) */}
         <AboutPhilosophy />
 
-        {/* Section 04: What Guides Us */}
-        <AboutGuidingPrinciples />
+        {/* 05. Our Approach (4-Step Understanding) */}
+        <AboutApproach />
 
-        {/* Section 05: Looking Forward */}
-        <AboutLookingForward />
+        {/* 06. What Makes Us Different? & The Naati Promise */}
+        <AboutDifferencePromise />
 
-        {/* Section 06: Final CTA */}
+        {/* 07. Our Values */}
+        <AboutValues />
+
+        {/* 08. A Message From Naati & Join The Movement */}
         <AboutFinalCta />
       </main>
     </div>

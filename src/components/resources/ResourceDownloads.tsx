@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, Download, FileText, Presentation } from 'lucide-react';
 import { DOWNLOADABLE_RESOURCES } from '@/data/resources';
 import { gsap, isReducedMotion } from '@/lib/animations/gsap';
 import { cn } from '@/lib/utils/cn';
@@ -192,19 +192,41 @@ export function ResourceDownloads({ className }: ResourceDownloadsProps) {
               </div>
             </div>
 
-            {/* Publication Action */}
-            <div className="pt-4 border-t border-forest-deep/10 flex flex-wrap items-center gap-4">
-              <Link
-                href={featuredHandbook.actionHref}
-                className="group inline-flex items-center gap-2.5 px-6 py-3.5 bg-forest-deep text-cream text-xs font-mono uppercase tracking-[0.16em] hover:bg-forest hover:text-cream transition-all duration-300"
-              >
-                <span>{featuredHandbook.actionLabel}</span>
-                <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
+            {/* Publication Actions */}
+            <div className="pt-4 border-t border-forest-deep/10 flex flex-wrap items-center gap-3 sm:gap-4">
+              {featuredHandbook.downloadUrl ? (
+                <a
+                  href={featuredHandbook.downloadUrl}
+                  download={featuredHandbook.downloadFilename || 'Naati-Farmers-Handbook.pdf'}
+                  className="group inline-flex items-center gap-2.5 px-6 py-3.5 bg-forest-deep text-cream text-xs font-mono uppercase tracking-[0.16em] hover:bg-forest hover:text-cream transition-all duration-300 shadow-warm-xs"
+                >
+                  <Download className="w-4 h-4 text-harvest" />
+                  <span>Download Handbook (PDF · 4.5 MB)</span>
+                </a>
+              ) : (
+                <Link
+                  href={featuredHandbook.actionHref}
+                  className="group inline-flex items-center gap-2.5 px-6 py-3.5 bg-forest-deep text-cream text-xs font-mono uppercase tracking-[0.16em] hover:bg-forest hover:text-cream transition-all duration-300"
+                >
+                  <span>{featuredHandbook.actionLabel}</span>
+                  <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </Link>
+              )}
+
+              {featuredHandbook.secondaryDownloadUrl && (
+                <a
+                  href={featuredHandbook.secondaryDownloadUrl}
+                  download={featuredHandbook.secondaryDownloadFilename || 'Naati-Farmers-Handbook.pptx'}
+                  className="inline-flex items-center gap-2 px-5 py-3.5 bg-white border border-forest-deep/20 text-xs font-mono uppercase tracking-[0.15em] text-forest-deep hover:bg-cream hover:border-forest-deep transition-all duration-200"
+                >
+                  <Presentation className="w-4 h-4 text-olive" />
+                  <span>Download Slides (PPTX · 48 MB)</span>
+                </a>
+              )}
 
               <Link
                 href="/dealers"
-                className="inline-flex items-center gap-2 px-4 py-3.5 text-xs font-mono uppercase tracking-[0.15em] text-forest-deep hover:text-harvest transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-3.5 text-xs font-mono uppercase tracking-[0.15em] text-forest-deep/75 hover:text-forest-deep transition-colors"
               >
                 <span>Locate Regional Dealer ↗</span>
               </Link>

@@ -214,6 +214,7 @@ export function ResourceLibrary({ className }: ResourceLibraryProps) {
             {filteredResources.map((item) => {
               const isAnchor = item.destination.startsWith('#');
               const isExternal = item.destination.startsWith('http');
+              const isDownload = item.destination.startsWith('/downloads/');
 
               return (
                 <article
@@ -271,6 +272,15 @@ export function ResourceLibrary({ className }: ResourceLibraryProps) {
                       {isAnchor ? (
                         <a
                           href={item.destination}
+                          className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.15em] font-medium text-forest-deep group-hover:text-harvest transition-colors duration-200"
+                        >
+                          <span>{item.destinationLabel}</span>
+                          <ArrowDownRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-y-0.5" />
+                        </a>
+                      ) : isDownload ? (
+                        <a
+                          href={item.destination}
+                          download
                           className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.15em] font-medium text-forest-deep group-hover:text-harvest transition-colors duration-200"
                         >
                           <span>{item.destinationLabel}</span>

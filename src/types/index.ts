@@ -15,7 +15,14 @@ export interface ProductSummary {
   features: string[];
 }
 
-export type CropGroup = 'Plantation' | 'Horticulture' | 'Field Crops' | 'Vegetables';
+export type CropGroup =
+  | 'Plantation'
+  | 'Horticulture'
+  | 'Field Crops'
+  | 'Vegetables'
+  | 'Spices'
+  | 'Orchards'
+  | 'Urban Gardening';
 
 export interface CropProtocol {
   id: string;

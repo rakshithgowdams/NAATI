@@ -57,11 +57,22 @@ export function createSiteMetadata({
     },
     icons: {
       icon: [
+        { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
+        { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
         { url: '/favicon.ico', sizes: 'any' },
         { url: '/favicon.svg', type: 'image/svg+xml' },
       ],
-      apple: '/assets/brand/naati-organics-logo.png',
+      apple: [
+        { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      ],
+      other: [
+        {
+          rel: 'apple-touch-icon-precomposed',
+          url: '/apple-touch-icon-precomposed.png',
+        },
+      ],
     },
+    manifest: '/site.webmanifest',
     openGraph: {
       type: 'website',
       locale: 'en_IN',

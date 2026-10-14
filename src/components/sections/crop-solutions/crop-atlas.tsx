@@ -30,134 +30,264 @@ export interface AtlasCropItem {
 
 export const ATLAS_CROPS: AtlasCropItem[] = [
   {
-    id: 'solanaceous',
+    id: 'coconut',
     index: '01',
-    name: 'Tomato / Brinjal / Chilli',
-    category: 'Fruiting Vegetables',
-    headline: 'From establishment to fruit development.',
+    name: 'Coconut',
+    category: 'Plantation Palms',
+    headline: 'Sustained crown vigour and high copra yields.',
     description:
-      'Fruiting vegetables require attention to soil conditions and changing nutritional needs throughout crop development.',
+      'Perennial palms require deep soil aeration, biological feeding in the active 2-metre root basin, and balanced trace minerals to prevent premature button shedding.',
     themes: [
       {
-        title: 'Root-Zone Conditions',
-        description: 'Aerated soil structure and stable organic matter for continuous moisture availability and root expansion.',
+        title: 'Feeder Root Zone Vitality',
+        description: 'Rebuilding fibrous feeder roots in the 1.5–2.0 metre circular ring around the palm trunk.',
       },
       {
-        title: 'Vegetative Growth',
-        description: 'Vigorous stem and leaf development establishing the photosynthetic framework required for heavy fruit sets.',
+        title: 'Button Retention & Fruit Set',
+        description: 'Targeted biological support minimizing button drop and supporting uniform bunch filling.',
       },
       {
-        title: 'Flowering & Fruit Development',
-        description: 'Targeted nutritional support assisting floral retention, fruit sizing, and balanced crop maturity.',
+        title: 'Crown Health & Copra Weight',
+        description: 'Dense, dark green frond architecture maximizing photosynthetic capacity and meat density.',
       },
     ],
-    timing: 'Establishment through fruit-set cycles',
-    imageSrc: '/assets/images/crop-solutions/tomato-brinjal-chilli.jpg',
-    imageAlt: 'Healthy tomato and brinjal plants with ripening fruits in organic farm rows',
+    timing: 'Pre-monsoon & post-monsoon dressing',
+    imageSrc: '/assets/images/crop-solutions/coconut.jpg',
+    imageAlt: 'Healthy productive coconut palm crown laden with abundant nut bunches on South Indian plantation',
   },
   {
-    id: 'alliums',
+    id: 'arecanut',
     index: '02',
-    name: 'Onion / Garlic',
-    category: 'Bulb & Root Alliums',
-    headline: 'A stronger foundation for bulb crops.',
+    name: 'Arecanut',
+    category: 'Plantation Palms',
+    headline: 'Crown stability and heavy nut-bunch retention.',
     description:
-      'Explore how soil structure, moisture conditions and crop-stage nutrition form part of bulb crop management.',
+      'Arecanut palms demand porous, well-aerated soil structure to avoid waterlogging and crown rot, coupled with active bio-nutrition during monsoon transitions.',
     themes: [
       {
-        title: 'Soil Structure',
-        description: 'Loose, friable soil aggregate preventing physical restriction during progressive bulb expansion.',
+        title: 'Root Basin Aeration',
+        description: 'De-compacting trench soil around palm bases to encourage vigorous white feeder roots.',
       },
       {
-        title: 'Root-Zone Environment',
-        description: 'Consistent microbial activity in shallow root zones ensuring efficient uptake of available micronutrients.',
+        title: 'Nut Retention & Weight',
+        description: 'Reducing young nut drop during heavy rainfall and optimizing final harvest grade.',
       },
       {
-        title: 'Bulb Development',
-        description: 'Nutritional balance as energy transitions from vertical leaf foliage to underground bulb accumulation.',
+        title: 'Seasonal Resistance',
+        description: 'Fortifying palm resilience against torrential monsoon stress and sudden moisture swings.',
       },
     ],
-    timing: 'At planting & active bulb swelling',
-    imageSrc: '/assets/images/crop-solutions/onion-garlic.jpg',
-    imageAlt: 'Cultivated onion and garlic fields with neat rows and healthy upright green leaves',
+    timing: 'May–June & September–October',
+    imageSrc: '/assets/images/crop-solutions/arecanut.jpg',
+    imageAlt: 'Towering healthy arecanut palms with vigorous green foliage and heavy nut bunches in Karnataka grove',
   },
   {
-    id: 'spices',
+    id: 'coffee',
     index: '03',
-    name: 'Turmeric / Ginger',
-    category: 'Spices & Rhizomes',
-    headline: 'Support growth beneath the surface.',
+    name: 'Coffee',
+    category: 'Estate Plantations',
+    headline: 'Thriving bushes beneath the forest canopy.',
     description:
-      'Rhizome crops require suitable growing conditions, healthy soil structure and nutrition management throughout their development.',
+      'Shade-grown Arabica and Robusta coffee estates depend on rich microbial humus layers to support floral initiation, pinhead setting, and uniform cherry sizing.',
     themes: [
       {
-        title: 'Organic Matter',
-        description: 'High organic carbon content creating porous, well-aerated mounds for healthy rhizome finger development.',
+        title: 'Forest Soil Humus Building',
+        description: 'Enhancing the natural leaf-litter decomposition layer to feed shallow root mats continuously.',
       },
       {
-        title: 'Soil Moisture Conditions',
-        description: 'Adequate moisture holding capacity paired with free internal drainage to protect subterranean roots.',
+        title: 'Post-Blossom Berry Set',
+        description: 'Targeted bio-nutrition after blossom showers ensuring minimal berry drop and uniform berry clusters.',
       },
       {
-        title: 'Rhizome Development',
-        description: 'Long-duration bio-nutrition supporting vegetative tillering through mature underground biomass yield.',
+        title: 'Bean Density & Cup Quality',
+        description: 'Balanced trace elements enhancing coffee cherry maturation, sugar content, and premium cup profiles.',
       },
     ],
-    timing: 'Land preparation through rhizome maturity',
-    imageSrc: '/assets/images/crop-solutions/turmeric-ginger.jpg',
-    imageAlt: 'Lush tropical turmeric and ginger crops with vigorous broad green foliage',
+    timing: 'Post-blossom & berry swelling',
+    imageSrc: '/assets/images/crop-solutions/coffee.jpg',
+    imageAlt: 'Lush shade-grown coffee plants loaded with ripe red cherries in Western Ghats estate',
   },
   {
-    id: 'greens',
+    id: 'pepper',
     index: '04',
-    name: 'Leafy Vegetables',
-    category: 'Horticultural Greens',
-    headline: 'Nurture every new leaf.',
+    name: 'Pepper',
+    category: 'Spices & Vines',
+    headline: 'Dense spikes and strong vine anchoring.',
     description:
-      'Leafy crops benefit from careful management of their growing environment and balanced nutrition.',
+      'Black pepper vines clambering on shade standards require healthy collar root zones protected from soil pathogens, along with balanced foliar feeding for long spike filling.',
     themes: [
       {
-        title: 'Soil Preparation',
-        description: 'Finely composted, active seedbeds promoting rapid emergence and uniform early root distribution.',
+        title: 'Collar Root Protection',
+        description: 'Organic soil enrichment around tree standards strengthening vine root collars against monsoon wilt.',
       },
       {
-        title: 'Vegetative Development',
-        description: 'Balanced mineral availability maintaining steady cellular vitality for lush, tender foliage growth.',
+        title: 'Spike Emergence & Pollination',
+        description: 'Supporting robust spike elongation and uniform flowering along every fruiting branch.',
       },
       {
-        title: 'Crop Health',
-        description: 'Natural crop vigour and biological resilience supporting uniform canopy coverage across beds.',
+        title: 'Berry Filling & Bold Peppercorns',
+        description: 'Nutrient availability throughout monsoon berry filling producing heavy, high-density black peppercorns.',
       },
     ],
-    timing: 'Pre-sowing & rapid vegetative cycles',
-    imageSrc: '/assets/images/crop-solutions/leafy-vegetables.jpg',
-    imageAlt: 'Dense green rows of vibrant natural spinach and amaranth leafy greens',
+    timing: 'Spike emergence & berry development',
+    imageSrc: '/assets/images/crop-solutions/pepper.jpg',
+    imageAlt: 'Climbing black pepper vines with dense green and ripening red peppercorn spikes on shade trees',
+  },
+  {
+    id: 'banana',
+    index: '05',
+    name: 'Banana',
+    category: 'Horticultural Fruits',
+    headline: 'Massive bunches from vigorous rootstocks.',
+    description:
+      'Bananas are heavy feeders requiring extensive rootzone organic matter, quick nutrient cycling, and biological stimulation from vegetative pseudostem to bunch emergence.',
+    themes: [
+      {
+        title: 'Planting Pit Conditioning',
+        description: 'Deep organic soil enrichment in planting pits ensuring rapid early root anchorage and sucker emergence.',
+      },
+      {
+        title: 'Shooting & Finger Count',
+        description: 'Nutrient surge during floral transformation maximizing the number of hands and fingers per bunch.',
+      },
+      {
+        title: 'Bunch Filling & Grade A Quality',
+        description: 'Sustained bio-nutrition maintaining strong bunch stalks, uniform finger length, and early maturity.',
+      },
+    ],
+    timing: 'Pit preparation through bunch shooting',
+    imageSrc: '/assets/images/crop-solutions/banana.jpg',
+    imageAlt: 'Vibrant organic banana plantation showing heavy hanging bunches of green bananas and purple inflorescence heart',
+  },
+  {
+    id: 'mango',
+    index: '06',
+    name: 'Mango',
+    category: 'Orchard Fruits',
+    headline: 'Flourishing blossoms to golden harvest.',
+    description:
+      'Mango orchards thrive when feeder roots along the canopy drip-line are energized with organic matter, followed by targeted nutrient timing during flowering and fruit sizing.',
+    themes: [
+      {
+        title: 'Canopy Drip-Line Ring Feeding',
+        description: 'Applying organic nutrition along the drip circle where feeder root concentration is highest.',
+      },
+      {
+        title: 'Panicle Vitality & Fruitlet Retention',
+        description: 'Biological conditioning preventing heavy flower drop and supporting early pea-stage fruitlet set.',
+      },
+      {
+        title: 'Fruit Sizing & Aroma Development',
+        description: 'Balanced organic nourishment enhancing fruit weight, pulp sweetness, and natural shelf-life.',
+      },
+    ],
+    timing: 'Post-harvest rest & fruit-set stage',
+    imageSrc: '/assets/images/crop-solutions/mango.jpg',
+    imageAlt: 'Abundant mature Alphonso and Badami mangoes hanging on leafy orchard branches in sunny grove',
+  },
+  {
+    id: 'vegetables',
+    index: '07',
+    name: 'Vegetables',
+    category: 'Open-Field & Protected Crops',
+    headline: 'From establishment to heavy picking.',
+    description:
+      'Tomatoes, brinjals, chillies, and gourds require fast, bio-available soil nutrition for rapid root establishment, continuous flowering, and prolonged harvest windows.',
+    themes: [
+      {
+        title: 'Raised Bed Soil Conditioning',
+        description: 'Aerated, microbe-rich bed preparation ensuring strong root spread right from nursery transplanting.',
+      },
+      {
+        title: 'Continuous Flowering & Set',
+        description: 'Balanced bio-stimulants helping plants navigate heat and humidity while retaining blossom clusters.',
+      },
+      {
+        title: 'Skin Lustre & Harvest Longevity',
+        description: 'Natural trace minerals delivering vibrant color, firm pulp texture, and improved transport shelf-life.',
+      },
+    ],
+    timing: 'Bed preparation & active fruiting cycles',
+    imageSrc: '/assets/images/crop-solutions/vegetables.jpg',
+    imageAlt: 'Lush organic vegetable beds with healthy tomatoes, brinjals, and chillies in fertile red loam soil',
   },
   {
     id: 'field-crops',
-    index: '05',
-    name: 'Other Field Crops',
-    category: 'Cereals, Millets & Field Crops',
+    index: '08',
+    name: 'Field Crops',
+    category: 'Cereals & Millets',
     headline: 'Different fields. A common foundation.',
     description:
-      'Cereals, millets and other field crops have different needs, but soil health remains an important part of crop management.',
+      'Finger millet (ragi), paddy, pulses, and dryland cereals need improved soil moisture retention, strong crown root establishment, and uniform panicle filling.',
     themes: [
       {
-        title: 'Soil Conditions',
-        description: 'Replenishing organic soil reserves in diverse soil types to improve moisture resilience in rainfed acres.',
+        title: 'Basal Soil Moisture Capacity',
+        description: 'Replenishing soil humus to improve water retention during erratic seasonal dry spells.',
       },
       {
-        title: 'Crop Establishment',
-        description: 'Strong seedling emergence and early crown-root initiation establishing robust tillering structure.',
+        title: 'Crown-Root & Tillering Drive',
+        description: 'Strong seedling emergence and early root initiation establishing robust tillering structure.',
       },
       {
-        title: 'Crop-Specific Nutritional Planning',
-        description: 'Carefully aligned agronomic timing adapting to regional weather cycles and local crop varieties.',
+        title: 'Grain Filling & Panicle Weight',
+        description: 'Aligned agronomic timing supporting complete grain filling without premature lodging.',
       },
     ],
-    timing: 'Basal application & seasonal milestones',
+    timing: 'Basal ploughing & tillering stage',
     imageSrc: '/assets/images/crop-solutions/field-crops.jpg',
-    imageAlt: 'Golden ripening finger millet ragi crop on Karnataka red earth farmland',
+    imageAlt: 'Golden ripening finger millet ragi and cereal field crops under Karnataka sunlight',
+  },
+  {
+    id: 'spices',
+    index: '09',
+    name: 'Spices',
+    category: 'Aromatic Spices & Rhizomes',
+    headline: 'Rich vitality beneath and above the soil.',
+    description:
+      'Turmeric, ginger, and cardamom demand deep, loose, humus-rich soil mounds that drain excess rainfall while providing sustained nutrition for dense underground rhizomes.',
+    themes: [
+      {
+        title: 'Porous Mounds & Drainage',
+        description: 'High organic carbon content creating friable raised beds preventing waterlogging and rhizome rot.',
+      },
+      {
+        title: 'Shoot Tillering & Canopy Cover',
+        description: 'Vigorous pseudostem and leaf canopy development establishing strong photosynthetic reserves.',
+      },
+      {
+        title: 'Rhizome Bulking & Curcumin',
+        description: 'Long-duration biological feeding boosting primary and secondary finger expansion and active essential oils.',
+      },
+    ],
+    timing: 'Land preparation through rhizome maturity',
+    imageSrc: '/assets/images/crop-solutions/spices.jpg',
+    imageAlt: 'Aromatic turmeric and ginger rhizomes growing vigorously in deep organic raised soil beds',
+  },
+  {
+    id: 'terrace-gardens',
+    index: '10',
+    name: 'Home / Terrace Gardens',
+    category: 'Urban & Container Gardens',
+    headline: 'Vibrant organic food on your rooftop.',
+    description:
+      'Potted vegetables, herbs, and container fruit trees in limited potting soil require frequent, gentle biological replenishment to stay lush, disease-free, and productive.',
+    themes: [
+      {
+        title: 'Potting Mix Biological Life',
+        description: 'Preventing soil exhaustion and compaction in grow bags and terracotta containers with organic bio-inputs.',
+      },
+      {
+        title: 'Safe, Residue-Free Nutrition',
+        description: '100% natural, non-toxic feeding ideal for home kitchen gardens, edible herbs, and terrace greens.',
+      },
+      {
+        title: 'Continuous Flowering in Pots',
+        description: 'Gentle foliar spritz and drench promoting prolific fruit set on potted tomatoes, chillies, and flowering ornamentals.',
+      },
+    ],
+    timing: 'Potting mix & fortnightly feeding',
+    imageSrc: '/assets/images/crop-solutions/terrace-garden.jpg',
+    imageAlt: 'Thriving rooftop terrace garden with potted organic vegetables, herbs, and lush grow bags',
   },
 ];
 
@@ -165,7 +295,7 @@ export const ATLAS_CROPS: AtlasCropItem[] = [
  * CROP SOLUTIONS PAGE — SECTION 02 & SECTION 03: THE CROP ATLAS & SELECTED EXPERIENCE
  *
  * Interactive Crop Discovery and Coordinated Detail Experience:
- * - Horizontally flowing editorial gallery displaying the 5 crop families
+ * - Horizontally flowing editorial gallery displaying the 10 core crop systems
  * - Card-to-details auto-scroll navigation accounting for fixed transparent navbar
  * - Immediate state synchronization ensuring active card and details match instantly
  * - Editorial entrance transition on crop switch with masked text and staggered themes
@@ -204,13 +334,13 @@ export function CropAtlas({ className }: CropAtlasProps) {
 
       gsap.fromTo(
         '.crop-atlas-card',
-        { opacity: 0, y: 28 },
+        { opacity: 0, y: 30 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.7,
-          stagger: 0.09,
+          duration: 0.6,
           ease: 'power2.out',
+          stagger: 0.05,
           scrollTrigger: {
             trigger: '.crop-atlas-gallery',
             start: 'top 85%',
@@ -223,101 +353,72 @@ export function CropAtlas({ className }: CropAtlasProps) {
     return () => ctx.revert();
   }, []);
 
-  // Smooth editorial transition for details panel content when selected crop updates
-  useEffect(() => {
+  // Coordinated detail reveal animation on crop selection change
+  const runDetailTransition = useCallback(() => {
     if (isReducedMotion()) return;
     if (!detailContentRef.current || !detailImageRef.current) return;
 
     const content = detailContentRef.current;
-    const img = detailImageRef.current;
+    const imgWrap = detailImageRef.current;
 
-    const meta = content.querySelector('.crop-detail-meta');
     const title = content.querySelector('.crop-detail-title');
     const headline = content.querySelector('.crop-detail-headline');
     const desc = content.querySelector('.crop-detail-desc');
-    const themes = content.querySelectorAll('.crop-detail-theme-item');
+    const meta = content.querySelector('.crop-detail-meta');
+    const themeItems = content.querySelectorAll('.crop-detail-theme-item');
 
-    gsap.killTweensOf([meta, title, headline, desc, themes, img]);
+    gsap.killTweensOf([title, headline, desc, meta, themeItems, imgWrap]);
 
-    const tl = gsap.timeline();
+    // Initial state setup
+    gsap.set([title, headline, desc, meta], { opacity: 0, y: 16 });
+    gsap.set(themeItems, { opacity: 0, x: -12 });
+    gsap.set(imgWrap, { opacity: 0.7, scale: 0.985 });
 
-    tl.fromTo(
-      meta,
-      { opacity: 0.3, y: 8 },
-      { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }
-    )
-      .fromTo(
-        title,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' },
-        '-=0.2'
-      )
-      .fromTo(
-        headline,
-        { opacity: 0, y: 14 },
-        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+    tl.to(imgWrap, { opacity: 1, scale: 1, duration: 0.5 })
+      .to(meta, { opacity: 1, y: 0, duration: 0.4 }, '-=0.35')
+      .to(title, { opacity: 1, y: 0, duration: 0.45 }, '-=0.3')
+      .to(headline, { opacity: 1, y: 0, duration: 0.4 }, '-=0.3')
+      .to(desc, { opacity: 1, y: 0, duration: 0.45 }, '-=0.3')
+      .to(
+        themeItems,
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.35,
+          stagger: 0.08,
+          ease: 'power2.out',
+        },
         '-=0.25'
-      )
-      .fromTo(
-        desc,
-        { opacity: 0.3, y: 10 },
-        { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' },
-        '-=0.25'
-      )
-      .fromTo(
-        themes,
-        { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out' },
-        '-=0.2'
-      )
-      .fromTo(
-        img,
-        { opacity: 0.7, scale: 1.02 },
-        { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' },
-        0
       );
-  }, [selectedIndex]);
-
-  // Reliable anchor/ref-based smooth scroll to the details panel with navbar clearance
-  const scrollToDetails = useCallback(() => {
-    if (typeof window === 'undefined' || !detailPanelRef.current) return;
-
-    // Use requestAnimationFrame to ensure state has applied and target coordinates are measured
-    requestAnimationFrame(() => {
-      if (!detailPanelRef.current) return;
-
-      // Measure dynamically rendered navbar height
-      const navEl = document.querySelector('header');
-      const navHeight = navEl
-        ? navEl.getBoundingClientRect().height
-        : window.innerWidth < 640
-        ? 80
-        : 96;
-
-      // Comfortable breathing room below navbar (24px on desktop, 16px on mobile)
-      const extraPadding = window.innerWidth < 640 ? 16 : 24;
-      const panelRect = detailPanelRef.current.getBoundingClientRect();
-      const currentScrollY = window.scrollY || window.pageYOffset;
-      const targetScrollY = Math.max(0, currentScrollY + panelRect.top - navHeight - extraPadding);
-
-      // If already at or within 20px of destination, avoid unnecessary scroll motion
-      if (Math.abs(currentScrollY - targetScrollY) < 20) return;
-
-      window.scrollTo({
-        top: targetScrollY,
-        behavior: isReducedMotion() ? 'auto' : 'smooth',
-      });
-    });
   }, []);
 
-  // Card Selection Handler: updates crop immediately and triggers smooth auto-scroll
-  const handleSelectCrop = (index: number) => {
-    // 1. Immediately update selected state (highlights card & updates panel content)
-    setSelectedIndex(index);
+  // Handle user crop card selection with optional gentle auto-scroll
+  const handleSelectCrop = useCallback(
+    (idx: number) => {
+      setSelectedIndex(idx);
+      // Small timeout to allow state rendering before animation fires
+      setTimeout(() => {
+        runDetailTransition();
+      }, 20);
 
-    // 2. Smoothly scroll to the top of the details panel
-    scrollToDetails();
-  };
+      // Smooth scroll toward the detail panel if user is on mobile or far away
+      if (typeof window !== 'undefined' && detailPanelRef.current) {
+        const rect = detailPanelRef.current.getBoundingClientRect();
+        // If the top of the detail panel is below the screen fold or above viewport
+        if (rect.top > window.innerHeight * 0.7 || rect.top < 0) {
+          const navbarOffset = 100;
+          const targetY = window.scrollY + rect.top - navbarOffset;
+          window.scrollTo({
+            top: targetY,
+            behavior: 'smooth',
+          });
+        }
+      }
+    },
+    [runDetailTransition]
+  );
 
   return (
     <section
@@ -326,22 +427,19 @@ export function CropAtlas({ className }: CropAtlasProps) {
       data-nav-theme="light"
       aria-labelledby="crop-atlas-heading"
       className={cn(
-        'relative w-full bg-cream text-forest-deep py-20 sm:py-28 lg:py-36 border-t border-forest-deep/10 overflow-hidden',
+        'relative w-full bg-cream text-forest-deep py-20 sm:py-28 lg:py-36 selection:bg-harvest selection:text-forest-deep',
         className
       )}
     >
-      <Container size="wide">
+      <Container size="default">
         {/* =====================================================================
-            SECTION 02 HEADER
+            SECTION HEADER & EDITORIAL FRAMING
             ===================================================================== */}
         <div className="crop-atlas-header max-w-3xl mb-12 sm:mb-16">
-          <div className="flex items-center gap-3 mb-5">
-            <span className="font-mono text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase text-forest-medium">
-              02 / EXPLORE THE FIELDS
-            </span>
-            <span className="h-px w-8 bg-forest-medium/30" aria-hidden="true" />
-            <span className="font-mono text-xs tracking-wider uppercase text-forest-deep/60 hidden sm:inline-block">
-              FIVE CORE CROP FAMILIES
+          <div className="inline-flex items-center gap-2 mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-forest-medium" aria-hidden="true" />
+            <span className="font-mono text-xs font-semibold tracking-widest uppercase text-forest-medium">
+              02 / THE CROP ATLAS
             </span>
           </div>
 
@@ -349,32 +447,32 @@ export function CropAtlas({ className }: CropAtlasProps) {
             id="crop-atlas-heading"
             className="font-display font-medium text-[clamp(2.35rem,4.4vw,4rem)] leading-[1.08] tracking-[-0.03em] text-forest-deep mb-5 [text-wrap:balance]"
           >
-            Find your crop.
+            One System.
             <br />
-            <span className="italic text-forest-medium">Understand its needs.</span>
+            <span className="italic text-forest-medium">10 Core Crop Solutions.</span>
           </h2>
 
           <p className="font-sans text-base sm:text-lg text-forest-deep/80 leading-relaxed [text-wrap:pretty]">
-            Explore crop families and discover the foundation for a more informed nutrition approach. Select any group below to explore key agronomic themes.
+            Explore South India&apos;s signature plantation crops, fruit orchards, open-field vegetables, cereals, and terrace gardens. Select any crop below to view verified agronomic management protocols.
           </p>
         </div>
 
         {/* =====================================================================
-            EDITORIAL CROP ATLAS GALLERY (Horizontal Stream)
-            Desktop: Horizontally flowing 5-column architectural cards
-            Mobile: Swipeable scroll stream with visible progress
+            EDITORIAL CROP ATLAS GALLERY (Grid of 10 Core Crops)
+            Desktop: 2 rows of 5 architectural cards
+            Mobile / Tablet: 2 or 3 column clean grid
             ===================================================================== */}
         <div className="crop-atlas-gallery mb-16 sm:mb-20">
           <div className="flex items-center justify-between pb-3 mb-4 border-b border-forest-deep/15">
             <span className="font-mono text-xs font-bold uppercase tracking-wider text-forest-deep/60">
-              CROP CATALOGUE (01 — 05)
+              CROP CATALOGUE (01 — 10)
             </span>
             <span className="font-mono text-xs text-forest-deep/50 hidden sm:inline">
               SELECT TO INSPECT SPECIFIC NEEDS
             </span>
           </div>
 
-          {/* Desktop & Tablet Gallery Grid */}
+          {/* Desktop & Tablet Gallery Grid: 2 rows of 5 on lg */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5">
             {ATLAS_CROPS.map((crop, idx) => {
               const isSelected = selectedIndex === idx;

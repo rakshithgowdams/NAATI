@@ -270,11 +270,11 @@ export function KnowledgeSection({ className }: KnowledgeSectionProps) {
               Two cleanly separated resource entries with interactive states
               ------------------------------------------------------------------- */}
           <div className="knowledge-resources-trigger lg:col-span-5 flex flex-col justify-between">
-            {/* ENTRY 01: SOIL ACADEMY */}
+            {/* ENTRY 01: SOIL LEARNING CENTRE */}
             <Link
               href="/soil-academy"
               className="knowledge-entry-1 group block p-4 sm:p-5 rounded-2xl transition-all duration-300 hover:bg-cream/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-harvest/40 -mx-2 sm:-mx-5"
-              aria-label="Explore Soil Academy — Understand soil structure, biological activity and crop nutrition"
+              aria-label="Explore Soil Learning Centre — Understand soil structure, biological activity and crop nutrition"
             >
               {/* Entry Number & Category in IBM Plex Mono */}
               <div className="flex items-center gap-2 mb-2">
@@ -285,7 +285,7 @@ export function KnowledgeSection({ className }: KnowledgeSectionProps) {
 
               {/* Resource Title in Fraunces */}
               <h3 className="font-display text-2xl sm:text-3xl text-cream font-medium tracking-[-0.02em] group-hover:text-harvest transition-colors duration-300">
-                Soil Academy
+                Soil Learning Centre
               </h3>
 
               {/* Resource Description in DM Sans */}
@@ -302,7 +302,7 @@ export function KnowledgeSection({ className }: KnowledgeSectionProps) {
               {/* CTA Link Indicator */}
               <div className="mt-4 inline-flex items-center gap-2 font-sans text-sm font-semibold text-cream group-hover:text-harvest transition-colors">
                 <span className="relative after:absolute after:bottom-0 after:left-0 after:w-0 group-hover:after:w-full after:h-px after:bg-harvest after:transition-all after:duration-300">
-                  Explore Soil Academy
+                  Explore Soil Learning Centre
                 </span>
                 <ArrowRight className="w-4 h-4 text-harvest transition-transform duration-200 group-hover:translate-x-1.5" />
               </div>
@@ -313,7 +313,7 @@ export function KnowledgeSection({ className }: KnowledgeSectionProps) {
 
             {/* ENTRY 02: FARMER HANDBOOK */}
             <Link
-              href="/resources"
+              href="/resources#resource-downloads"
               className="knowledge-entry-2 group block p-4 sm:p-5 rounded-2xl transition-all duration-300 hover:bg-cream/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-harvest/40 -mx-2 sm:-mx-5"
               aria-label="Open Farmer Handbook — Practical field knowledge for informed growing decisions"
             >

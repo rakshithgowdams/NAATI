@@ -69,7 +69,7 @@ export function ResourcesCTA({ className }: ResourcesCTAProps) {
             href="/soil-academy"
             className="group inline-flex items-center gap-2.5 px-7 sm:px-8 py-4 bg-harvest text-forest-deep text-xs sm:text-sm font-mono uppercase tracking-[0.18em] font-semibold hover:bg-cream transition-all duration-300 shadow-md"
           >
-            <span>EXPLORE SOIL ACADEMY</span>
+            <span>EXPLORE SOIL LEARNING CENTRE</span>
             <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
 

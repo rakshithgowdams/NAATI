@@ -8,6 +8,9 @@ import {
   CropNutritionSystem,
   CropSolutions,
   KnowledgeSection,
+  WhyFarmersChooseNaati,
+  HomeTestimonials,
+  DealerNetworkSection,
   ContactEnquirySection,
 } from '@/components/sections/home';
 
@@ -40,7 +43,16 @@ export default function HomePage() {
         {/* Phase 09: Homepage Section 07 — Knowledge Before Products (Field Notes) */}
         <KnowledgeSection />
 
-        {/* Phase 10: Homepage Section 08 — Contact & Enquiry (Let's Grow Together) */}
+        {/* Phase 10: Homepage Section 09 — Why Farmers Choose Naati */}
+        <WhyFarmersChooseNaati />
+
+        {/* Phase 11: Homepage Section 10 — Testimonials (Voices from the Field) */}
+        <HomeTestimonials />
+
+        {/* Phase 12: Homepage Section 11 — Dealer Network (Grow Together With Naati) */}
+        <DealerNetworkSection />
+
+        {/* Phase 13: Closing Contact & Enquiry (Let's Grow Together) */}
         <ContactEnquirySection />
       </main>
     </div>

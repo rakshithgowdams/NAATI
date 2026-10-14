@@ -59,6 +59,13 @@ export interface DownloadableResourceItem {
   distribution: string;
   actionHref: string;
   actionLabel: string;
+  downloadUrl?: string;
+  downloadFilename?: string;
+  fileSize?: string;
+  secondaryDownloadUrl?: string;
+  secondaryDownloadFilename?: string;
+  secondaryFileSize?: string;
+  secondaryActionLabel?: string;
   image?: string;
   featured?: boolean;
 }
@@ -122,12 +129,12 @@ export const HUB_RESOURCES: ResourceItem[] = [
     id: 'guide-crop-specific',
     title: 'Crop Solutions & Seasonal Dosage Protocols',
     description:
-      'Targeted nutrient management and field timing for Arecanut, Coffee, Coconut, Black Pepper, Ginger, Turmeric, Vegetables and Pulses.',
+      'Targeted nutrient management and field timing for Coconut, Arecanut, Coffee, Pepper, Banana, Mango, Vegetables, Field Crops, Spices and Terrace Gardens.',
     category: 'GUIDES',
     typeLabel: 'Field Guide',
     destination: '/crop-solutions',
     destinationLabel: 'View Crop Solutions ↗',
-    tags: ['Arecanut', 'Coffee', 'Pepper', 'Ginger', 'Vegetables', 'Dosage'],
+    tags: ['Coconut', 'Arecanut', 'Coffee', 'Pepper', 'Banana', 'Mango', 'Vegetables', 'Dosage'],
     featured: false,
   },
   {
@@ -138,12 +145,12 @@ export const HUB_RESOURCES: ResourceItem[] = [
     category: 'DOWNLOADS',
     typeLabel: 'Official Publication',
     language: 'English',
-    destination: '/contact?subject=handbook-english',
-    destinationLabel: 'Request Print / Notification ↗',
-    tags: ['Handbook', 'English', 'Farmer Handbook', 'Soil Science', 'Print Edition'],
+    destination: '/downloads/Naati-Farmers-Handbook.pdf',
+    destinationLabel: 'Download Handbook (PDF · 4.5 MB) ↓',
+    tags: ['Handbook', 'English', 'Farmer Handbook', 'Soil Science', 'PDF', 'PPTX'],
     featured: true,
-    badge: 'Official Print Edition',
-    image: '/assets/images/resources/farmer-handbook-mockup.jpg',
+    badge: 'Instant PDF & PPTX Download',
+    image: '/assets/images/resources/farmer-handbook-cover.jpg',
   },
   {
     id: 'doc-handbook-kn',
@@ -193,7 +200,7 @@ export const HUB_RESOURCES: ResourceItem[] = [
     category: 'VIDEOS',
     typeLabel: 'Field Video Series',
     destination: '/soil-academy',
-    destinationLabel: 'View Soil Academy ↗',
+    destinationLabel: 'View Soil Learning Centre ↗',
     tags: ['Video', 'Living Soil', 'Aggregates', 'Microbiology', 'Documentary'],
     featured: false,
     badge: 'In Production',
@@ -315,7 +322,7 @@ export const PRACTICAL_FIELD_GUIDES: FieldGuideItem[] = [
       'How glomalin and microbial exudates physically hold aggregates together',
     ],
     destination: '/soil-academy#lessons',
-    destinationText: 'Study in Soil Academy ↗',
+    destinationText: 'Study in Soil Learning Centre ↗',
     image: '/assets/images/resources/field-guide-soil.jpg',
     featured: true,
   },
@@ -457,13 +464,20 @@ export const DOWNLOADABLE_RESOURCES: DownloadableResourceItem[] = [
     title: 'Naati Organics Farmer Handbook',
     subtitle: 'A Practical Guide to Soil Health & Crop Nutrition (English Edition)',
     type: 'Comprehensive Agricultural Handbook',
-    format: 'Official Print Edition & Advisory PDF',
+    format: 'Official Print Edition, Complete PDF & Presentation PPTX',
     language: 'English',
-    status: 'Available via Agro-Advisory Network & In Prep for Download',
-    distribution: 'Printed copies supplied during regional agronomy training sessions across South India.',
-    actionHref: '/contact?subject=handbook-english',
-    actionLabel: 'Request Print Copy / Notify Me ↗',
-    image: '/assets/images/resources/farmer-handbook-mockup.jpg',
+    status: 'Available for Immediate Download (PDF · 4.5 MB & PPTX · 48 MB)',
+    distribution: 'Direct download available online. High-quality print editions distributed through regional agro-dealers across South India.',
+    actionHref: '/downloads/Naati-Farmers-Handbook.pdf',
+    actionLabel: 'Download Handbook (PDF · 4.5 MB) ↓',
+    downloadUrl: '/downloads/Naati-Farmers-Handbook.pdf',
+    downloadFilename: 'Naati-Farmers-Handbook.pdf',
+    fileSize: '4.5 MB',
+    secondaryDownloadUrl: '/downloads/Naati-Farmers-Handbook.pptx',
+    secondaryDownloadFilename: 'Naati-Farmers-Handbook.pptx',
+    secondaryFileSize: '48.3 MB',
+    secondaryActionLabel: 'Download Slides (PPTX · 48 MB) ↓',
+    image: '/assets/images/resources/farmer-handbook-cover.jpg',
     featured: true,
   },
   {

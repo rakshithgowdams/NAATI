@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { BookOpen, Languages, ArrowUpRight, Check, AlertCircle } from 'lucide-react';
+import { BookOpen, Languages, ArrowUpRight, Check, AlertCircle, Download, Presentation } from 'lucide-react';
 import { gsap, isReducedMotion } from '@/lib/animations/gsap';
 import { Container } from '@/components/ui/container';
 import { cn } from '@/lib/utils/cn';
@@ -233,22 +233,35 @@ export function HandbookResource({ className }: HandbookResourceProps) {
                 <div className="flex items-start gap-3 p-4 rounded-xl bg-forest-deep/5 border border-forest-deep/10 mb-6">
                   <AlertCircle className="w-4 h-4 text-forest-medium shrink-0 mt-0.5" />
                   <div className="text-xs font-sans text-forest-deep/75 leading-relaxed">
-                    <strong>Publication Status:</strong> Printed handbook copies are distributed at Naati regional farmer workshops. Digital downloadable PDF files are currently in final editorial preparation and will be published upon regional review.
+                    <strong>Publication Status:</strong> The official Naati Organics Farmer Handbook is now available for immediate digital download in full-fidelity PDF and presentation PPTX formats. High-quality printed editions are also distributed at Naati regional farmer workshops.
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+                  <a
+                    href="/downloads/Naati-Farmers-Handbook.pdf"
+                    download="Naati-Farmers-Handbook.pdf"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-forest-deep text-cream font-sans text-sm font-semibold tracking-wide transition-all duration-300 hover:bg-forest-medium hover:shadow-warm-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-deep"
+                  >
+                    <Download className="w-4 h-4 text-harvest" />
+                    <span>Download Handbook (PDF · 4.5 MB)</span>
+                  </a>
+
+                  <a
+                    href="/downloads/Naati-Farmers-Handbook.pptx"
+                    download="Naati-Farmers-Handbook.pptx"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full border border-forest-deep/20 bg-white text-forest-deep font-sans text-sm font-medium tracking-wide transition-all duration-300 hover:bg-cream hover:border-forest-deep"
+                  >
+                    <Presentation className="w-4 h-4 text-olive" />
+                    <span>Download Slides (PPTX · 48 MB)</span>
+                  </a>
+
                   <Link
                     href="/contact?subject=farmer-handbook"
-                    className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-forest-deep text-cream font-sans text-sm font-semibold tracking-wide transition-all duration-300 hover:bg-forest-medium hover:shadow-warm-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-deep"
+                    className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-forest-deep/75 hover:text-forest-deep transition-colors py-2 px-1"
                   >
-                    <span>Request Copy via Advisory Team</span>
-                    <ArrowUpRight className="w-4 h-4" />
+                    <span>Request Print Edition ↗</span>
                   </Link>
-
-                  <span className="font-mono text-xs text-forest-deep/50 text-center sm:text-right">
-                    Edition: 2026 Field Standard
-                  </span>
                 </div>
               </div>
             </div>

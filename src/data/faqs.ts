@@ -92,7 +92,7 @@ export const FAQ_ITEMS: FaqItem[] = [
       'When biological, physical, and chemical properties are in equilibrium, the soil breathes, holds moisture, cycles plant nutrients naturally, resists compaction, and fosters resilient crop root systems.',
     ],
     relatedLink: '/soil-academy',
-    relatedLabel: 'Explore Soil Academy Lessons ↗',
+    relatedLabel: 'Explore Soil Learning Centre Lessons ↗',
     keywords: [
       'soil health',
       'living soil',

@@ -63,14 +63,14 @@ export const APP_ROUTES: AppRoute[] = [
   },
   {
     path: '/soil-academy',
-    name: 'Soil Academy',
+    name: 'Soil Learning Centre',
     category: 'education',
     description: 'Soil health education platform: lessons, soil biology, and organic farming science.',
     phase: 7,
   },
   {
     path: '/soil-academy/[slug]',
-    name: 'Soil Academy Lesson',
+    name: 'Soil Learning Centre Lesson',
     category: 'education',
     description: 'Individual educational module explaining soil science in depth.',
     phase: 7,

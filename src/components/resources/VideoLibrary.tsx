@@ -159,7 +159,7 @@ export function VideoLibrary({ className }: VideoLibraryProps) {
                   href={topic.relatedHref}
                   className="group inline-flex items-center justify-between w-full text-xs font-mono uppercase tracking-[0.12em] font-medium text-forest-deep hover:text-harvest transition-colors"
                 >
-                  <span>Learn in Soil Academy</span>
+                  <span>Learn in Soil Learning Centre</span>
                   <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
               </div>
@@ -178,7 +178,7 @@ export function VideoLibrary({ className }: VideoLibraryProps) {
               Looking to study soil concepts today?
             </h3>
             <p className="font-sans text-sm sm:text-base text-cream/75 leading-relaxed">
-              Explore the five structured lessons and the signature interactive Living Soil Explorer inside the Naati Soil Academy.
+              Explore the five structured lessons and the signature interactive Living Soil Explorer inside the Naati Soil Learning Centre.
             </p>
           </div>
 
@@ -186,7 +186,7 @@ export function VideoLibrary({ className }: VideoLibraryProps) {
             href="/soil-academy"
             className="group inline-flex items-center gap-2.5 px-6 sm:px-7 py-3.5 sm:py-4 bg-harvest text-forest-deep text-xs sm:text-sm font-mono uppercase tracking-[0.18em] font-semibold hover:bg-cream transition-all duration-300 shrink-0"
           >
-            <span>ENTER SOIL ACADEMY</span>
+            <span>ENTER SOIL LEARNING CENTRE</span>
             <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
         </div>

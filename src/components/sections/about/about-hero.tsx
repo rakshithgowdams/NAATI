@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { ArrowDown } from 'lucide-react';
+import { ArrowDown, Sparkles } from 'lucide-react';
 import { gsap, isReducedMotion } from '@/lib/animations/gsap';
 import { cn } from '@/lib/utils/cn';
 
@@ -11,14 +11,14 @@ export interface AboutHeroProps {
 }
 
 /**
- * ABOUT NAATI ORGANICS — SECTION 01: ABOUT HERO
+ * ABOUT NAATI ORGANICS — SECTION 01: HERO BANNER
  *
- * Full-Bleed Editorial Split-Screen Hero:
- * - Left 54%: Editorial typography on warm cream (#F5F1E7) with container grid alignment
- * - Right 46%: Full-bleed agricultural documentary photograph filling 100% height and reaching right screen edge
- * - Zero rounded corners, zero outer margins, seamless full-panel coverage (object-fit: cover)
- * - Refined responsive stacking: full-width edge-to-edge on mobile with balanced aspect ratio
- * - Pure GSAP progressive entrance + subtle parallax
+ * Client Specification:
+ * ABOUT NAATI ORGANICS
+ * Hero Banner
+ * (Background: Sunrise over healthy farmland with a farmer gently holding a handful of rich, living soil.)
+ * We Believe Every Great Harvest Begins Beneath the Soil.
+ * Fix the Soil. Feed the Plant.
  */
 export function AboutHero({ className }: AboutHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -45,7 +45,7 @@ export function AboutHero({ className }: AboutHeroProps) {
           '-=0.35'
         )
         .fromTo(
-          '.about-hero-description',
+          '.about-hero-tagline',
           { opacity: 0, y: 18 },
           { opacity: 1, y: 0, duration: 0.65 },
           '-=0.45'
@@ -99,7 +99,7 @@ export function AboutHero({ className }: AboutHeroProps) {
       ref={sectionRef}
       id="about-hero"
       data-nav-theme="light"
-      aria-label="About Naati Organics — To grow better, we look deeper."
+      aria-label="About Naati Organics — We Believe Every Great Harvest Begins Beneath the Soil."
       className={cn(
         'relative w-full bg-[#F5F1E7] text-forest overflow-hidden selection:bg-harvest selection:text-forest-deep',
         className
@@ -117,25 +117,33 @@ export function AboutHero({ className }: AboutHeroProps) {
             <div className="about-hero-eyebrow inline-flex items-center gap-2.5 mb-5 sm:mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-olive animate-pulse" aria-hidden="true" />
               <span className="font-mono text-[11px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-olive">
-                ABOUT / NAATI ORGANICS
+                ABOUT NAATI ORGANICS
               </span>
             </div>
 
-            {/* Display Headline in Fraunces */}
+            {/* Display Headline in Fraunces (Client Specified) */}
             <h1 className="tracking-[-0.035em] leading-[1.04] [text-wrap:balance] mb-6 sm:mb-8">
-              <span className="about-hero-title-line block font-display font-medium text-[clamp(2.75rem,5.2vw,5.5rem)] text-forest">
-                To grow better,
+              <span className="about-hero-title-line block font-display font-medium text-[clamp(2.5rem,5vw,5.2rem)] text-forest">
+                We Believe Every
               </span>
-              <span className="about-hero-title-line block font-display font-normal italic text-olive text-[clamp(2.75rem,5.2vw,5.5rem)] mt-1 sm:mt-2">
-                we look deeper.
+              <span className="about-hero-title-line block font-display font-medium text-[clamp(2.5rem,5vw,5.2rem)] text-forest">
+                Great Harvest Begins
+              </span>
+              <span className="about-hero-title-line block font-display font-normal italic text-olive text-[clamp(2.5rem,5vw,5.2rem)] mt-1 sm:mt-2">
+                Beneath the Soil.
               </span>
             </h1>
 
-            {/* Supporting Editorial Description in DM Sans */}
-            <div className="about-hero-description space-y-4 max-w-xl">
-              <p className="font-sans text-base sm:text-lg md:text-xl text-text-secondary leading-relaxed [text-wrap:pretty]">
-                We believe stronger farms begin with healthier soil. Our approach connects what
-                happens beneath the surface with what plants need above it.
+            {/* Core Tagline Badge (Client Specified) */}
+            <div className="about-hero-tagline max-w-xl">
+              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-forest text-cream shadow-warm-xs mb-4">
+                <Sparkles className="w-4 h-4 text-harvest" />
+                <span className="font-display font-medium text-sm sm:text-base tracking-wide">
+                  Fix the Soil. Feed the Plant.
+                </span>
+              </div>
+              <p className="font-sans text-base sm:text-lg text-text-secondary leading-relaxed [text-wrap:pretty]">
+                Healthy crops are not created in isolation—they are the natural biological outcome of fertile, living soil.
               </p>
             </div>
           </div>
@@ -143,11 +151,11 @@ export function AboutHero({ className }: AboutHeroProps) {
           {/* Editorial Anchor Indicator at Bottom */}
           <div className="about-hero-scroll-cue pt-4 sm:pt-6">
             <a
-              href="#story-beneath"
+              href="#our-story"
               className="group inline-flex items-center gap-3 font-mono text-xs font-semibold tracking-[0.2em] text-forest/80 hover:text-forest transition-colors uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest/20 rounded py-1"
-              aria-label="Scroll to discover our thinking"
+              aria-label="Scroll to explore our story"
             >
-              <span>DISCOVER OUR THINKING</span>
+              <span>DISCOVER OUR STORY</span>
               <span className="w-7 h-7 rounded-full bg-cream-light border border-cream-border flex items-center justify-center transition-transform duration-300 group-hover:translate-y-1 shadow-warm-xs">
                 <ArrowDown className="w-3.5 h-3.5 text-olive" />
               </span>
@@ -156,8 +164,8 @@ export function AboutHero({ className }: AboutHeroProps) {
         </div>
 
         {/* ===================================================================
-            RIGHT PANEL (46% on desktop): FULL-BLEED PHOTOGRAPHIC PANEL
-            Edge-to-edge agricultural documentary photograph filling 100% panel
+            RIGHT PANEL (46% on desktop): SUNRISE OVER FARMLAND WITH LIVING SOIL
+            (Background: Sunrise over healthy farmland with a farmer gently holding a handful of rich, living soil.)
             =================================================================== */}
         <div className="w-full lg:w-[46%] xl:w-[48%] relative min-h-[380px] sm:min-h-[460px] md:min-h-[520px] lg:min-h-full self-stretch order-last">
           <div
@@ -170,13 +178,13 @@ export function AboutHero({ className }: AboutHeroProps) {
               className="absolute inset-[-6%] w-[112%] h-[112%] will-change-transform"
             >
               <Image
-                src="/assets/images/about/hero-plants-soil.jpg"
-                alt="Young vibrant green agricultural crop plants emerging from dark organic soil in Karnataka morning sunlight"
+                src="/assets/images/home/why-farmers-choose-naati.jpg"
+                alt="Sunrise over healthy farmland with farmer gently holding rich, living soil with active root nodules"
                 fill
                 priority
                 quality={92}
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover object-[center_35%] select-none"
+                className="object-cover object-[center_40%] select-none"
               />
             </div>
 
@@ -199,10 +207,10 @@ export function AboutHero({ className }: AboutHeroProps) {
             <div className="absolute bottom-6 sm:bottom-8 lg:bottom-10 left-6 sm:left-8 lg:left-10 right-6 sm:right-8 lg:right-10 z-20 flex items-center justify-between text-cream pointer-events-none">
               <span className="font-mono text-[10px] sm:text-[11px] tracking-[0.22em] uppercase text-cream/90 flex items-center gap-2 drop-shadow-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-harvest" />
-                CHAMARAJANAGAR, KARNATAKA
+                SUNRISE ON LIVING FARMLAND
               </span>
               <span className="font-mono text-[10px] tracking-wider text-cream/75 uppercase drop-shadow-sm">
-                SOIL & CROP ECOLOGY
+                LIVING SOIL ECOSYSTEM
               </span>
             </div>
           </div>

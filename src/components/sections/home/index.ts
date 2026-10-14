@@ -25,6 +25,14 @@ export type { CropSolutionsProps } from './CropSolutions';
 export { KnowledgeSection, Section07Knowledge } from './KnowledgeSection';
 export type { KnowledgeSectionProps } from './KnowledgeSection';
 
+export { WhyFarmersChooseNaati, Section09WhyFarmersChooseNaati } from './WhyFarmersChooseNaati';
+export type { WhyFarmersChooseNaatiProps } from './WhyFarmersChooseNaati';
+
+export { HomeTestimonials, Section10Testimonials } from './HomeTestimonials';
+export type { HomeTestimonialsProps } from './HomeTestimonials';
+
+export { DealerNetworkSection, Section11DealerNetwork } from './DealerNetworkSection';
+export type { DealerNetworkSectionProps } from './DealerNetworkSection';
+
 export { ContactEnquirySection, Section08ContactEnquiry } from './ContactEnquirySection';
 export type { ContactEnquirySectionProps } from './ContactEnquirySection';
-

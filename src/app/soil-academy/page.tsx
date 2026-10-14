@@ -13,9 +13,9 @@ import {
 } from '@/components/soil-academy';
 
 export const metadata: Metadata = createSiteMetadata({
-  title: 'Soil Academy — Soil Health & Crop Nutrition',
+  title: 'Soil Learning Centre — Soil Health & Crop Nutrition | Naati Organics',
   description:
-    "Explore Naati Organics' Soil Academy: farmer-focused lessons on soil health, roots, organic matter, soil biology and balanced crop nutrition.",
+    "Explore Naati Organics' Soil Learning Centre: farmer-focused lessons on soil health, roots, organic matter, soil biology and balanced crop nutrition.",
   path: '/soil-academy',
 });
 

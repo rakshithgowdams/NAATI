@@ -63,17 +63,16 @@ export const ENQUIRY_TYPES: EnquiryTypeOption[] = [
 ];
 
 export const CROP_OPTIONS = [
+  'Coconut',
   'Arecanut',
   'Coffee',
-  'Coconut',
-  'Black Pepper',
-  'Ginger & Turmeric',
-  'Tomato / Brinjal / Chilli',
-  'Onion & Garlic',
-  'Leafy Vegetables',
-  'Field Crops & Pulses',
-  'Cardamom & Spices',
-  'Fruit Orchards (Mango, Banana, Citrus)',
+  'Pepper',
+  'Banana',
+  'Mango',
+  'Vegetables',
+  'Field Crops',
+  'Spices',
+  'Home/Terrace Gardens',
   'Other / Not Listed',
 ];
 

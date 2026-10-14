@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Sparkles } from 'lucide-react';
 import { gsap, isReducedMotion } from '@/lib/animations/gsap';
 import { Container } from '@/components/ui/container';
 import { cn } from '@/lib/utils/cn';
@@ -12,22 +12,63 @@ export interface AboutPhilosophyProps {
   className?: string;
 }
 
+const CASCADE_STEPS = [
+  {
+    step: '01',
+    title: 'Healthy Soil',
+    subtitle: 'Living Subterranean Biology',
+    desc: 'Rich in organic carbon, active microbes, and mineral balance.',
+    color: 'border-earth/40 text-harvest',
+    bg: 'bg-earth/10',
+  },
+  {
+    step: '02',
+    title: 'Strong Roots',
+    subtitle: 'Deeper Feeder Network',
+    desc: 'Expansive architecture absorbing moisture and micronutrients efficiently.',
+    color: 'border-olive/40 text-olive-light',
+    bg: 'bg-olive/10',
+  },
+  {
+    step: '03',
+    title: 'Healthy Plants',
+    subtitle: 'Vigorous Foliar Canopy',
+    desc: 'High chlorophyll index, strong vascular system, and natural disease resistance.',
+    color: 'border-forest-light/40 text-cream',
+    bg: 'bg-forest-light/10',
+  },
+  {
+    step: '04',
+    title: 'Abundant Harvests',
+    subtitle: 'Compound Resilience & Yield',
+    desc: 'Higher packout grade, superior market taste, and renewed soil fertility for next season.',
+    color: 'border-harvest/50 text-harvest',
+    bg: 'bg-harvest/10',
+  },
+];
+
 /**
- * ABOUT NAATI ORGANICS — SECTION 03: OUR PHILOSOPHY
+ * ABOUT NAATI ORGANICS — SECTION 06: OUR PHILOSOPHY
  *
- * Compact, visually striking connected editorial composition:
- * - Dark forest-green background (#14240E) with data-nav-theme="dark"
- * - Oversized cream typography in Fraunces
- * - Photographic backdrop of living soil & thriving plant foliage
- * - Flowing botanical root-inspired SVG connector line that progressively draws
- * - Two connected priorities: 01 Build the Soil (Naati Plus) & 02 Feed the Plant (Naati Pro)
- * - Seamless links navigating to /products/naati-plus and /products/naati-pro
- * - Concluding statement: "Two connected priorities. One thoughtful approach."
+ * Client Specification:
+ * OUR PHILOSOPHY
+ * Soil First.
+ * Everything Else Follows.
+ * Most agricultural systems begin with the crop.
+ * Naati begins with the soil.
+ * Because:
+ * Healthy Soil
+ * ↓
+ * Strong Roots
+ * ↓
+ * Healthy Plants
+ * ↓
+ * Abundant Harvests
+ * This philosophy influences every product, every recommendation, and every conversation we have with farmers.
  */
 export function AboutPhilosophy({ className }: AboutPhilosophyProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const connectorSvgRef = useRef<SVGSVGElement>(null);
-  const connectorPathRef = useRef<SVGPathElement>(null);
+  const cascadeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -62,53 +103,25 @@ export function AboutPhilosophy({ className }: AboutPhilosophyProps) {
           '-=0.4'
         );
 
-      // 2. Botanical Connecting SVG Path Draw
-      if (connectorPathRef.current) {
-        const pathLength = connectorPathRef.current.getTotalLength() || 400;
-        gsap.set(connectorPathRef.current, {
-          strokeDasharray: pathLength,
-          strokeDashoffset: pathLength,
-        });
-
-        gsap.to(connectorPathRef.current, {
-          strokeDashoffset: 0,
-          duration: 1.2,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: '.phil-connect-stage',
-            start: 'top 82%',
-            toggleActions: 'play none none none',
-          },
-        });
-      }
-
-      // 3. Two Pillars Entrance
-      const pillarsTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: '.phil-connect-stage',
-          start: 'top 84%',
-          toggleActions: 'play none none none',
-        },
-      });
-
-      pillarsTl
-        .fromTo(
-          '.phil-pillar-1',
-          { opacity: 0, y: 22 },
-          { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }
-        )
-        .fromTo(
-          '.phil-pillar-2',
-          { opacity: 0, y: 22 },
-          { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' },
-          '-=0.4'
-        )
-        .fromTo(
-          '.phil-final-statement',
-          { opacity: 0, y: 18 },
-          { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' },
-          '-=0.3'
+      // 2. Cascade cards animation
+      if (cascadeRef.current) {
+        gsap.fromTo(
+          cascadeRef.current.querySelectorAll('.cascade-step-card'),
+          { opacity: 0, y: 24 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.15,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: cascadeRef.current,
+              start: 'top 82%',
+              toggleActions: 'play none none none',
+            },
+          }
         );
+      }
     }, sectionRef.current);
 
     return () => ctx.revert();
@@ -137,7 +150,7 @@ export function AboutPhilosophy({ className }: AboutPhilosophyProps) {
           <div className="phil-about-eyebrow inline-flex items-center gap-2.5 mb-4 sm:mb-5">
             <span className="w-1.5 h-1.5 rounded-full bg-harvest animate-pulse" aria-hidden="true" />
             <span className="font-mono text-[11px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-harvest">
-              02 / THE NAATI PHILOSOPHY
+              OUR PHILOSOPHY
             </span>
           </div>
 
@@ -147,25 +160,90 @@ export function AboutPhilosophy({ className }: AboutPhilosophyProps) {
             className="phil-about-headline tracking-[-0.035em] leading-[1.05] [text-wrap:balance]"
           >
             <span className="block font-display font-medium text-[clamp(2.25rem,4.5vw,4.25rem)] text-cream">
-              Fix the Soil.
+              Soil First.
             </span>
             <span className="block font-display italic font-normal text-harvest text-[clamp(2.25rem,4.5vw,4.25rem)] mt-1">
-              Feed the Plant.
+              Everything Else Follows.
             </span>
           </h2>
 
           {/* Supporting Intro in DM Sans */}
-          <p className="phil-about-intro font-sans text-base sm:text-lg md:text-xl text-cream-muted/90 mt-4 sm:mt-5 max-w-xl leading-relaxed [text-wrap:pretty]">
-            Healthy growth depends on the relationship between the soil and the crop. Our approach
-            considers both.
+          <p className="phil-about-intro font-sans text-base sm:text-lg md:text-xl text-cream-muted/90 mt-4 sm:mt-5 max-w-2xl leading-relaxed [text-wrap:pretty]">
+            Most agricultural systems begin with the crop. Naati begins with the soil.
           </p>
         </div>
 
         {/* =======================================================================
-            2. CONNECTED CONCEPTUAL STAGE
-            Atmospheric photographic visual backdrop + Two interconnected pillars
+            2. THE BIOLOGICAL CASCADE (Client Specification)
+            Healthy Soil ↓ Strong Roots ↓ Healthy Plants ↓ Abundant Harvests
             ======================================================================= */}
-        <div className="phil-connect-stage relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-cream/15 bg-forest-surface shadow-2xl p-6 sm:p-10 md:p-12 lg:p-16">
+        <div className="mb-14 sm:mb-18">
+          <div className="inline-flex items-center gap-2 mb-6">
+            <Sparkles className="w-4 h-4 text-harvest" />
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-harvest font-semibold">
+              The Biological Chain Reaction
+            </span>
+          </div>
+
+          <div
+            ref={cascadeRef}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 items-stretch relative"
+          >
+            {CASCADE_STEPS.map((item, idx) => (
+              <div
+                key={item.step}
+                className={cn(
+                  'cascade-step-card relative flex flex-col justify-between p-6 sm:p-7 rounded-2xl border backdrop-blur-xs transition-all duration-300 hover:border-harvest/50 group',
+                  item.bg,
+                  item.color
+                )}
+              >
+                <div>
+                  {/* Step counter */}
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="font-mono text-xs font-bold tracking-widest text-cream/60">
+                      STEP {item.step}
+                    </span>
+                    {idx < CASCADE_STEPS.length - 1 && (
+                      <span className="hidden lg:flex w-6 h-6 rounded-full bg-cream/10 items-center justify-center text-cream/70 group-hover:text-harvest transition-colors">
+                        <ArrowDown className="w-3.5 h-3.5 -rotate-90" />
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className="font-display font-medium text-2xl text-cream mb-1">
+                    {item.title}
+                  </h3>
+                  <p className="font-mono text-xs text-harvest/90 mb-3">
+                    {item.subtitle}
+                  </p>
+                  <p className="font-sans text-sm text-cream-muted/90 leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+
+                {/* Mobile vertical down arrow indicator */}
+                {idx < CASCADE_STEPS.length - 1 && (
+                  <div className="flex lg:hidden justify-center pt-4">
+                    <ArrowDown className="w-4 h-4 text-cream/40" />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Philosophy Closing Callout */}
+        <div className="p-6 sm:p-8 rounded-2xl bg-cream/5 border border-cream/15 max-w-3xl mb-14">
+          <p className="font-sans text-base sm:text-lg text-cream/95 leading-relaxed italic [text-wrap:pretty]">
+            &ldquo;This philosophy influences every product, every recommendation, and every conversation we have with farmers.&rdquo;
+          </p>
+        </div>
+
+        {/* =======================================================================
+            3. CONNECTED NUTRITION SYSTEMS (Naati Plus & Naati Pro)
+            ======================================================================= */}
+        <div className="phil-connect-stage relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-cream/15 bg-forest-surface shadow-2xl p-6 sm:p-10 md:p-12">
           {/* Background Soil-Plant Connection Visual */}
           <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
             <Image
@@ -176,119 +254,65 @@ export function AboutPhilosophy({ className }: AboutPhilosophyProps) {
               sizes="(max-width: 1024px) 100vw, 1280px"
               className="object-cover object-center select-none mix-blend-luminosity"
             />
-            {/* Dark Scrim */}
             <div className="absolute inset-0 bg-gradient-to-b from-[#14240E]/90 via-[#14240E]/80 to-[#14240E]/95" />
           </div>
 
-          {/* Foreground Grid: Two Pillars Connected by Botanical Concept */}
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 lg:gap-20 items-stretch">
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-stretch">
             {/* PILLAR 01: BUILD THE SOIL */}
-            <div className="phil-pillar-1 flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-cream/5 border border-cream/10 backdrop-blur-xs">
+            <div className="flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-cream/5 border border-cream/10 backdrop-blur-xs">
               <div>
-                {/* Index in IBM Plex Mono */}
                 <div className="inline-flex items-center gap-2 mb-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-harvest" aria-hidden="true" />
                   <span className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-harvest">
-                    01 / BUILD THE SOIL
+                    SYSTEM 01 / BUILD THE SOIL
                   </span>
                 </div>
-
-                {/* Subtitle in Fraunces */}
-                <h3 className="font-display font-medium text-2xl sm:text-3xl text-cream tracking-tight mb-3">
+                <h3 className="font-display font-medium text-2xl text-cream mb-2">
                   The Subterranean Foundation
                 </h3>
-
-                {/* Principle Explanation */}
-                <p className="font-sans text-sm sm:text-base text-cream-muted/90 leading-relaxed [text-wrap:pretty]">
-                  Support soil structure, organic matter and the living environment surrounding
-                  plant roots.
+                <p className="font-sans text-sm sm:text-base text-cream-muted/90 leading-relaxed mb-6">
+                  Rebuild soil structure, restore beneficial microbial colonies, and enrich organic carbon around the root zone.
                 </p>
               </div>
-
-              {/* Contextual Product Link */}
-              <div className="mt-6 pt-5 border-t border-cream/10">
+              <div className="pt-4 border-t border-cream/10">
                 <Link
                   href="/products/naati-plus"
-                  className="group inline-flex items-center gap-2 text-xs sm:text-sm font-sans font-semibold text-harvest hover:text-cream transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-harvest"
-                  aria-label="Discover Naati Plus — Enriched Vermicompost"
+                  className="group inline-flex items-center gap-2 text-sm font-sans font-semibold text-harvest hover:text-cream transition-colors"
                 >
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-harvest">
-                    NAATI PLUS
-                  </span>
+                  <span className="font-mono text-xs uppercase tracking-wider text-harvest">NAATI PLUS</span>
                   <span className="text-cream-muted/70">— Enriched Vermicompost</span>
-                  <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
               </div>
             </div>
 
             {/* PILLAR 02: FEED THE PLANT */}
-            <div className="phil-pillar-2 flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-cream/5 border border-cream/10 backdrop-blur-xs">
+            <div className="flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-cream/5 border border-cream/10 backdrop-blur-xs">
               <div>
-                {/* Index in IBM Plex Mono */}
                 <div className="inline-flex items-center gap-2 mb-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-olive-light" aria-hidden="true" />
                   <span className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-olive-light">
-                    02 / FEED THE PLANT
+                    SYSTEM 02 / FEED THE PLANT
                   </span>
                 </div>
-
-                {/* Subtitle in Fraunces */}
-                <h3 className="font-display font-medium text-2xl sm:text-3xl text-cream tracking-tight mb-3">
-                  The Canopy & Yield
+                <h3 className="font-display font-medium text-2xl text-cream mb-2">
+                  The Canopy & Yield Vitality
                 </h3>
-
-                {/* Principle Explanation */}
-                <p className="font-sans text-sm sm:text-base text-cream-muted/90 leading-relaxed [text-wrap:pretty]">
-                  Support plant nutrition through the stages of crop growth.
+                <p className="font-sans text-sm sm:text-base text-cream-muted/90 leading-relaxed mb-6">
+                  Provide balanced secondary and micronutrient nutrition to power vegetative vigor, flowering, and fruit set.
                 </p>
               </div>
-
-              {/* Contextual Product Link */}
-              <div className="mt-6 pt-5 border-t border-cream/10">
+              <div className="pt-4 border-t border-cream/10">
                 <Link
                   href="/products/naati-pro"
-                  className="group inline-flex items-center gap-2 text-xs sm:text-sm font-sans font-semibold text-olive-light hover:text-cream transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-olive-light"
-                  aria-label="Discover Naati Pro — Plant Nutrition Bio-Activator"
+                  className="group inline-flex items-center gap-2 text-sm font-sans font-semibold text-olive-light hover:text-cream transition-colors"
                 >
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-olive-light">
-                    NAATI PRO
-                  </span>
-                  <span className="text-cream-muted/70">— Bio-Activator</span>
-                  <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  <span className="font-mono text-xs uppercase tracking-wider text-olive-light">NAATI PRO</span>
+                  <span className="text-cream-muted/70">— Liquid Plant Nutrient</span>
+                  <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
               </div>
             </div>
-          </div>
-
-          {/* Progressive Botanical SVG Connector Draw Between Pillars (Desktop/Tablet) */}
-          <div className="hidden md:flex justify-center my-6 relative z-10 pointer-events-none">
-            <svg
-              ref={connectorSvgRef}
-              width="320"
-              height="32"
-              viewBox="0 0 320 32"
-              fill="none"
-              className="w-80 h-8 opacity-80"
-              aria-hidden="true"
-            >
-              <path
-                ref={connectorPathRef}
-                d="M10 16 C 80 6, 120 26, 160 16 C 200 6, 240 26, 310 16"
-                stroke="#DDCE9A"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeDasharray="6 4"
-              />
-              <circle cx="160" cy="16" r="3" fill="#DDCE9A" />
-            </svg>
-          </div>
-
-          {/* Ending Statement */}
-          <div className="phil-final-statement relative z-10 text-center pt-8 md:pt-4 border-t border-cream/10 mt-6 sm:mt-8">
-            <p className="font-display italic text-lg sm:text-xl md:text-2xl text-cream font-normal">
-              Two connected priorities.{' '}
-              <span className="text-harvest font-medium">One thoughtful approach.</span>
-            </p>
           </div>
         </div>
       </Container>

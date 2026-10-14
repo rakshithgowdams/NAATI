@@ -110,7 +110,7 @@ export function ContactClosingCta({ className }: ContactClosingCtaProps) {
             href="/soil-academy"
             className="group inline-flex items-center gap-2 px-6 sm:px-7 py-4 bg-transparent border border-cream/30 text-cream text-xs sm:text-sm font-mono uppercase tracking-[0.18em] font-medium hover:border-harvest hover:text-harvest transition-all duration-200"
           >
-            <span>VISIT SOIL ACADEMY</span>
+            <span>VISIT SOIL LEARNING CENTRE</span>
             <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-harvest" />
           </Link>
         </div>

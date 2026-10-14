@@ -421,17 +421,19 @@ export const HANDBOOK_INFO = {
       code: 'en',
       name: 'English Edition',
       label: 'English (Original)',
-      status: 'In Preparation for Download',
-      format: 'Full-Colour Comprehensive Advisory PDF',
+      status: 'Available for Immediate Download (PDF & PPTX)',
+      format: 'Full-Colour Comprehensive Advisory PDF & Presentation Slides',
+      downloadPdfUrl: '/downloads/Naati-Farmers-Handbook.pdf',
+      downloadPptxUrl: '/downloads/Naati-Farmers-Handbook.pptx',
     },
     {
       code: 'kn',
       name: 'ಕನ್ನಡ ಆವೃತ್ತಿ',
       label: 'Kannada (ಪ್ರಾದೇಶಿಕ ಆವೃತ್ತಿ)',
-      status: 'In Preparation for Download',
+      status: 'Available via Authorized Dealers',
       format: 'ರೈತ ಮಾರ್ಗದರ್ಶಿ ಪುಸ್ತಕ (ಕನ್ನಡ)',
     },
   ],
   verifiedNote:
-    'Printed handbook editions are distributed through authorized Naati agricultural advisory workshops across Karnataka and South India. Digital PDF downloads will be released upon completion of regional translations.',
+    'The complete Naati Organics Farmer Handbook is available for direct digital download in PDF and PPTX slide formats. High-quality print editions are also distributed through authorized Naati agricultural advisory workshops across Karnataka and South India.',
 };

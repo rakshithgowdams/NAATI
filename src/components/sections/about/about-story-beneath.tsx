@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import Image from 'next/image';
+import { AlertCircle, CheckCircle2, Sparkles, Heart } from 'lucide-react';
 import { gsap, isReducedMotion } from '@/lib/animations/gsap';
 import { Container } from '@/components/ui/container';
 import { cn } from '@/lib/utils/cn';
@@ -10,102 +11,91 @@ export interface AboutStoryBeneathProps {
   className?: string;
 }
 
+const OBSERVATION_POINTS = [
+  'Every season, farmers work harder.',
+  'Yet many soils are becoming weaker.',
+  'Organic matter is declining.',
+  'Beneficial microorganisms are disappearing.',
+  'Roots are becoming weaker.',
+  'More inputs are often required to achieve the same yields.',
+];
+
+const NAATI_PILLARS = [
+  { title: 'Native wisdom', desc: 'Indigenous agricultural heritage and local seed-soil understanding' },
+  { title: 'Natural farming principles', desc: 'Biological harmony without destructive synthetic salts' },
+  { title: 'Respect for soil', desc: 'Viewing the underground ecosystem as sacred living earth' },
+  { title: 'Sustainable agriculture', desc: 'Safe for water tables, pollinators, and farm families' },
+  { title: 'Long-term thinking', desc: 'Cumulative fertility that compounds over decades' },
+];
+
 /**
- * ABOUT NAATI ORGANICS — SECTION 02: THE STORY BENEATH
+ * ABOUT NAATI ORGANICS — SECTION 02: OUR STORY & WHY "NAATI"?
  *
- * Asymmetrical editorial composition:
- * - Warm cream background (#F5F1E7) with data-nav-theme="light"
- * - Left: Macro photograph of living fertile soil with organic matter and root networks
- * - Right: Why We Exist headline, two concise paragraphs, expanding divider line, and closing statement
- * - Smooth reversible ScrollTrigger entrance + micro-parallax
+ * Client Specification:
+ * OUR STORY
+ * Naati Was Born From One Simple Observation.
+ * Every season, farmers work harder.
+ * Yet many soils are becoming weaker...
+ * This is not simply a crop problem. It is a soil health problem.
+ *
+ * WHY "NAATI"?
+ * The word Naati represents something deeply rooted in our heritage.
+ * It stands for:
+ * • Native wisdom
+ * • Natural farming principles
+ * • Respect for soil
+ * • Sustainable agriculture
+ * • Long-term thinking
  */
 export function AboutStoryBeneath({ className }: AboutStoryBeneathProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  const storyRef = useRef<HTMLDivElement>(null);
+  const naatiCardRef = useRef<HTMLDivElement>(null);
   const visualWrapperRef = useRef<HTMLDivElement>(null);
-  const parallaxImgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!sectionRef.current) return;
     if (isReducedMotion()) return;
 
     const ctx = gsap.context(() => {
-      // 1. Image clip reveal
-      if (visualWrapperRef.current) {
+      // 1. Story section entrance
+      if (storyRef.current) {
         gsap.fromTo(
-          visualWrapperRef.current,
-          { clipPath: 'inset(10% 0% 0% 0%)', opacity: 0, y: 28 },
+          storyRef.current.querySelectorAll('.story-anim-item'),
+          { opacity: 0, y: 22 },
           {
-            clipPath: 'inset(0% 0% 0% 0%)',
             opacity: 1,
             y: 0,
-            duration: 1.0,
+            duration: 0.7,
+            stagger: 0.1,
             ease: 'power3.out',
             scrollTrigger: {
-              trigger: visualWrapperRef.current,
-              start: 'top 88%',
+              trigger: storyRef.current,
+              start: 'top 85%',
               toggleActions: 'play none none none',
             },
           }
         );
       }
 
-      // 2. Parallax on macro image
-      if (parallaxImgRef.current && visualWrapperRef.current) {
+      // 2. Naati Heritage card entrance
+      if (naatiCardRef.current) {
         gsap.fromTo(
-          parallaxImgRef.current,
-          { yPercent: -5 },
+          naatiCardRef.current,
+          { opacity: 0, y: 28 },
           {
-            yPercent: 5,
-            ease: 'none',
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power3.out',
             scrollTrigger: {
-              trigger: visualWrapperRef.current,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 0.5,
+              trigger: naatiCardRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
             },
           }
         );
       }
-
-      // 3. Right column text entrance
-      const textTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: '.story-text-trigger',
-          start: 'top 88%',
-          toggleActions: 'play none none none',
-        },
-      });
-
-      textTl
-        .fromTo(
-          '.story-eyebrow',
-          { opacity: 0, y: 14 },
-          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
-        )
-        .fromTo(
-          '.story-headline',
-          { opacity: 0, y: 24 },
-          { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' },
-          '-=0.3'
-        )
-        .fromTo(
-          '.story-copy-p',
-          { opacity: 0, y: 16 },
-          { opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: 'power2.out' },
-          '-=0.4'
-        )
-        .fromTo(
-          '.story-divider-line',
-          { scaleX: 0, transformOrigin: 'left center' },
-          { scaleX: 1, duration: 0.8, ease: 'power2.inOut' },
-          '-=0.3'
-        )
-        .fromTo(
-          '.story-closing-statement',
-          { opacity: 0, y: 16 },
-          { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' },
-          '-=0.4'
-        );
     }, sectionRef.current);
 
     return () => ctx.revert();
@@ -114,115 +104,190 @@ export function AboutStoryBeneath({ className }: AboutStoryBeneathProps) {
   return (
     <section
       ref={sectionRef}
-      id="story-beneath"
+      id="our-story"
       data-nav-theme="light"
-      aria-labelledby="story-beneath-heading"
+      aria-labelledby="our-story-heading"
       className={cn(
-        'relative w-full bg-[#F5F1E7] text-forest overflow-hidden py-18 sm:py-24 md:py-28 lg:py-32 selection:bg-harvest selection:text-forest-deep',
+        'relative w-full bg-[#FAF7F0] text-forest py-20 sm:py-28 lg:py-36 overflow-hidden selection:bg-harvest selection:text-forest-deep',
         className
       )}
     >
-      {/* Top Hairline Divider */}
-      <div className="absolute top-0 inset-x-0 h-px bg-cream-border/70" />
+      {/* Top Hairline Separation */}
+      <div className="absolute top-0 inset-x-0 h-px bg-cream-border/70 z-10" />
 
       <Container size="default">
-        {/* Asymmetrical 2-column editorial grid: Left ~50% | Right ~50% */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-14 lg:gap-16 xl:gap-20 items-center">
-          {/* ===================================================================
-              LEFT: MACRO SOIL ECOLOGY PHOTOGRAPHY
-              High-resolution documentary view of humus aggregates & mycorrhizal roots
-              =================================================================== */}
-          <div className="lg:col-span-6 relative order-2 lg:order-1">
-            <div
-              ref={visualWrapperRef}
-              className="relative w-full aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden bg-cream-deep border border-cream-border/90 shadow-warm-md will-change-transform"
-            >
-              <div
-                ref={parallaxImgRef}
-                className="absolute inset-[-6%] w-[112%] h-[112%] will-change-transform"
+        {/* =====================================================================
+            01 — OUR STORY (Client Specified Observation & Purpose)
+            ===================================================================== */}
+        <div ref={storyRef} className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start mb-20 sm:mb-28">
+          {/* Left Column: The Observation & Diagnostic Realization */}
+          <div className="lg:col-span-7 flex flex-col justify-between">
+            <div>
+              {/* Eyebrow in IBM Plex Mono */}
+              <div className="story-anim-item inline-flex items-center gap-2 mb-3 sm:mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-olive animate-pulse" aria-hidden="true" />
+                <span className="font-mono text-[11px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-olive">
+                  OUR STORY
+                </span>
+              </div>
+
+              {/* Main Headline */}
+              <h2
+                id="our-story-heading"
+                className="story-anim-item font-display font-medium text-[clamp(2.15rem,4.2vw,3.75rem)] text-forest tracking-[-0.03em] leading-[1.1] mb-6 [text-wrap:balance]"
               >
-                <Image
-                  src="/assets/images/about/living-soil-macro.jpg"
-                  alt="High-resolution macro documentary photograph of dark living agricultural soil with organic matter and mycorrhizal root fibers"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  quality={90}
-                  className="object-cover object-center select-none"
-                />
+                Naati Was Born From One Simple Observation.
+              </h2>
+
+              {/* Observation Checklist Items */}
+              <div className="story-anim-item space-y-3 mb-8 p-5 sm:p-6 rounded-2xl bg-cream-light/80 border border-cream-border/80">
+                {OBSERVATION_POINTS.map((obs, idx) => (
+                  <div key={idx} className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-earth/15 text-earth flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold font-mono">
+                      !
+                    </span>
+                    <span className="font-sans text-sm sm:text-base text-forest/90 font-medium leading-snug">
+                      {obs}
+                    </span>
+                  </div>
+                ))}
               </div>
 
-              {/* Tonal Vignette */}
-              <div
-                className="absolute inset-0 bg-gradient-to-t from-forest-deep/60 via-transparent to-transparent pointer-events-none"
-                aria-hidden="true"
-              />
-
-              {/* Technical Specimen Identification Tag */}
-              <div className="absolute top-4 left-4 z-10 pointer-events-none">
-                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-forest-deep/75 backdrop-blur-md text-cream border border-cream/15 text-[11px] font-mono tracking-wider uppercase shadow-xs">
-                  <span className="w-1.5 h-1.5 rounded-full bg-harvest" />
-                  FIG. 01 — LIVING RHIZOSPHERE
-                </span>
+              {/* Core Diagnosis Callout Box */}
+              <div className="story-anim-item p-6 rounded-2xl bg-earth/10 border border-earth/25 mb-8">
+                <div className="flex items-center gap-2.5 mb-2">
+                  <AlertCircle className="w-5 h-5 text-earth shrink-0" />
+                  <span className="font-mono text-xs font-bold uppercase tracking-wider text-earth">
+                    THE CRITICAL REALIZATION
+                  </span>
+                </div>
+                <p className="font-display font-medium text-xl sm:text-2xl text-forest tracking-tight">
+                  This is not simply a crop problem.
+                  <br />
+                  <span className="text-earth italic font-normal">It is a soil health problem.</span>
+                </p>
               </div>
 
-              {/* Bottom Editorial Caption */}
-              <div className="absolute bottom-4 left-5 right-5 z-10 flex items-center justify-between text-cream pointer-events-none">
-                <span className="font-display text-sm sm:text-base font-medium tracking-tight drop-shadow-sm">
-                  Soil Biology & Root Network
+              {/* Single Purpose Statement */}
+              <div className="story-anim-item space-y-3">
+                <span className="font-mono text-xs font-bold uppercase tracking-widest text-olive block">
+                  OUR FOUNDING PURPOSE
                 </span>
-                <span className="font-mono text-[10px] tracking-widest text-cream/80 uppercase">
-                  ACTIVE HUMUS
-                </span>
+                <p className="font-sans text-base sm:text-lg text-text-secondary leading-relaxed">
+                  Naati Organics was created with a single purpose:
+                </p>
+                <p className="font-display font-medium text-lg sm:text-xl text-forest pl-4 border-l-2 border-olive leading-snug">
+                  &ldquo;To help farmers rebuild the health of their soil before trying to improve the crop. Because healthy crops are a natural outcome of healthy soil.&rdquo;
+                </p>
               </div>
             </div>
           </div>
 
-          {/* ===================================================================
-              RIGHT: WHY WE EXIST EDITORIAL STORY STATEMENT
-              =================================================================== */}
-          <div className="story-text-trigger lg:col-span-6 flex flex-col justify-between order-1 lg:order-2">
-            <div>
-              {/* Category Eyebrow in IBM Plex Mono */}
-              <div className="story-eyebrow inline-flex items-center gap-2.5 mb-4 sm:mb-5">
-                <span className="w-1.5 h-1.5 rounded-full bg-earth" aria-hidden="true" />
-                <span className="font-mono text-[11px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-earth">
-                  01 / WHY WE EXIST
+          {/* Right Column: Macro Visual of Living Soil Soil Organic Matter */}
+          <div className="lg:col-span-5">
+            <div
+              ref={visualWrapperRef}
+              className="relative w-full aspect-[4/5] rounded-3xl overflow-hidden bg-cream-deep border border-cream-border/90 shadow-warm-md group"
+            >
+              <Image
+                src="/assets/images/about/living-soil-macro.jpg"
+                alt="Macro view of living organic soil teeming with organic humus and biological activity"
+                fill
+                sizes="(max-width: 1023px) 100vw, 480px"
+                quality={90}
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+
+              <div
+                className="absolute inset-0 bg-gradient-to-t from-forest-deep/85 via-forest-deep/20 to-transparent pointer-events-none"
+                aria-hidden="true"
+              />
+
+              <div className="absolute top-4 left-4 z-10">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-forest-deep/80 backdrop-blur-md text-cream text-[11px] font-mono tracking-wider uppercase border border-cream/20">
+                  <Sparkles className="w-3.5 h-3.5 text-harvest" />
+                  <span>THE LIVING SOIL ECOSYSTEM</span>
                 </span>
               </div>
 
-              {/* Main Headline in Fraunces */}
-              <h2
-                id="story-beneath-heading"
-                className="story-headline font-display font-medium text-2xl sm:text-3xl lg:text-[2.5rem] xl:text-[2.75rem] text-forest leading-[1.12] tracking-[-0.03em] mb-6 sm:mb-8 [text-wrap:balance]"
-              >
-                The most important part of a plant is often the part we cannot see.
-              </h2>
-
-              {/* Two Short Supporting Editorial Paragraphs in DM Sans */}
-              <div className="space-y-4 sm:space-y-5 text-text-secondary font-sans text-base sm:text-[17px] leading-relaxed [text-wrap:pretty]">
-                <p className="story-copy-p">
-                  Healthy soil is more than a growing medium. It supports roots, stores moisture,
-                  provides a home for living organisms, and plays an essential role in nutrient
-                  cycling.
-                </p>
-                <p className="story-copy-p">
-                  At Naati Organics, we believe caring for this foundation is a meaningful first
-                  step toward healthier, more resilient crops.
-                </p>
+              <div className="absolute bottom-5 left-5 right-5 z-10 text-cream pointer-events-none">
+                <span className="font-display text-lg sm:text-xl font-medium drop-shadow-sm block">
+                  Billions of Organisms at Work
+                </span>
+                <span className="font-sans text-xs text-cream/80 block mt-1 leading-snug">
+                  Healthy crumb structure, porous aggregate channels, and beneficial root-zone symbiosis.
+                </span>
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Expanding Fine Divider Line */}
-            <div className="story-divider-line w-full h-px bg-cream-border/90 my-8 sm:my-10" />
+        {/* =====================================================================
+            02 — WHY "NAATI"? (Client Specified Heritage Definition)
+            ===================================================================== */}
+        <div
+          ref={naatiCardRef}
+          className="rounded-3xl bg-forest-deep text-cream p-8 sm:p-12 lg:p-16 border border-forest/30 shadow-2xl relative overflow-hidden"
+        >
+          {/* Ambient Glow */}
+          <div
+            className="absolute -right-20 -bottom-20 w-96 h-96 bg-olive/20 rounded-full blur-3xl pointer-events-none"
+            aria-hidden="true"
+          />
 
-            {/* Concluding Editorial Statement */}
-            <div className="story-closing-statement">
-              <span className="font-mono text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase text-olive block mb-2">
-                FOUNDATIONAL PRINCIPLE
+          <div className="max-w-3xl relative z-10 mb-8 sm:mb-10">
+            <div className="inline-flex items-center gap-2 mb-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-harvest" />
+              <span className="font-mono text-xs font-bold uppercase tracking-widest text-harvest">
+                WHY &ldquo;NAATI&rdquo;?
               </span>
-              <p className="font-display italic text-xl sm:text-2xl text-forest font-normal leading-snug">
-                &ldquo;Everything above begins with what is below.&rdquo;
-              </p>
+            </div>
+
+            <h3 className="font-display font-medium text-3xl sm:text-4xl lg:text-5xl text-cream tracking-tight mb-3">
+              Why &ldquo;Naati&rdquo;?
+            </h3>
+
+            <p className="font-sans text-base sm:text-lg text-cream/90 leading-relaxed mb-2 [text-wrap:pretty]">
+              The word <span className="text-harvest font-semibold">Naati</span> represents something deeply rooted in our heritage.
+            </p>
+            <p className="font-mono text-xs uppercase tracking-wider text-harvest/90 font-medium">
+              It stands for:
+            </p>
+          </div>
+
+          {/* 5 Pillars of "Naati" */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8 sm:mb-10 relative z-10">
+            {NAATI_PILLARS.map((item, idx) => (
+              <div
+                key={idx}
+                className="p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-harvest/40 transition-colors flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <CheckCircle2 className="w-4 h-4 text-harvest shrink-0" />
+                    <span className="font-mono text-[10px] text-cream/50 uppercase font-bold">
+                      0{idx + 1}
+                    </span>
+                  </div>
+                  <h4 className="font-display font-medium text-base sm:text-lg text-cream mb-1">
+                    {item.title}
+                  </h4>
+                </div>
+                <p className="font-sans text-xs text-cream/70 mt-2 leading-relaxed">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Conclusion Banner */}
+          <div className="pt-6 border-t border-white/15 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
+            <p className="font-sans text-sm sm:text-base text-cream/90 max-w-2xl leading-relaxed">
+              At Naati Organics, we combine these timeless values with modern agricultural knowledge to create practical solutions for today&apos;s farmers.
+            </p>
+            <div className="inline-flex items-center gap-2 text-harvest font-mono text-xs font-bold uppercase tracking-wider shrink-0">
+              <Heart className="w-3.5 h-3.5 fill-harvest" />
+              <span>Timeless Wisdom · Modern Science</span>
             </div>
           </div>
         </div>
@@ -230,3 +295,6 @@ export function AboutStoryBeneath({ className }: AboutStoryBeneathProps) {
     </section>
   );
 }
+
+// Backward-compatible alias
+export const Section02AboutStory = AboutStoryBeneath;

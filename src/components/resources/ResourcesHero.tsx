@@ -165,7 +165,7 @@ export function ResourcesHero({ className }: ResourcesHeroProps) {
                 href="/soil-academy"
                 className="group inline-flex items-center gap-2 px-4 sm:px-5 py-3.5 sm:py-4 text-xs sm:text-sm font-mono uppercase tracking-[0.18em] font-medium text-forest-deep hover:text-harvest transition-colors duration-200"
               >
-                <span>VISIT SOIL ACADEMY</span>
+                <span>VISIT SOIL LEARNING CENTRE</span>
                 <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-harvest" />
               </Link>
             </div>
