@@ -518,13 +518,12 @@ export function CropSolutions({ className }: CropSolutionsProps) {
                     type="button"
                     onClick={() => handleSelectCrop(idx)}
                     className={cn(
-                      'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer border select-none',
+                      'inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer border select-none',
                       activeIndex === idx
                         ? 'bg-forest text-cream border-forest shadow-xs font-semibold'
                         : 'bg-cream-light/80 text-forest/85 hover:bg-forest/10 hover:text-forest border-cream-border/90'
                     )}
                   >
-                    <span className="text-sm">{crop.emoji}</span>
                     <span>{crop.name}</span>
                   </button>
                 ))}
@@ -644,9 +643,8 @@ export function CropSolutions({ className }: CropSolutionsProps) {
                       aria-hidden="true"
                     />
                     <div className="absolute bottom-2.5 left-3 right-3 z-10 flex items-center justify-between text-cream pointer-events-none">
-                      <span className="font-display text-base font-semibold tracking-tight drop-shadow-sm flex items-center gap-1.5">
-                        <span className="text-xl">{crop.emoji}</span>
-                        <span>{crop.name}</span>
+                      <span className="font-display text-base font-semibold tracking-tight drop-shadow-sm">
+                        {crop.name}
                       </span>
                       <span className="font-mono text-[11px] text-cream/90 tracking-wider">
                         {crop.index} / {String(totalCrops).padStart(2, '0')}
@@ -825,9 +823,8 @@ export function CropSolutions({ className }: CropSolutionsProps) {
 
                         {/* Active Crop Name Caption on Image */}
                         <div className="absolute bottom-4 left-5 right-5 z-10 flex items-center justify-between text-cream pointer-events-none">
-                          <span className="font-display text-lg sm:text-xl font-medium tracking-tight drop-shadow-sm flex items-center gap-2">
-                            <span className="text-2xl">{crop.emoji}</span>
-                            <span>{crop.name}</span>
+                          <span className="font-display text-lg sm:text-xl font-medium tracking-tight drop-shadow-sm">
+                            {crop.name}
                           </span>
                           <span className="font-mono text-xs text-cream/90 tracking-wider">
                             {crop.index} / {String(totalCrops).padStart(2, '0')}
@@ -917,7 +914,7 @@ export function CropSolutions({ className }: CropSolutionsProps) {
                             : 'text-text-secondary hover:text-forest hover:bg-cream-light/50 border border-transparent'
                         )}
                       >
-                        {/* Left: Indicator Bar, Emoji, Index & Crop Name */}
+                        {/* Left: Indicator Bar, Index & Crop Name */}
                         <div className="flex items-center gap-2.5">
                           <span
                             className={cn(
@@ -928,8 +925,6 @@ export function CropSolutions({ className }: CropSolutionsProps) {
                             )}
                             aria-hidden="true"
                           />
-
-                          <span className="text-base select-none shrink-0">{crop.emoji}</span>
 
                           <span
                             className={cn(
