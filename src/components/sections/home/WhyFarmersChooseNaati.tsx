@@ -540,7 +540,7 @@ export function WhyFarmersChooseNaati({ className }: WhyFarmersChooseNaatiProps)
               <div className="col-span-7 overflow-hidden relative flex flex-col justify-between">
                 <div
                   ref={desktopTrackRef}
-                  className="flex items-stretch gap-4 xl:gap-5 pt-0.5 pb-1.5 will-change-transform"
+                  className="flex items-stretch gap-4 xl:gap-5 pt-3 pb-2 px-1.5 will-change-transform"
                 >
                   {PHILOSOPHY_PILLARS.map((pillar, idx) => {
                     const IconComponent = pillar.icon;
