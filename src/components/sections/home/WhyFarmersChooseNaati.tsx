@@ -404,30 +404,30 @@ export function WhyFarmersChooseNaati({ className }: WhyFarmersChooseNaatiProps)
       <div ref={desktopPinWrapperRef} className="relative w-full hidden lg:block">
         <div
           ref={desktopStageRef}
-          className="w-full min-h-[100svh] flex flex-col justify-center py-4 xl:py-6 overflow-hidden select-none"
+          className="w-full min-h-[100svh] flex flex-col justify-center py-8 overflow-hidden select-none"
         >
           <Container size="default" className="w-full">
             {/* Top Header & Interactive Ticker */}
-            <div className="flex items-end justify-between gap-6 mb-4 xl:mb-5 pb-3 xl:pb-4 border-b border-cream-border/70">
+            <div className="flex items-end justify-between gap-6 mb-6 pb-4 border-b border-cream-border/70">
               <div>
-                <div className="inline-flex items-center gap-2 mb-1.5">
+                <div className="inline-flex items-center gap-2 mb-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-olive animate-pulse" aria-hidden="true" />
                   <span className="font-mono text-xs font-semibold tracking-[0.22em] uppercase text-olive">
                     SECTION 9 – WHY FARMERS CHOOSE NAATI
                   </span>
                 </div>
                 <h2 id="why-naati-heading-desktop" className="tracking-[-0.03em] leading-tight">
-                  <span className="font-display font-medium text-2xl xl:text-3xl text-forest">
+                  <span className="font-display font-medium text-3xl xl:text-4xl text-forest">
                     More Than Products.{' '}
                   </span>
-                  <span className="font-display italic font-normal text-olive text-2xl xl:text-3xl">
+                  <span className="font-display italic font-normal text-olive text-3xl xl:text-4xl">
                     A Farming Philosophy.
                   </span>
                 </h2>
               </div>
 
               {/* Live Pillar Ticker & Nav Controls */}
-              <div className="flex items-center gap-4 shrink-0 bg-cream-light/80 border border-cream-border/90 px-3.5 py-2 rounded-2xl shadow-warm-xs">
+              <div className="flex items-center gap-4 shrink-0 bg-cream-light/80 border border-cream-border/90 px-4 py-2.5 rounded-2xl shadow-warm-xs">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-harvest animate-pulse" aria-hidden="true" />
                   <span className="font-mono text-xs font-bold text-forest uppercase tracking-wider">
@@ -472,11 +472,11 @@ export function WhyFarmersChooseNaati({ className }: WhyFarmersChooseNaatiProps)
             </div>
 
             {/* Split Showcase: Pinned Left Anchor + Scrolling Right Track */}
-            <div className="grid grid-cols-12 gap-6 xl:gap-8 items-stretch">
+            <div className="grid grid-cols-12 gap-8 xl:gap-10 items-stretch">
               {/* Left Column: Visual Documentary Anchor & Brand Promise */}
-              <div className="col-span-5 flex flex-col justify-between space-y-2.5 xl:space-y-3">
+              <div className="col-span-5 flex flex-col justify-between space-y-4">
                 {/* High-Resolution Documentary Photo Frame */}
-                <div className="relative w-full h-[155px] lg:h-[165px] xl:h-[190px] rounded-2xl xl:rounded-3xl overflow-hidden bg-cream-deep border border-cream-border/90 shadow-warm-md group">
+                <div className="relative w-full h-[220px] xl:h-[240px] rounded-3xl overflow-hidden bg-cream-deep border border-cream-border/90 shadow-warm-md group">
                   <Image
                     src="/assets/images/home/why-farmers-choose-naati.jpg"
                     alt="Farmer and agricultural advisor examining living soil root nodules in Karnataka field"
@@ -490,34 +490,34 @@ export function WhyFarmersChooseNaati({ className }: WhyFarmersChooseNaatiProps)
                     aria-hidden="true"
                   />
                   {/* Floating Badge */}
-                  <div className="absolute top-3 left-3 z-10">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-forest-deep/80 backdrop-blur-md text-cream text-[9px] xl:text-[10px] font-mono tracking-wider uppercase border border-cream/20">
+                  <div className="absolute top-3.5 left-3.5 z-10">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-forest-deep/80 backdrop-blur-md text-cream text-[10px] font-mono tracking-wider uppercase border border-cream/20">
                       <Sparkles className="w-3 h-3 text-harvest" />
                       <span>GROUNDED IN FIELD TRUTH</span>
                     </span>
                   </div>
                   {/* Caption Overlay */}
-                  <div className="absolute bottom-2.5 left-3.5 right-3.5 z-10 text-cream pointer-events-none">
-                    <span className="font-display text-sm xl:text-base font-medium drop-shadow-sm block">
+                  <div className="absolute bottom-3 left-4 right-4 z-10 text-cream pointer-events-none">
+                    <span className="font-display text-base font-medium drop-shadow-sm block">
                       Root-Level Trust Across South India
                     </span>
-                    <span className="font-sans text-[10px] xl:text-[11px] text-cream/80 block mt-0.5">
+                    <span className="font-sans text-[11px] text-cream/80 block mt-0.5">
                       Inspecting living humus &amp; mycorrhizal root nodulation
                     </span>
                   </div>
                 </div>
 
                 {/* Editorial Manifesto Card */}
-                <div className="p-3.5 xl:p-4.5 rounded-2xl xl:rounded-3xl bg-cream-light border border-cream-border/90 shadow-warm-xs">
-                  <span className="font-mono text-[10px] xl:text-[11px] font-bold uppercase tracking-wider text-earth block mb-1">
+                <div className="p-5 rounded-3xl bg-cream-light border border-cream-border/90 shadow-warm-xs">
+                  <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-earth block mb-1.5">
                     A PROMISE TO THE LAND
                   </span>
-                  <p className="font-display italic text-sm xl:text-base text-forest leading-snug mb-2">
+                  <p className="font-display italic text-base xl:text-lg text-forest leading-snug mb-2.5">
                     &ldquo;A farmer&apos;s soil is their family&apos;s greatest inheritance. Every solution we formulate is built to leave your land healthier than we found it.&rdquo;
                   </p>
-                  <div className="flex items-center gap-2 pt-1.5 border-t border-cream-border/80">
+                  <div className="flex items-center gap-2 pt-2 border-t border-cream-border/80">
                     <span className="w-1.5 h-1.5 rounded-full bg-olive" />
-                    <span className="font-sans text-[10px] xl:text-[11px] font-medium text-text-secondary">
+                    <span className="font-sans text-[11px] font-medium text-text-secondary">
                       Naati Organics Agronomy Directorate · Bengaluru, Karnataka
                     </span>
                   </div>
@@ -526,13 +526,13 @@ export function WhyFarmersChooseNaati({ className }: WhyFarmersChooseNaatiProps)
                 {/* Direct Link to Nutrition System */}
                 <Link
                   href="/nutrition-system"
-                  className="inline-flex items-center justify-between py-2.5 px-4 xl:py-3 xl:px-5 rounded-xl xl:rounded-2xl bg-forest text-cream font-sans text-xs xl:text-sm font-semibold hover:bg-olive transition-colors group shadow-warm-xs"
+                  className="inline-flex items-center justify-between p-3.5 px-5 rounded-2xl bg-forest text-cream font-sans text-xs xl:text-sm font-semibold hover:bg-olive transition-colors group shadow-warm-xs"
                 >
-                  <div className="flex items-center gap-2">
-                    <Sprout className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-harvest" />
+                  <div className="flex items-center gap-2.5">
+                    <Sprout className="w-4 h-4 text-harvest" />
                     <span>Explore the Two-Step Nutrition System</span>
                   </div>
-                  <ArrowRight className="w-3.5 h-3.5 xl:w-4 xl:h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </Link>
               </div>
 
@@ -540,7 +540,7 @@ export function WhyFarmersChooseNaati({ className }: WhyFarmersChooseNaatiProps)
               <div className="col-span-7 overflow-hidden relative flex flex-col justify-between">
                 <div
                   ref={desktopTrackRef}
-                  className="flex items-stretch gap-4 xl:gap-5 pt-3 pb-2 px-1.5 will-change-transform"
+                  className="flex items-stretch gap-5 pt-3.5 pb-2.5 px-2 will-change-transform"
                 >
                   {PHILOSOPHY_PILLARS.map((pillar, idx) => {
                     const IconComponent = pillar.icon;
@@ -551,7 +551,7 @@ export function WhyFarmersChooseNaati({ className }: WhyFarmersChooseNaatiProps)
                         key={pillar.id}
                         onClick={() => handleSelectPillarDesktop(idx)}
                         className={cn(
-                          'w-[290px] lg:w-[310px] xl:w-[335px] shrink-0 p-4.5 xl:p-5 rounded-2xl border transition-all duration-300 flex flex-col justify-between cursor-pointer group select-none',
+                          'w-[320px] xl:w-[350px] shrink-0 p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-between cursor-pointer group select-none',
                           isActive
                             ? 'bg-white border-olive shadow-warm-md scale-[1.01]'
                             : 'bg-cream-light/95 border-cream-border/90 hover:border-olive/50 hover:bg-white shadow-warm-xs'
@@ -559,11 +559,11 @@ export function WhyFarmersChooseNaati({ className }: WhyFarmersChooseNaatiProps)
                       >
                         <div>
                           {/* Header: Checkmark Icon & Index */}
-                          <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-2">
                               <div
                                 className={cn(
-                                  'w-7 h-7 xl:w-8 xl:h-8 rounded-xl flex items-center justify-center transition-colors duration-300',
+                                  'w-8 h-8 rounded-xl flex items-center justify-center transition-colors duration-300',
                                   isActive
                                     ? 'bg-forest text-cream'
                                     : 'bg-forest/5 text-forest group-hover:bg-forest group-hover:text-cream'
@@ -571,19 +571,19 @@ export function WhyFarmersChooseNaati({ className }: WhyFarmersChooseNaatiProps)
                               >
                                 <CheckCircle2
                                   className={cn(
-                                    'w-3.5 h-3.5 xl:w-4 xl:h-4 transition-colors',
+                                    'w-4 h-4 transition-colors',
                                     isActive ? 'text-harvest' : 'text-olive group-hover:text-harvest'
                                   )}
                                 />
                               </div>
-                              <span className="font-mono text-[10px] xl:text-[11px] font-bold text-text-muted tracking-widest uppercase">
+                              <span className="font-mono text-[11px] font-bold text-text-muted tracking-widest uppercase">
                                 {pillar.number} / 06
                               </span>
                             </div>
 
                             <span
                               className={cn(
-                                'font-mono text-[9px] xl:text-[10px] px-2.5 py-0.5 rounded-full border font-semibold uppercase tracking-wider transition-colors',
+                                'font-mono text-[10px] px-2.5 py-0.5 rounded-full border font-semibold uppercase tracking-wider transition-colors',
                                 isActive
                                   ? 'bg-olive/10 border-olive/30 text-olive'
                                   : 'bg-cream-deep border-cream-border text-forest/75'
@@ -596,14 +596,14 @@ export function WhyFarmersChooseNaati({ className }: WhyFarmersChooseNaatiProps)
                           {/* Title & Subtitle */}
                           <h3
                             className={cn(
-                              'font-display font-medium text-lg xl:text-xl tracking-tight transition-colors mb-1',
+                              'font-display font-medium text-xl tracking-tight transition-colors mb-1.5',
                               isActive ? 'text-forest' : 'text-forest group-hover:text-olive'
                             )}
                           >
                             {pillar.title}
                           </h3>
 
-                          <p className="font-sans text-xs font-semibold text-text-primary/90 mb-2 leading-snug">
+                          <p className="font-sans text-xs font-semibold text-text-primary/90 mb-3 leading-snug">
                             {pillar.subtitle}
                           </p>
 
@@ -614,8 +614,8 @@ export function WhyFarmersChooseNaati({ className }: WhyFarmersChooseNaatiProps)
                         </div>
 
                         {/* Micro Visual Bar */}
-                        <div className="pt-3 mt-4 border-t border-cream-border/60 flex items-center justify-between text-text-muted">
-                          <span className="text-[10px] xl:text-[11px] font-mono uppercase tracking-wider text-forest/70 flex items-center gap-1.5">
+                        <div className="pt-4 mt-6 border-t border-cream-border/60 flex items-center justify-between text-text-muted">
+                          <span className="text-[11px] font-mono uppercase tracking-wider text-forest/70 flex items-center gap-1.5">
                             <IconComponent className="w-3.5 h-3.5 text-olive" />
                             <span>Verified Standard</span>
                           </span>
@@ -632,7 +632,7 @@ export function WhyFarmersChooseNaati({ className }: WhyFarmersChooseNaatiProps)
                 </div>
 
                 {/* Bottom Controls: 6 Dots & Scrolling Hint */}
-                <div className="flex items-center justify-between pt-2.5 mt-2 border-t border-cream-border/60">
+                <div className="flex items-center justify-between pt-4 mt-2 border-t border-cream-border/60">
                   <div className="flex items-center gap-2">
                     {PHILOSOPHY_PILLARS.map((p, idx) => (
                       <button
